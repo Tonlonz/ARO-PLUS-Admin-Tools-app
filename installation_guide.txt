@@ -1,0 +1,101 @@
+========================================================================
+คู่มือการใช้งานและติดตั้งแอปพลิเคชัน ARO PLUS Admin Tools (WebApp / PWA)
+========================================================================
+
+เนื่องจากแอปพลิเคชันนี้ออกแบบมาเพื่อใช้งานภายในองค์กร (Internal App) ตัวระบบจึงสามารถส่งต่อและติดตั้งได้อย่างรวดเร็วในรูปแบบแอปพลิเคชันเสมือนจริง (Native WebApp) ทั้งบนคอมพิวเตอร์และมือถือโดยไม่ต้องดาวน์โหลดจากสโตร์
+
+⚠️ ข้อสำคัญเพื่อความปลอดภัยของเบราว์เซอร์สากล (สำคัญมาก):
+ฟังก์ชัน "การกดปุ่มติดตั้งแอป" และ "การตรวจจับเวอร์ชันใหม่เพื่อแจ้งเตือนอัปเดต" จะทำงานต่อเมื่อไฟล์ถูกเปิดผ่านเครือข่ายเซิร์ฟเวอร์เท่านั้น (เช่น เปิดผ่าน Link URL เว็บไซต์, หรือระบบ IP ของเซิร์ฟเวอร์ภายในบริษัท หรือการจำลองคอมพิวเตอร์เป็น localhost)
+*หากท่านดับเบิ้ลคลิกไฟล์ index.html ตรงๆ จากโฟลเดอร์ในคอมพิวเตอร์ หน้าเว็บจะขึ้นเป็นไฟล์โลคอล (file:///...) ตัวโปรแกรมจะคำนวณออฟไลน์ได้ปกติ 100% แต่เบราว์เซอร์จะไม่ยอมให้กดติดตั้งลงหน้าจอ และไม่ระบุการแจ้งเตือนอัปเดต
+
+------------------------------------------------------------------------
+1. วิธีติดตั้งแอปบนคอมพิวเตอร์เดสก์ท็อป (Windows / Mac)
+------------------------------------------------------------------------
+เปิดเว็บบราวเซอร์ Google Chrome หรือ Microsoft Edge จากนั้นระบุที่อยู่ลิงก์แอปพลิเคชันของท่าน:
+วิธีเปิดเซิร์ฟเวอร์โลคอลแบบง่ายที่สุดสำหรับผู้ทดสอบ: เปิดโฟลเดอร์แอป -> เปิด Command Prompt (CMD) พิมพ์คำสั่ง: python -m http.server 8080 แล้วเปิดเบราว์เซอร์เข้าลิงก์ http://localhost:8080
+
+ขั้นตอนติดตั้ง:
+- เมื่อหน้าเว็บเปิดขึ้นมา สังเกตที่ แถบระบุที่อยู่ด้านบนขวา (URL Bar) จะปรากฏ "ไอคอนรูปหน้าจอคอมพิวเตอร์พร้อมลูกศรลง"
+- หรือกดที่ปุ่มเมนู (จุด 3 จุด มุมขวาบนสุด) -> เลือกเมนู "ติดตั้ง ARO PLUS Admin Tools" (Install ARO PLUS Admin Tools)
+- กดตกลง ตัวแอปจะแยกหน้าต่างออกมาเป็นโปรแกรมอิสระ และสร้างไอคอนบนหน้าจอคอมพิวเตอร์ทันที เปิดใช้ได้แม้ไม่มีอินเทอร์เน็ต
+
+------------------------------------------------------------------------
+2. วิธีติดตั้งแอปบนมือถือระบบ Android (ผ่าน Google Chrome)
+------------------------------------------------------------------------
+- เปิดแอป Google Chrome บนมือถือ แล้วเข้าลิงก์ URL ของแอปพลิเคชัน
+- กดที่ปุ่มเมนู (จุด 3 จุด ที่มุมขวาบนของเบราว์เซอร์)
+- เลือกเมนู "เพิ่มลงในหน้าจอหลัก" (Add to Home Screen) หรือ "ติดตั้งแอป" (Install App)
+- ตัวแอปพลิเคชันจะติดตั้งลงบนหน้าจอมือถือทันที สามารถลากจัดตำแหน่งได้เหมือนแอปพลิเคชันปกติ
+
+------------------------------------------------------------------------
+3. วิธีติดตั้งแอปบนมือถือระบบ iOS (ผ่าน Safari บน iPhone / iPad)
+------------------------------------------------------------------------
+- เปิดแอป Safari (ต้องเป็น Safari เท่านั้น) แล้วเปิดเข้าลิงก์แอปพลิเคชัน
+- กดปุ่ม "แชร์" (Share Button) ที่แถบเมนูด้านล่าง (ไอคอนรูปกล่องที่มีลูกศรชี้ขึ้น)
+- เลื่อนหน้าต่างเมนูลงมาด้านล่าง เลือกหัวข้อ "เพิ่มไปยังหน้าจอโฮม" (Add to Home Screen)
+- กดปุ่ม "เพิ่ม" (Add) ที่มุมขวาบน แอปจะกลายเป็นไอคอนแอปบนหน้าจอมือถือทันที
+
+------------------------------------------------------------------------
+4. ระบบการอัปเดตเวอร์ชันใหม่ (Developer & User Update Workflow)
+------------------------------------------------------------------------
+- สำหรับผู้พัฒนา: เมื่อทำการเปลี่ยนดีไซน์หรือปรับโค้ดใหม่เสร็จ ให้ท่านแก้ไขรหัสเวอร์ชันที่บรรทัดแรกในไฟล์ `sw.js` (เช่น เปลี่ยนจาก 'aro-plus-cache-v1.0.0' เป็น 'aro-plus-cache-v1.0.1') แล้วอัปโหลดไฟล์ชุดใหม่ขึ้นทับเซิร์ฟเวอร์เดิม
+- สำหรับผู้ใช้: เมื่อเปิดใช้งานแอป ตัวระบบจะทำการดึงไฟล์ใหม่มาติดตั้งเบื้องหลังเงียบๆ และจะปรากฏแถบแจ้งเตือนสีแดงด้านล่างทันทีว่า "✨ มีการอัปเดตเวอร์ชันใหม่! คุณพร้อมที่จะอัพเดทไฟล์ใหม่ใช่ไหม?" 
+- เมื่อผู้ใช้งานกดปุ่ม "อัปเดตทันที" หน้าแอปจะกระทำการลงไฟล์เวอร์ชันล่าสุดทดแทนเวอร์ชันเก่า และรีเฟรชหน้าจอให้เองทันทีโดยที่ผู้ใช้ไม่ต้องมาลบและดาวน์โหลด ZIP ใหม่
+
+------------------------------------------------------------------------
+5. วิธีการถอนการติดตั้งแอปพลิเคชัน (Uninstall)
+------------------------------------------------------------------------
+- บนคอมพิวเตอร์: เปิดหน้าต่างแอป ARO PLUS -> กดจุด 3 จุดที่แถบเมนูด้านบนสุดของหน้าต่าง -> เลือก "ถอนการติดตั้งแอป ARO PLUS" (Uninstall)
+- บนมือถือ (iOS/Android): กดค้างที่ไอคอนบนหน้าจอหลัก -> เลือก "ลบแอป" (Remove/Delete App) ระบบปฏิบัติการจะลบตัวติดตั้งและเคลียร์หน่วยความจำแคชออกจากเครื่องทันทีตามปกติ
+
+
+
+========================================================================
+APPLICATION INSTALLATION GUIDE FOR ARO PLUS ADMIN TOOLS (WebApp / PWA)
+========================================================================
+
+Since this is an internal enterprise deployment, the application is packed as a Progressive Web App (PWA). It allows all corporate users to install it as a standalone app on both Desktop and Mobile devices without passing through App Stores.
+
+⚠️ Critical Prerequisite for Browser Security (Crucial):
+The "Install App" prompt and "New Update Alert" mechanism ONLY execute when the code runs through a secure server web context (e.g., inside an actual hosted intranet site, domain name URL, server IP, or local host network like http://localhost).
+*If you simply double-click the index.html file inside a computer directory, the URL shows (file:///...). The software will still compute and perform offline perfectly, but the installation prompt and version check banner will remain hidden due to international web browser security rules.
+
+------------------------------------------------------------------------
+1. Desktop Installation (Windows / Mac via Chrome or Edge)
+------------------------------------------------------------------------
+Launch Google Chrome or Microsoft Edge and navigate to your production server site link:
+Quick testing tip for local developers: Open the app folder directory -> open Terminal/CMD and type: `python -m http.server 8080`, then open your browser to http://localhost:8080
+
+Steps to Install:
+- Once the page renders, navigate your attention to the right end of the top Address Bar (URL Bar). An "Install Icon" (A screen with a downward arrow) will appear.
+- Alternatively, click the 3-dots context menu on the upper-right corner -> Select "Install ARO PLUS Admin Tools".
+- Accept the prompt. The web application immediately separates itself into a desktop app frame window with an absolute desktop app shortcut.
+
+------------------------------------------------------------------------
+2. Android Installation (via Google Chrome)
+------------------------------------------------------------------------
+- Open Google Chrome on your device and load the corporate application link.
+- Tap the 3-dots menu icon at the upper-right corner of Chrome.
+- Select "Add to Home Screen" or "Install App".
+- The system packs the shortcut layout, deploying the standalone app icon seamlessly on your device's home launcher.
+
+------------------------------------------------------------------------
+3. iOS Installation (via Safari on iPhone / iPad)
+------------------------------------------------------------------------
+- Launch Safari browser (strictly Safari only) and navigate to the application link.
+- Tap the "Share" icon on the bottom navigation dashboard (the square box with an upward-pointing arrow).
+- Scroll down the layout panel and select "Add to Home Screen".
+- Tap the "Add" button on the top right. The webapp launcher icon immediately joins your screen apps ecosystem.
+
+------------------------------------------------------------------------
+4. Automated Continuous Integration & Updates Strategy
+------------------------------------------------------------------------
+- For Developers: When modifications or upgrades are finalized, update the cache iteration identifier located at the first line of the `sw.js` file (e.g., change from 'aro-plus-cache-v1.0.0' to 'aro-plus-cache-v1.0.1') and re-upload the folder payload into your active network server directory.
+- For Users: The background worker continuously tracks active server data. Once version changes are sniffed out, an inline banner drops at the bottom screen view stating: "New Update Available! Are you ready to install the new update?".
+- Tapping "Update Now" instantly clears previous local cached assets, overwrites current memory layouts cleanly, and triggers an autonomous page refresh to let users interact with the newest software seamlessly.
+
+------------------------------------------------------------------------
+5. Uninstallation Guide (Removal Process)
+------------------------------------------------------------------------
+- On Desktop Platforms: Launch the running PWA window -> click the 3-dots menu on the window title top bar -> choose "Uninstall ARO PLUS Admin Tools".
+- On Mobile Platforms (iOS/Android): Press and hold the app icon on the homepage launcher -> click "Remove App" or "Delete App". The OS completely wipes out cached entities and deletes the software framework instantaneously.

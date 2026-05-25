@@ -1,0 +1,2318 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>ARO PLUS Admin Tools</title>
+  <meta name="description" content="ARO PLUS Admin Tools - เครื่องคำนวณปริมาณน้ำและผลิตภัณฑ์สำหรับตู้ปลา" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#e63946" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="ARO PLUS" />
+
+  <style>
+    /* ─── DESIGN SYSTEM & PALETTE ─── */
+    :root {
+      /* Colors: Red, White, Gray, Dark Gray, Black */
+      --red-primary: #e63946;
+      --red-hover: #d62828;
+      --red-glow: rgba(230, 57, 70, 0.4);
+      --green-accent: #2a9d8f;
+
+      --font-th: 'Sukhumvit Set', 'Prompt', 'Sarabun', sans-serif;
+      --font-en: 'Poppins', sans-serif;
+
+      --transition-speed: 0.25s;
+      --transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+    }
+
+    /* ─── DARK THEME ─── */
+    [data-theme="dark"] {
+      --bg-base: #0a0a0c;
+      --bg-surface: #121216;
+      --bg-card: #18181f;
+      --bg-card-hover: #1e1e27;
+      --bg-input: #0d0d11;
+      --bg-sidebar: #0f0f13;
+
+      --border: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(230, 57, 70, 0.5);
+
+      --text-primary: #f8f9fa;
+      --text-secondary: #a0a5b5;
+      --text-muted: #64687a;
+
+      --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.5);
+      --topbar-bg: rgba(18, 18, 22, 0.9);
+      --tank-bg: rgba(20, 30, 50, 0.4);
+      --tank-border: #4ba3e3;
+    }
+
+    /* ─── LIGHT THEME ─── */
+    [data-theme="light"] {
+      --bg-base: #f3f4f6;
+      --bg-surface: #ffffff;
+      --bg-card: #ffffff;
+      --bg-card-hover: #fafafa;
+      --bg-input: #f0f2f5;
+      --bg-sidebar: #ffffff;
+
+      --border: rgba(0, 0, 0, 0.08);
+      --border-focus: rgba(230, 57, 70, 0.4);
+
+      --text-primary: #111827;
+      --text-secondary: #4b5563;
+      --text-muted: #9ca3af;
+
+      --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.06);
+      --topbar-bg: rgba(255, 255, 255, 0.9);
+      --tank-bg: rgba(220, 240, 255, 0.3);
+      --tank-border: #1d72b8;
+    }
+
+    /* ─── BASE RESET ─── */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      overflow-x: hidden;
+      background: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-th);
+      transition: background var(--transition), color var(--transition);
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    input,
+    button,
+    select,
+    textarea {
+      font-family: inherit;
+    }
+
+    /* ─── APP STRUCTURE ─── */
+    .app-shell {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ─── TOP HEADER ─── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      height: 64px;
+      background: var(--topbar-bg);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 100;
+      flex-shrink: 0;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-container {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, var(--red-primary), #800f1b);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 15px var(--red-glow);
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+
+    .logo-container svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: #ffffff;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .brand-title {
+      font-family: var(--font-en);
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: var(--text-primary);
+    }
+
+    .brand-sub {
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .theme-toggle {
+      display: flex;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      padding: 4px;
+      border-radius: 50px;
+      gap: 2px;
+    }
+
+    .theme-btn {
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      padding: 6px 14px;
+      font-size: 11px;
+      font-weight: 600;
+      font-family: var(--font-en);
+      border-radius: 50px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition);
+    }
+
+    .theme-btn svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+
+    .theme-btn.active {
+      background: var(--red-primary);
+      color: #ffffff;
+      box-shadow: 0 2px 10px var(--red-glow);
+    }
+
+    /* ─── MAIN WORKSPACE ─── */
+    .main-workspace {
+      display: flex;
+      flex: 1;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* ─── SIDEBAR ─── */
+    .sidebar {
+      width: 240px;
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 16px 0;
+      flex-shrink: 0;
+      transition: var(--transition);
+    }
+
+    .menu-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      padding: 12px 24px 8px;
+      font-family: var(--font-en);
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 24px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+      border-left: 4px solid transparent;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .menu-item svg {
+      width: 18px;
+      height: 18px;
+      opacity: 0.7;
+      transition: var(--transition);
+    }
+
+    .menu-item:hover {
+      background: rgba(230, 57, 70, 0.06);
+      color: var(--text-primary);
+    }
+
+    .menu-item:hover svg {
+      opacity: 1;
+      color: var(--red-primary);
+    }
+
+    .menu-item.active {
+      background: rgba(230, 57, 70, 0.08);
+      color: var(--red-primary);
+      border-left-color: var(--red-primary);
+      font-weight: 600;
+    }
+
+    .menu-item.active svg {
+      opacity: 1;
+      color: var(--red-primary);
+    }
+
+    /* ─── CONTENT AREA ─── */
+    .content-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-base);
+      overflow-x: hidden;
+    }
+
+    .page {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .page.active {
+      display: flex;
+    }
+
+    /* ─── CALCULATOR PAGE ─── */
+    .calc-layout {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .calc-header {
+      padding: 24px 32px 12px;
+      flex-shrink: 0;
+    }
+
+    .calc-header h2 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .calc-header h2 span {
+      color: var(--red-primary);
+    }
+
+    .calc-header p {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* Formulas tabs bar */
+    .tabs-bar {
+      display: flex;
+      gap: 8px;
+      padding: 12px 32px;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      scrollbar-width: none;
+      flex-shrink: 0;
+    }
+
+    .tabs-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tab-button {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      padding: 8px 18px;
+      border-radius: 50px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tab-button:hover {
+      border-color: var(--red-primary);
+      color: var(--red-primary);
+    }
+
+    .tab-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .tab-button.active {
+      background: var(--red-primary);
+      border-color: var(--red-primary);
+      color: #ffffff;
+      box-shadow: 0 4px 15px var(--red-glow);
+    }
+
+    .tab-button .tab-icon-pill {
+      stroke: currentColor;
+      transition: var(--transition);
+    }
+
+    .tab-button:hover .tab-icon-pill {
+      stroke: var(--red-primary);
+    }
+
+    .tab-button.active .tab-icon-pill {
+      stroke: #ffffff;
+      filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
+    }
+
+    /* Grid Area for Calculator */
+    .calc-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
+      padding: 24px 32px;
+      flex: 1;
+    }
+
+    /* Left Visual Box */
+    .visual-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .card-title {
+      padding: 16px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .tank-view {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+      min-height: 280px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tank-svg-wrapper {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      aspect-ratio: 380 / 220;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Dimensions Inputs */
+    .inputs-bar {
+      padding: 20px;
+      background: var(--bg-input);
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .unit-switch-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .unit-switch-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .unit-toggle-group {
+      display: flex;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 2px;
+    }
+
+    .unit-toggle-btn {
+      border: none;
+      background: transparent;
+      padding: 4px 12px;
+      font-size: 10.5px;
+      font-weight: 600;
+      border-radius: 4px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .unit-toggle-btn.active {
+      background: var(--red-primary);
+      color: #ffffff;
+    }
+
+    /* ─── SHORTCUT PRESETS ─── */
+    .shortcut-presets-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 6px;
+      margin-bottom: 6px;
+    }
+
+    .shortcut-presets-title {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .shortcut-presets {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .shortcut-btn {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 11.5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      user-select: none;
+    }
+
+    .shortcut-btn:hover {
+      background: rgba(230, 57, 70, 0.08);
+      border-color: rgba(230, 57, 70, 0.3);
+      color: var(--red-primary);
+      transform: translateY(-1px);
+    }
+
+    .shortcut-btn:active {
+      transform: translateY(0);
+    }
+
+    .shortcut-btn.active {
+      background: rgba(230, 57, 70, 0.15);
+      border-color: var(--red-primary);
+      color: var(--red-primary);
+      font-weight: 600;
+    }
+
+    [data-theme="light"] .shortcut-btn {
+      background: rgba(0, 0, 0, 0.02);
+    }
+
+    .dims-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .input-group label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-wrapper input {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: var(--font-en);
+      color: var(--text-primary);
+      border-radius: var(--radius-sm);
+      outline: none;
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    .input-wrapper input:focus {
+      border-color: var(--red-primary);
+      box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.2);
+    }
+
+    .input-wrapper input::-webkit-outer-spin-button,
+    .input-wrapper input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .input-wrapper input[type=number] {
+      -moz-appearance: textfield;
+    }
+
+    .input-unit {
+      position: absolute;
+      right: 12px;
+      font-size: 11px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    /* Right Result Box */
+    .results-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .formula-info-bar {
+      padding: 16px 20px;
+      background: var(--bg-input);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .formula-badge {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 700;
+      background: var(--red-primary);
+      color: #ffffff;
+      padding: 2px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .formula-title-text {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .formula-math-preview {
+      font-family: var(--font-en);
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    .results-container {
+      flex: 1;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .equation-card {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .eq-title {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .eq-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-family: var(--font-en);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .eq-val {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: 4px;
+      min-width: 42px;
+      text-align: center;
+    }
+
+    .eq-val.accent {
+      color: var(--red-primary);
+      border-color: rgba(230, 57, 70, 0.3);
+    }
+
+    .eq-op {
+      color: var(--text-muted);
+    }
+
+    .eq-result-badge {
+      background: linear-gradient(135deg, var(--red-primary), #b31623);
+      color: #ffffff;
+      padding: 4px 12px;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px var(--red-glow);
+    }
+
+    .output-card {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+      transition: var(--transition);
+    }
+
+    .output-card:hover {
+      border-color: var(--red-primary);
+    }
+
+    .output-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .output-val {
+      font-size: 38px;
+      font-weight: 800;
+      font-family: var(--font-en);
+      color: var(--text-primary);
+      line-height: 1.1;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .output-val span {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .output-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .dosage-card {
+      background: linear-gradient(135deg, rgba(230, 57, 70, 0.08) 0%, transparent 100%);
+      border: 1px solid var(--border-focus);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .dosage-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .dosage-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--red-primary);
+    }
+
+    .dosage-subtitle {
+      font-size: 10.5px;
+      color: var(--text-secondary);
+    }
+
+    .dosage-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 16px;
+    }
+
+    .product-dosage-item {
+      display: flex;
+      gap: 16px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      align-items: center;
+      transition: var(--transition);
+    }
+
+    .product-dosage-item:hover {
+      border-color: var(--red-primary);
+      background: var(--bg-card-hover);
+      transform: translateY(-1px);
+    }
+
+    .product-img-wrap {
+      width: 64px;
+      height: 80px;
+      flex-shrink: 0;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: var(--transition);
+    }
+
+    .product-dosage-item:hover .product-img-wrap {
+      border-color: rgba(230, 57, 70, 0.25);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .dosage-stat-val.accent {
+      color: var(--red-primary);
+    }
+
+    /* ─── ABOUT PAGE ─── */
+    .about-container {
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .about-hero-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .about-hero-logo {
+      width: 72px;
+      height: 72px;
+      background: linear-gradient(135deg, var(--red-primary), #800f1b);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px var(--red-glow);
+      flex-shrink: 0;
+    }
+
+    .about-hero-logo svg {
+      width: 38px;
+      height: 38px;
+      fill: none;
+      stroke: #ffffff;
+      stroke-width: 2.2;
+    }
+
+    .about-hero-info h3 {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .about-hero-info p {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .product-info-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: var(--shadow-card);
+      transition: var(--transition);
+    }
+
+    .product-info-card:hover {
+      border-color: var(--red-primary);
+      transform: translateY(-2px);
+    }
+
+    .product-badge {
+      align-self: flex-start;
+      font-size: 9px;
+      font-weight: 700;
+      color: #ffffff;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .badge-active-plus {
+      background: #2a9d8f;
+    }
+
+    .badge-aura-plus {
+      background: #457b9d;
+    }
+
+    .badge-medicine {
+      background: #a855f7;
+    }
+
+    .product-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .product-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* ─── FOOTER CREDITS ─── */
+    .footer-credit {
+      text-align: center;
+      padding: 10px 16px;
+      font-size: 10.5px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      background: var(--bg-sidebar);
+      font-family: var(--font-en);
+      flex-shrink: 0;
+      letter-spacing: 0.2px;
+    }
+
+    .footer-credit strong {
+      color: var(--text-secondary);
+    }
+
+    .footer-credit a {
+      color: var(--red-primary);
+      text-decoration: none;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes pulse-glow {
+
+      0%,
+      100% {
+        box-shadow: 0 0 12px var(--red-glow);
+      }
+
+      50% {
+        box-shadow: 0 0 22px rgba(230, 57, 70, 0.6);
+      }
+    }
+
+    @keyframes pop {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .animate-pop {
+      animation: pop 0.25s ease-out;
+    }
+
+    /* ─── DESKTOP ONLY DOSAGE SCROLLING ─── */
+    @media (min-width: 769px) {
+      #dosage-container {
+        max-height: 330px;
+        overflow-y: auto;
+        padding-right: 6px;
+      }
+
+      #dosage-container::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      #dosage-container::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      #dosage-container::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 10px;
+      }
+
+      #dosage-container::-webkit-scrollbar-thumb:hover {
+        background: var(--red-primary);
+      }
+    }
+
+    /* ─── RESPONSIVE LAYOUT (Mobile) ─── */
+    @media (max-width: 768px) {
+      .topbar {
+        padding: 0 16px;
+        height: 58px;
+      }
+
+      .brand-title {
+        font-size: 15px;
+      }
+
+      .brand-sub {
+        display: none;
+      }
+
+      /* Sidebar changes to Bottom Tab Bar */
+      .sidebar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 60px;
+        flex-direction: row;
+        border-right: none;
+        border-top: 1px solid var(--border);
+        padding: 0;
+        z-index: 200;
+        justify-content: space-around;
+      }
+
+      .menu-label {
+        display: none;
+      }
+
+      .menu-item {
+        flex: 1;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        padding: 6px 0;
+        font-size: 10px;
+        border-left: none;
+        border-top: 3px solid transparent;
+      }
+
+      .menu-item.active {
+        border-top-color: var(--red-primary);
+        border-left-color: transparent;
+      }
+
+      .main-workspace {
+        padding-bottom: 60px;
+        /* Space for bottom nav bar */
+      }
+
+      .content-area {
+        overflow-y: visible;
+      }
+
+      /* Stack Calc layout */
+      .calc-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+        padding: 16px 16px 32px;
+        gap: 16px;
+        overflow-y: visible;
+      }
+
+      .calc-header {
+        padding: 16px 16px 8px;
+      }
+
+      .tabs-bar {
+        padding: 8px 16px;
+      }
+
+      .visual-card {
+        min-height: 290px;
+      }
+
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .about-container {
+        padding: 16px 16px 80px;
+      }
+
+      .about-hero-card {
+        padding: 20px;
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    /* ─── 3D SVG STYLING & ANIMATIONS ─── */
+    .tank-edge {
+      stroke: var(--tank-border);
+      stroke-width: 1.5;
+      fill: none;
+      transition: stroke var(--transition-speed);
+    }
+
+    .tank-edge-back {
+      stroke: var(--border);
+      stroke-dasharray: 4 3;
+      stroke-width: 1;
+      fill: none;
+    }
+
+    .tank-surface-glass {
+      fill: rgba(255, 255, 255, 0.03);
+      stroke: var(--tank-border);
+      stroke-width: 1.5;
+    }
+
+    .water-base {
+      fill: rgba(30, 110, 200, 0.45);
+      transition: fill var(--transition-speed);
+    }
+
+    .water-back-wall {
+      fill: rgba(25, 90, 180, 0.35);
+    }
+
+    .water-side-wall {
+      fill: rgba(20, 80, 160, 0.45);
+    }
+
+    .water-front-wall {
+      fill: rgba(35, 120, 220, 0.45);
+    }
+
+    .water-top-surface {
+      fill: rgba(70, 160, 250, 0.65);
+      stroke: rgba(255, 255, 255, 0.35);
+      stroke-width: 0.5;
+    }
+
+    .dimension-line {
+      stroke: var(--text-muted);
+      stroke-width: 1;
+      stroke-dasharray: 3 2;
+    }
+
+    .dimension-text {
+      font-size: 9px;
+      font-weight: 700;
+      font-family: 'Prompt', var(--font-th);
+      dominant-baseline: middle;
+    }
+
+    #text-w {
+      text-anchor: middle;
+    }
+
+    #text-h {
+      text-anchor: start;
+    }
+
+    #text-d {
+      text-anchor: start;
+    }
+
+    .fish-body {
+      fill: #ff6b6b;
+      transition: transform 0.2s ease;
+    }
+
+    .bubble-element {
+      fill: rgba(255, 255, 255, 0.5);
+      animation: float-bubble 3s infinite linear;
+    }
+
+    @keyframes float-bubble {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 0.8;
+      }
+
+      90% {
+        opacity: 0.8;
+      }
+
+      100% {
+        transform: translateY(-80px) scale(0.6);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<body style="margin: 0; padding: 0; background: var(--bg-base); color: var(--text-primary);">
+
+  <div class="app-shell">
+
+    <!-- ─── TOP HEADER ─── -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="logo-container" aria-label="Wrench logo icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">ARO PLUS Admin Tools</h1>
+          <div class="brand-sub">ระบบจัดการและคำนวณสูตรน้ำ</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="theme-toggle" role="group" aria-label="Appearance Mode">
+          <button class="theme-btn" id="btn-theme-light" onclick="toggleTheme('light')" aria-pressed="false">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0-14v2M12 19v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            Light
+          </button>
+          <button class="theme-btn active" id="btn-theme-dark" onclick="toggleTheme('dark')" aria-pressed="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="currentColor" />
+            </svg>
+            Dark
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ─── WORKSPACE ─── -->
+    <div class="main-workspace">
+
+      <!-- ─── SIDEBAR ─── -->
+      <aside class="sidebar">
+        <div class="menu-label">ฟังก์ชันการใช้งาน</div>
+        <a class="menu-item active" id="menu-calc" onclick="navigate('calc')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="4" y="2" width="16" height="20" rx="2" />
+            <line x1="8" y1="6" x2="16" y2="6" />
+            <line x1="8" y1="10" x2="16" y2="10" />
+            <line x1="8" y1="14" x2="14" y2="14" />
+          </svg>
+          เครื่องคำนวณปริมาณน้ำ
+        </a>
+
+        <div class="menu-label">ข้อมูลแบรนด์</div>
+        <a class="menu-item" id="menu-about" onclick="navigate('about')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
+          เกี่ยวกับ ARO PLUS
+        </a>
+      </aside>
+
+      <!-- ─── CONTENT CONTAINER ─── -->
+      <main class="content-area">
+
+        <!-- ════ CALCULATOR PAGE ════ -->
+        <section class="page active" id="page-calc">
+          <div class="calc-layout">
+
+            <div class="calc-header">
+              <h2>💧 เครื่องคำนวณสูตรน้ำ <span>ARO PLUS</span></h2>
+              <p>กรอกขนาดตู้ปลาเพื่อวิเคราะห์ปริมาณน้ำและการคำนวณอัตราส่วนการใช้ผลิตภัณฑ์อย่างแม่นยำ</p>
+            </div>
+
+            <!-- Formula tabs -->
+            <div class="tabs-bar" role="tablist">
+              <button class="tab-button active" onclick="switchFormula(0)" id="f-tab-0">💧 ปริมาณน้ำ</button>
+              <button class="tab-button" onclick="switchFormula(1)" id="f-tab-1">
+                <span class="tab-dot" style="background: #ff4d5a; box-shadow: 0 0 8px rgba(255, 77, 90, 0.6);"></span>
+                Active Plus
+              </button>
+              <button class="tab-button" onclick="switchFormula(2)" id="f-tab-2">
+                <span class="tab-dot" style="background: #9ca3af; box-shadow: 0 0 8px rgba(156, 163, 175, 0.6);"></span>
+                Aura Plus
+              </button>
+              <button class="tab-button" onclick="switchFormula(3)" id="f-tab-3">
+                <svg class="tab-icon-pill" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
+                  stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 2px;">
+                  <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z" />
+                  <path d="m8.5 11.5 7 7" />
+                </svg>
+                ยาเวชภัณฑ์
+              </button>
+            </div>
+
+            <!-- Grid panel -->
+            <div class="calc-grid">
+
+              <!-- Left Card: Visualization -->
+              <div class="visual-card">
+                <div class="card-title">
+                  <span>🐠 แบบจำลองตู้ปลาแบบ 3 มิติ (Isometric)</span>
+                  <span id="visual-indicator"
+                    style="font-size: 11px; font-weight: 700; color: var(--red-primary);"></span>
+                </div>
+
+                <div class="tank-view">
+                  <div class="tank-svg-wrapper">
+                    <!-- 3D Isometric SVG Aquarium -->
+                    <svg id="isometric-tank" viewBox="0 0 380 220" width="100%" height="100%"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <linearGradient id="glassGrad" x1="0" y1="0" x2="1" y2="1">
+                          <stop offset="0%" stop-color="rgba(255, 255, 255, 0.15)" />
+                          <stop offset="100%" stop-color="rgba(255, 255, 255, 0.02)" />
+                        </linearGradient>
+                        <linearGradient id="waterFrontGrad" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stop-color="rgba(0, 180, 216, 0.5)" />
+                          <stop offset="100%" stop-color="rgba(3, 4, 94, 0.75)" />
+                        </linearGradient>
+                        <linearGradient id="waterSideGrad" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stop-color="rgba(0, 150, 199, 0.55)" />
+                          <stop offset="100%" stop-color="rgba(2, 62, 138, 0.8)" />
+                        </linearGradient>
+                        <linearGradient id="waterTopGrad" x1="0" y1="0" x2="1" y2="1">
+                          <stop offset="0%" stop-color="rgba(144, 224, 239, 0.75)" />
+                          <stop offset="100%" stop-color="rgba(0, 180, 216, 0.6)" />
+                        </linearGradient>
+                        <linearGradient id="fishGrad" x1="0" y1="0" x2="1" y2="0">
+                          <stop offset="0%" stop-color="#ff7f50" />
+                          <stop offset="100%" stop-color="#ff4500" />
+                        </linearGradient>
+                      </defs>
+
+                      <!-- Background grids for depth -->
+                      <g opacity="0.1">
+                        <line x1="20" y1="180" x2="300" y2="180" stroke="var(--text-muted)" stroke-width="0.5" />
+                        <line x1="160" y1="20" x2="160" y2="200" stroke="var(--text-muted)" stroke-width="0.5" />
+                      </g>
+
+                      <!-- Back and bottom frame lines (inside) -->
+                      <polygon id="tank-bottom-plane" points="" fill="none" class="tank-edge-back" />
+                      <line id="tank-back-vertical" x1="0" y1="0" x2="0" y2="0" class="tank-edge-back" />
+
+                      <!-- Water Volume Polygons (Drawn in order from back to front) -->
+                      <polygon id="water-bottom" points="" class="water-base" opacity="0.8" />
+                      <polygon id="water-back" points="" class="water-back-wall" />
+                      <polygon id="water-side" points="" class="water-side-wall" />
+                      <polygon id="water-front" points="" class="water-front-wall" />
+                      <polygon id="water-top" points="" class="water-top-surface" />
+
+                      <!-- Glass walls (outer structure) -->
+                      <polygon id="tank-front-plane" points="" class="tank-surface-glass" />
+                      <polygon id="tank-right-plane" points="" class="tank-surface-glass" />
+                      <polygon id="tank-top-rim" points="" fill="none" class="tank-edge" stroke-dasharray="1 1" />
+
+                      <!-- Outer frame lines -->
+                      <line id="edge-front-left" x1="0" y1="0" x2="0" y2="0" class="tank-edge" />
+                      <line id="edge-front-bottom" x1="0" y1="0" x2="0" y2="0" class="tank-edge" />
+                      <line id="edge-front-right" x1="0" y1="0" x2="0" y2="0" class="tank-edge" />
+                      <line id="edge-right-bottom" x1="0" y1="0" x2="0" y2="0" class="tank-edge" />
+
+                      <!-- Bubbles Group -->
+                      <g id="bubble-group">
+                        <circle cx="100" cy="160" r="1.5" class="bubble-element"
+                          style="animation-delay: 0.1s; animation-duration: 3.5s;" />
+                        <circle cx="105" cy="155" r="2.2" class="bubble-element"
+                          style="animation-delay: 1.2s; animation-duration: 2.8s;" />
+                        <circle cx="170" cy="165" r="1.2" class="bubble-element"
+                          style="animation-delay: 0.5s; animation-duration: 4.1s;" />
+                        <circle cx="175" cy="160" r="2.5" class="bubble-element"
+                          style="animation-delay: 2.1s; animation-duration: 3s;" />
+                      </g>
+
+                      <!-- Fish Element -->
+                      <g id="fish-group" transform="translate(150, 130)">
+                        <!-- Tail -->
+                        <polygon points="-8,-4 -8,4 -14,0" fill="url(#fishGrad)" />
+                        <!-- Body -->
+                        <ellipse cx="0" cy="0" rx="9" ry="5" fill="url(#fishGrad)" />
+                        <!-- Eye -->
+                        <circle cx="5" cy="-2" r="1" fill="#ffffff" />
+                        <circle cx="5.5" cy="-2" r="0.5" fill="#000000" />
+                        <!-- Fin -->
+                        <polygon points="-2,1 -5,5 -1,3" fill="#ff4500" opacity="0.8" />
+                      </g>
+
+                      <!-- Dimension Guides & Text -->
+                      <!-- Width (W) -->
+                      <line id="guide-w" x1="0" y1="0" x2="0" y2="0" class="dimension-line" />
+                      <text id="text-w" x="0" y="0" class="dimension-text" fill="var(--red-primary)">W: --</text>
+
+                      <!-- Depth (H/Width) -->
+                      <line id="guide-h" x1="0" y1="0" x2="0" y2="0" class="dimension-line" />
+                      <text id="text-h" x="0" y="0" class="dimension-text" fill="var(--green-accent)">H: --</text>
+
+                      <!-- Height (D) -->
+                      <line id="guide-d" x1="0" y1="0" x2="0" y2="0" class="dimension-line" />
+                      <text id="text-d" x="0" y="0" class="dimension-text" fill="#e29578">D: --</text>
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Inputs Section -->
+                <div class="inputs-bar">
+                  <div class="unit-switch-container">
+                    <span class="unit-switch-label">📏 เลือกหน่วยวัดตู้ปลา</span>
+                    <div class="unit-toggle-group">
+                      <button class="unit-toggle-btn active" id="unit-inch" onclick="switchUnit('inch')">นิ้ว
+                        (Inches)</button>
+                      <button class="unit-toggle-btn" id="unit-cm" onclick="switchUnit('cm')">ซม. (cm)</button>
+                    </div>
+                  </div>
+
+                  <!-- ─── SIZE SHORTCUT PRESETS ─── -->
+                  <div class="shortcut-presets-container" id="shortcut-presets-area">
+                    <div class="shortcut-presets-title">⚡ ขนาดตู้ยอดนิยม</div>
+                    <div class="shortcut-presets" id="shortcut-presets-list">
+                      <!-- Populated by JS based on selected unit -->
+                    </div>
+                  </div>
+
+                  <div class="dims-grid">
+                    <div class="input-group">
+                      <label for="tank-w">ความยาว (ยาว)</label>
+                      <div class="input-wrapper">
+                        <input type="number" id="tank-w" min="0" placeholder="0" oninput="runCalculation()" />
+                        <span class="input-unit" id="unit-lbl-w">นิ้ว</span>
+                      </div>
+                    </div>
+
+                    <div class="input-group">
+                      <label for="tank-h">ความกว้าง (กว้าง)</label>
+                      <div class="input-wrapper">
+                        <input type="number" id="tank-h" min="0" placeholder="0" oninput="runCalculation()" />
+                        <span class="input-unit" id="unit-lbl-h">นิ้ว</span>
+                      </div>
+                    </div>
+
+                    <div class="input-group">
+                      <label for="tank-d">ความสูง (สูง)</label>
+                      <div class="input-wrapper">
+                        <input type="number" id="tank-d" min="0" placeholder="0" oninput="runCalculation()" />
+                        <span class="input-unit" id="unit-lbl-d">นิ้ว</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Card: Calculations -->
+              <div class="results-card">
+                <div class="formula-info-bar">
+                  <div class="formula-badge" id="formula-badge">สูตรหลัก</div>
+                  <div class="formula-title-text" id="formula-title">สูตรคำนวณปริมาณน้ำในตู้</div>
+                  <div class="formula-math-preview" id="formula-formula">ยาว × กว้าง × สูง = A</div>
+                </div>
+
+                <div class="results-container">
+                  <!-- Mathematical equation step preview -->
+                  <div class="equation-card">
+                    <div class="eq-title">ขั้นตอนการแทนค่าสมการ</div>
+                    <div class="eq-row">
+                      <div class="eq-val" id="eq-v-w">L</div>
+                      <span class="eq-op">×</span>
+                      <div class="eq-val" id="eq-v-h">W</div>
+                      <span class="eq-op">×</span>
+                      <div class="eq-val" id="eq-v-d">H</div>
+                      <span class="eq-op">×</span>
+                      <div class="eq-val accent" id="eq-v-constant">0.016</div>
+                      <span class="eq-op">=</span>
+                      <div class="eq-result-badge" id="eq-v-res">-- ลิตร</div>
+                    </div>
+                  </div>
+
+                  <!-- Primary Result -->
+                  <div class="output-card">
+                    <div class="output-label">ปริมาณน้ำในตู้ปลาทั้งหมด</div>
+                    <div class="output-val" id="total-liters-display">
+                      -- <span>ลิตร</span>
+                    </div>
+                    <div class="output-sub" id="calculation-desc">กรอกขนาดตู้ปลาเพื่อเริ่มต้นระบบคำนวณปริมาณน้ำ</div>
+                  </div>
+
+                  <!-- Dosage result section if selected -->
+                  <div id="dosage-container" style="display: none; display: flex; flex-direction: column; gap: 12px;">
+                  </div>
+
+                </div><!-- /results-container -->
+              </div><!-- /results-card -->
+
+            </div><!-- /calc-grid -->
+          </div><!-- /calc-layout -->
+        </section>
+
+        <!-- ════ ABOUT PAGE ════ -->
+        <section class="page" id="page-about">
+          <div class="about-container">
+
+            <div class="about-hero-card">
+              <div class="about-hero-logo">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+                </svg>
+              </div>
+              <div class="about-hero-info">
+                <h3>เกี่ยวกับผลิตภัณฑ์ ARO PLUS</h3>
+                <p>เครื่องมือระบบนี้ออกแบบมาเพื่อดูแลรักษาระบบน้ำสำหรับอุปกรณ์ปลาสวยงามจาก ARO PLUS
+                  โดยสามารถคำนวณสัดส่วนการใช้วิตามินและแร่ธาตุต่างๆ
+                  เพื่อความรักษาสมดุลทางเคมีของตู้ปลาได้อย่างปลอดภัยและมีมาตรฐานสูงสุด</p>
+              </div>
+            </div>
+
+            <div class="products-grid">
+              <div class="product-info-card">
+                <span class="product-badge badge-active-plus">Active Plus 200 ml</span>
+                <div class="product-name">Active Plus วิตามินเสริม (200 มล.)</div>
+                <div class="product-desc">สูตรวิตามินเพื่อกระตุ้นภูมิคุ้มกันและบำรุงสุขภาพปลา อัตราส่วนปริมาณน้ำ 50 ลิตร
+                  ต่อ 1 ฝา (10 CC)</div>
+              </div>
+
+              <div class="product-info-card">
+                <span class="product-badge badge-aura-plus">Aura Plus 200 ml</span>
+                <div class="product-name">Aura Plus แร่ธาตุเข้มข้น (200 มล.)</div>
+                <div class="product-desc">สูตรช่วยเพิ่มแร่ธาตุสำคัญเพื่อบำรุงเกล็ดปลาให้เงางาม สุขภาพดี แข็งแรง
+                  อัตราส่วนปริมาณน้ำ 100 ลิตร ต่อ 1 ฝา (10 CC)</div>
+              </div>
+
+              <div class="product-info-card">
+                <span class="product-badge badge-active-plus">Active Plus 1 Litre</span>
+                <div class="product-name">Active Plus วิตามินเสริม (1 ลิตร)</div>
+                <div class="product-desc">สูตรประหยัดแบบแกลลอนขนาดใหญ่สำหรับบ่อหรือระบบตู้ขนาดใหญ่ อัตราส่วนปริมาณน้ำ
+                  100 ลิตร ต่อ 1 ฝา (20 CC)</div>
+              </div>
+
+              <div class="product-info-card">
+                <span class="product-badge badge-aura-plus">Aura Plus 1 Litre</span>
+                <div class="product-name">Aura Plus แร่ธาตุเข้มข้น (1 ลิตร)</div>
+                <div class="product-desc">สูตรแร่ธาตุรวมขวดใหญ่เพื่อความคุ้มค่า สำหรับระบบน้ำที่ต้องการแร่ธาตุสูง
+                  อัตราส่วนปริมาณน้ำ 200 ลิตร ต่อ 1 ฝา (20 CC)</div>
+              </div>
+
+              <div class="product-info-card">
+                <span class="product-badge badge-medicine">AquaBac 100 ml.</span>
+                <div class="product-name">AquaBac ยารักษาโรคเกล็ดพอง / ติดเชื้อ (100 มล.)</div>
+                <div class="product-desc" style="font-size: 11px; color: var(--text-muted);">ยารักษาอาการเกล็ดพอง
+                  ติดเชื้อ ครีบและหางเปื่อย ปากบวม ตาโปน ตกเลือด ใช้ 5 ซีซี (ครึ่งฝา) ต่อน้ำ 100 ลิตร รักษาติดต่อกัน
+                  7-14 วัน เปลี่ยนถ่ายน้ำวันละ 30-50% ทุกวันในช่วงการรักษา เหมาะกับปลามังกร, ปลากระเบน, เสือตอ
+                  แนะนำใช้คู่กับวิตามิน Active Plus</div>
+              </div>
+
+              <div class="product-info-card">
+                <span class="product-badge badge-medicine">AquaBac 1 Litre</span>
+                <div class="product-name">AquaBac ยารักษาโรคเกล็ดพอง / ติดเชื้อ (1 ลิตร)</div>
+                <div class="product-desc" style="font-size: 11px; color: var(--text-muted);">
+                  สูตรประหยัดแบบแกลลอนขนาดใหญ่สำหรับระบบตู้หรือบ่อขนาดใหญ่ ใช้ 30 ซีซี (1 ฝาใหญ่) ต่อน้ำ 600 ลิตร
+                  รักษาติดต่อกัน 7-14 วัน เปลี่ยนถ่ายน้ำวันละ 30-50% ทุกวันในช่วงการรักษา เหมาะกับปลามังกร, ปลากระเบน,
+                  เสือตอ</div>
+              </div>
+
+              <div class="product-info-card">
+                <span class="product-badge badge-medicine">Bacta 100 ml.</span>
+                <div class="product-name">Bacta ยารักษาปลาติดเชื้อแบคทีเรีย (100 มล.)</div>
+                <div class="product-desc" style="font-size: 11px; color: var(--text-muted);">ยารักษาปลาติดเชื้อแบคทีเรีย
+                  ตกเลือด ตัวเปื่อย ครีบและหางลู่ ตกแดง ปากบวม อัตราส่วน 5 ซีซี (ครึ่งฝา) ต่อน้ำ 50 ลิตร รักษาติดต่อกัน
+                  7-14 วัน เปลี่ยนถ่ายน้ำวันละ 30-50% ทุกวัน เหมาะกับปลาทอง, หงส์แก้ว, ครอสบรีด, ปลากัด, Discus,
+                  ปลาหางนกยูง</div>
+              </div>
+
+              <div class="product-info-card">
+                <span class="product-badge badge-medicine">Bacta 1 Litre</span>
+                <div class="product-name">Bacta ยารักษาปลาติดเชื้อแบคทีเรีย (1 ลิตร)</div>
+                <div class="product-desc" style="font-size: 11px; color: var(--text-muted);">
+                  สูตรแกลลอนขนาดใหญ่สำหรับผู้ใช้ปริมาณมาก รักษาอาการติดเชื้อจากแบคทีเรีย ใช้ 30 ซีซี (1 ฝาใหญ่) ต่อน้ำ
+                  300 ลิตร รักษาติดต่อกัน 7-14 วัน เปลี่ยนถ่ายน้ำวันละ 30-50% ทุกวัน เหมาะกับปลาทอง, หงส์แก้ว, ครอสบรีด,
+                  ปลากัด, Discus, ปลาหางนกยูง</div>
+              </div>
+
+              <div class="product-info-card">
+                <span class="product-badge badge-medicine">AquaH 250 g.</span>
+                <div class="product-name">AquaH ยารักษาสภาพน้ำ / ปรับสภาพน้ำ (250 กรัม)</div>
+                <div class="product-desc" style="font-size: 11px; color: var(--text-muted);">ยารักษาสภาพน้ำชนิดผง
+                  ลดปลาหลังลอย ลดเครียดจากการเคลื่อนย้าย ฟื้นตัวจากการวางยาสลบ/ยาปฏิชีวนะเร็วขึ้น
+                  ไม่มีส่วนประกอบของยาปฏิชีวนะ ปรับสภาพน้ำใช้ 3 กรัม ต่อน้ำ 1 ลิตร / แก้ปลาช็อกน้ำใช้ 5 กรัม ต่อน้ำ 1
+                  ลิตร เหมาะกับปลามังกร, ปลากระเบน, เสือตอ</div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <!-- ─── FOOTER CREDITS ─── -->
+    <footer class="footer-credit">
+      Made by <b>Tony Chun</b> and my best friends (Gemini, ChatGPT and Claude :D)
+    </footer>
+
+  </div>
+
+  <!-- ─── JAVASCRIPT LOGIC ─── -->
+  <script>
+    // ─── STATE MANAGEMENT ───
+    let selectedUnit = 'inch'; // 'inch' or 'cm'
+    let activeTabIdx = 0; // index of active formula tab
+
+    // Formulas configs
+    const formulas = [
+      {
+        id: 0,
+        title: "สูตรคำนวณปริมาณน้ำในตู้ปลา",
+        badge: "ปริมาณน้ำ",
+        formulaText: "กว้าง × ยาว × สูง = ปริมาตรรวม",
+        hasDosage: false,
+        products: []
+      },
+      {
+        id: 1,
+        title: "สูตรคำนวณ Active Plus",
+        badge: "Active Plus",
+        formulaText: "200ml: น้ำ 50L / 1 ฝา (10 CC) | 1L: น้ำ 100L / 1 ฝา (20 CC)",
+        hasDosage: true,
+        products: [
+          { name: "Active Plus 200 ml", image: "images/active-200ml.png", waterPerCap: 50, ccPerCap: 10, desc: "ขวดสีดำ ฉลากสีส้ม" },
+          { name: "Active Plus 1 ลิตร", image: "images/active-1l.png", waterPerCap: 100, ccPerCap: 20, desc: "ขวดสีขาว ฉลากสีส้ม" }
+        ]
+      },
+      {
+        id: 2,
+        title: "สูตรคำนวณ Aura Plus",
+        badge: "Aura Plus",
+        formulaText: "200ml: น้ำ 100L / 1 ฝา (10 CC) | 1L: น้ำ 200L / 1 ฝา (20 CC)",
+        hasDosage: true,
+        products: [
+          { name: "Aura Plus 200 ml", image: "images/aura-200ml.png", waterPerCap: 100, ccPerCap: 10, desc: "ขวดสีดำ ฉลากสีฟ้าเทา" },
+          { name: "Aura Plus 1 ลิตร", image: "images/aura-1l.png", waterPerCap: 200, ccPerCap: 20, desc: "ขวดสีขาว ฉลากสีฟ้าเทา" }
+        ]
+      },
+      {
+        id: 3,
+        title: "สูตรคำนวณ ยาเวชภัณฑ์",
+        badge: "ยาเวชภัณฑ์",
+        formulaText: "คำนวณปริมาณยา AquaBac, Bacta และผงปรับสภาพน้ำ AquaH",
+        hasDosage: true,
+        products: [
+          {
+            name: "AquaBac 100 ml.",
+            image: "images/aquabac-100ml.png",
+            type: "liquid",
+            waterPerCap: 100,
+            ccPerCap: 5,
+            capName: "ครึ่งฝา",
+            capDesc: "ครึ่งฝา (5 CC)",
+            desc: "ยารักษาโรคเกล็ดพอง / ติดเชื้อ | เหมาะกับปลามังกร, ปลากระเบน, เสือตอ",
+            notes: [
+              "ใช้ติดต่อกัน 7-14 วัน",
+              "เปลี่ยนถ่ายน้ำวันละ 30-50% ทุกวันในช่วงการรักษา",
+              "แนะนำใช้คู่กับวิตามินบำรุง Active Plus"
+            ]
+          },
+          {
+            name: "AquaBac 1 Litre",
+            image: "images/aquabac-1l.png",
+            type: "liquid",
+            waterPerCap: 600,
+            ccPerCap: 30,
+            capName: "ฝาใหญ่",
+            capDesc: "1 ฝาใหญ่ (30 CC)",
+            desc: "ยารักษาโรคเกล็ดพอง / ติดเชื้อ | เหมาะกับปลามังกร, ปลากระเบน, เสือตอ",
+            notes: [
+              "ใช้ติดต่อกัน 7-14 วัน",
+              "เปลี่ยนถ่ายน้ำวันละ 30-50% ทุกวันในช่วงการรักษา",
+              "แนะนำใช้คู่กับวิตามินบำรุง Active Plus"
+            ]
+          },
+          {
+            name: "Bacta 100 ml.",
+            image: "images/bacta-100ml.png",
+            type: "liquid",
+            waterPerCap: 50,
+            ccPerCap: 5,
+            capName: "ครึ่งฝา",
+            capDesc: "ครึ่งฝา (5 CC)",
+            desc: "ยารักษาปลาติดเชื้อแบคทีเรีย | เหมาะกับปลาทอง, หงส์แก้ว, ครอสบรีด, ปลากัด, Discus, ปลาหางนกยูง",
+            notes: [
+              "ใช้ติดต่อกัน 7-14 วัน",
+              "เปลี่ยนถ่ายน้ำวันละ 30-50% ทุกวันในช่วงการรักษา"
+            ]
+          },
+          {
+            name: "Bacta 1 Litre",
+            image: "images/bacta-1l.png",
+            type: "liquid",
+            waterPerCap: 300,
+            ccPerCap: 30,
+            capName: "ฝาใหญ่",
+            capDesc: "1 ฝาใหญ่ (30 CC)",
+            desc: "ยารักษาปลาติดเชื้อแบคทีเรีย | เหมาะกับปลาทอง, หงส์แก้ว, ครอสบรีด, ปลากัด, Discus, ปลาหางนกยูง",
+            notes: [
+              "ใช้ติดต่อกัน 7-14 วัน",
+              "เปลี่ยนถ่ายน้ำวันละ 30-50% ทุกวันในช่วงการรักษา"
+            ]
+          },
+          {
+            name: "AquaH 250 g.",
+            image: "images/aquah-250g.png",
+            type: "powder",
+            desc: "ยารักษาปลาหลังลอย / ปรับสภาพน้ำ (ชนิดผง) | เหมาะกับปลามังกร, ปลากระเบน, เสือตอ",
+            notes: [
+              "ช่วยลดปลาหลังลอย ลดเครียดจากการเคลื่อนย้าย และช่วยให้ฟื้นตัวจากยาสลบปฏิชีวนะได้เร็วขึ้น",
+              "ไม่มีส่วนประกอบของยาปฏิชีวนะ"
+            ]
+          }
+        ]
+      }
+    ];
+
+    // ─── NAVIGATIONAL ROUTER ───
+    function navigate(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+
+      document.getElementById(`page-${pageId}`).classList.add('active');
+      document.getElementById(`menu-${pageId}`).classList.add('active');
+    }
+
+    // ─── CONFIG & APPEARANCE THEME ───
+    function toggleTheme(mode) {
+      document.documentElement.setAttribute('data-theme', mode);
+      localStorage.setItem('aro-theme', mode);
+
+      const btnLight = document.getElementById('btn-theme-light');
+      const btnDark = document.getElementById('btn-theme-dark');
+
+      if (mode === 'light') {
+        btnLight.classList.add('active');
+        btnLight.setAttribute('aria-pressed', 'true');
+        btnDark.classList.remove('active');
+        btnDark.setAttribute('aria-pressed', 'false');
+      } else {
+        btnDark.classList.add('active');
+        btnDark.setAttribute('aria-pressed', 'true');
+        btnLight.classList.remove('active');
+        btnLight.setAttribute('aria-pressed', 'false');
+      }
+    }
+
+    // Initialize theme from storage
+    const initialTheme = localStorage.getItem('aro-theme') || 'dark';
+    toggleTheme(initialTheme);
+
+    // ─── SWITCH UNIT OF TANK ───
+    function switchUnit(unit) {
+      selectedUnit = unit;
+
+      const inchBtn = document.getElementById('unit-inch');
+      const cmBtn = document.getElementById('unit-cm');
+
+      if (unit === 'inch') {
+        inchBtn.classList.add('active');
+        cmBtn.classList.remove('active');
+      } else {
+        cmBtn.classList.add('active');
+        inchBtn.classList.remove('active');
+      }
+
+      // Update labels and placeholder text
+      const labelString = unit === 'inch' ? 'นิ้ว' : 'ซม.';
+      document.getElementById('unit-lbl-w').innerText = labelString;
+      document.getElementById('unit-lbl-h').innerText = labelString;
+      document.getElementById('unit-lbl-d').innerText = labelString;
+
+      renderPresets();
+      runCalculation();
+    }
+
+    // ─── TANK SIZE PRESETS ───
+    const tankPresets = {
+      inch: [
+        { label: '36×18×20', w: 36, h: 18, d: 20 },
+        { label: '48×20×20', w: 48, h: 20, d: 20 },
+        { label: '60×20×20', w: 60, h: 20, d: 20 },
+        { label: '60×24×24', w: 60, h: 24, d: 24 },
+        { label: '72×24×24', w: 72, h: 24, d: 24 },
+        { label: '84×30×30', w: 84, h: 30, d: 30 },
+      ],
+      cm: [
+        { label: '90×45×50', w: 90, h: 45, d: 50 },
+        { label: '120×50×50', w: 120, h: 50, d: 50 },
+        { label: '150×50×50', w: 150, h: 50, d: 50 },
+        { label: '150×60×60', w: 150, h: 60, d: 60 },
+        { label: '180×60×60', w: 180, h: 60, d: 60 },
+        { label: '210×75×75', w: 210, h: 75, d: 75 },
+      ]
+    };
+
+    let activePresetLabel = null;
+
+    function renderPresets() {
+      const presets = tankPresets[selectedUnit];
+      const container = document.getElementById('shortcut-presets-list');
+      container.innerHTML = presets.map(p => `
+        <button
+          class="shortcut-btn${activePresetLabel === p.label ? ' active' : ''}"
+          onclick="applyPreset('${p.label}', ${p.w}, ${p.h}, ${p.d})"
+          title="ยาว ${p.w} × กว้าง ${p.h} × สูง ${p.d} ${selectedUnit === 'inch' ? 'นิ้ว' : 'ซม.'}"
+        >${p.label}</button>
+      `).join('');
+    }
+
+    function applyPreset(label, w, h, d) {
+      document.getElementById('tank-w').value = w;
+      document.getElementById('tank-h').value = h;
+      document.getElementById('tank-d').value = d;
+      activePresetLabel = label;
+      renderPresets();
+      runCalculation();
+    }
+
+    // Clear active preset when user manually edits inputs
+    ['tank-w', 'tank-h', 'tank-d'].forEach(id => {
+      document.getElementById(id)?.addEventListener('input', () => {
+        activePresetLabel = null;
+        renderPresets();
+      });
+    });
+
+    // ─── SWITCH FORMULA TABS ───
+    function switchFormula(idx) {
+      activeTabIdx = idx;
+
+      document.querySelectorAll('.tab-button').forEach((btn, i) => {
+        btn.classList.toggle('active', i === idx);
+      });
+
+      const fConfig = formulas[idx];
+      document.getElementById('formula-badge').innerText = fConfig.badge;
+      document.getElementById('formula-title').innerText = fConfig.title;
+      document.getElementById('formula-formula').innerText = fConfig.formulaText;
+
+      runCalculation();
+    }
+
+    // ─── MAIN CALCULATION FUNCTION ───
+    function runCalculation() {
+      // Read input values
+      const wVal = parseFloat(document.getElementById('tank-w').value) || 0;
+      const hVal = parseFloat(document.getElementById('tank-h').value) || 0;
+      const dVal = parseFloat(document.getElementById('tank-d').value) || 0;
+
+      // Visual dimensions for isometric representation (with defaults if empty)
+      const displayW = wVal || (selectedUnit === 'inch' ? 48 : 120);
+      const displayH = hVal || (selectedUnit === 'inch' ? 20 : 50);
+      const displayD = dVal || (selectedUnit === 'inch' ? 20 : 50);
+
+      // Calculate aquarium volume
+      // A = W * H * D
+      const A = wVal * hVal * dVal;
+      let liters = 0;
+      let multiplier = 0.016;
+
+      if (selectedUnit === 'inch') {
+        multiplier = 0.016;
+        liters = A * multiplier;
+      } else {
+        // metric system: (cm * cm * cm) / 1000 = liters
+        multiplier = 0.001;
+        liters = A * multiplier;
+      }
+
+      // Update substitute values in equation layout
+      document.getElementById('eq-v-w').innerText = wVal > 0 ? wVal : 'W';
+      document.getElementById('eq-v-h').innerText = hVal > 0 ? hVal : 'H';
+      document.getElementById('eq-v-d').innerText = dVal > 0 ? dVal : 'D';
+      document.getElementById('eq-v-constant').innerText = multiplier;
+
+      const litDisplay = document.getElementById('total-liters-display');
+      const calcDesc = document.getElementById('calculation-desc');
+      const eqRes = document.getElementById('eq-v-res');
+
+      if (wVal > 0 && hVal > 0 && dVal > 0) {
+        const formattedLiters = liters.toFixed(2);
+
+        litDisplay.innerHTML = `${Number(formattedLiters).toLocaleString()} <span>ลิตร</span>`;
+        eqRes.innerText = `${formattedLiters} ลิตร`;
+        calcDesc.innerText = `ปริมาตรตู้ปลา (A) = ${A.toLocaleString()} | สูตรคำนวณน้ำ = A × ${multiplier}`;
+
+        // Animation pop effect
+        litDisplay.classList.remove('animate-pop');
+        void litDisplay.offsetWidth; // Trigger reflow
+        litDisplay.classList.add('animate-pop');
+
+        // Update dosage if applicable
+        const fConfig = formulas[activeTabIdx];
+        const dosageContainer = document.getElementById('dosage-container');
+
+        if (fConfig.hasDosage) {
+          dosageContainer.style.display = 'flex';
+          dosageContainer.style.flexDirection = 'column';
+          dosageContainer.style.gap = '12px';
+
+          let htmlContent = '';
+          fConfig.products.forEach(p => {
+            if (p.type === 'powder') {
+              // AquaH powder calculation
+              const dosagePrep = liters * 3;
+              const dosageShock = liters * 5;
+              htmlContent += `
+                <div class="product-dosage-item" style="flex-direction: column; align-items: stretch; gap: 10px;">
+                  <div style="display: flex; gap: 16px; align-items: center;">
+                    <div class="product-img-wrap">
+                      <img src="${p.image}" alt="${p.name}" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
+                    </div>
+                    <div style="flex: 1;">
+                      <div style="font-size: 13.5px; font-weight: 700; color: var(--text-primary);">${p.name}</div>
+                      <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 2px;">
+                        ${p.desc}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: rgba(255,255,255,0.015); border-radius: var(--radius-sm); padding: 10px; border: 1px solid var(--border);">
+                    <div style="display: flex; flex-direction: column;">
+                      <span style="font-size: 10px; color: var(--text-secondary); font-weight: 600; margin-bottom: 4px;">🔧 ปรับสภาพน้ำ (3g / 1L)</span>
+                      <span style="font-size: 18px; font-weight: 800; font-family: var(--font-en); color: var(--red-primary);">${dosagePrep.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 1 })} <span style="font-size: 11px; font-weight: 500; color: var(--text-secondary);">กรัม</span></span>
+                      <span style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">(ใช้ประมาณ ${(dosagePrep / 250).toFixed(1)} กระปุก)</span>
+                    </div>
+                    <div style="display: flex; flex-direction: column;">
+                      <span style="font-size: 10px; color: var(--text-secondary); font-weight: 600; margin-bottom: 4px;">🚨 แก้ปลาช็อกน้ำ (5g / 1L)</span>
+                      <span style="font-size: 18px; font-weight: 800; font-family: var(--font-en); color: #2a9d8f;">${dosageShock.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 1 })} <span style="font-size: 11px; font-weight: 500; color: var(--text-secondary);">กรัม</span></span>
+                      <span style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">(ใช้ประมาณ ${(dosageShock / 250).toFixed(1)} กระปุก)</span>
+                    </div>
+                  </div>
+
+                  ${p.notes ? `
+                    <div style="font-size: 10.5px; color: var(--text-muted); border-top: 1px dashed var(--border); padding-top: 8px; margin-top: 2px; line-height: 1.45;">
+                      <div style="font-weight: 600; margin-bottom: 4px; color: var(--text-secondary);">📝 วิธีใช้เพิ่มเติม:</div>
+                      <ul style="padding-left: 16px; margin: 0; display: flex; flex-direction: column; gap: 3px;">
+                        ${p.notes.map(n => `<li>${n}</li>`).join('')}
+                      </ul>
+                    </div>
+                  ` : ''}
+                </div>
+              `;
+            } else {
+              // Liquid products (Active Plus, Aura Plus, AquaBac liquid, Bacta liquid)
+              const dosageCaps = liters / p.waterPerCap;
+              const dosageCC = dosageCaps * p.ccPerCap;
+
+              // Handle cap sizing and description
+              const waterPerCapText = p.waterPerCap;
+              const ccPerCapText = p.ccPerCap;
+              const capUnitText = p.capName || "ฝา";
+              const capDescText = p.capDesc || `1 ฝา (${p.ccPerCap} CC)`;
+
+              htmlContent += `
+                <div class="product-dosage-item" style="flex-direction: column; align-items: stretch; gap: 10px;">
+                  <div style="display: flex; gap: 16px; align-items: center;">
+                    <div class="product-img-wrap">
+                      <img src="${p.image}" alt="${p.name}" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
+                    </div>
+                    <div style="flex: 1;">
+                      <div style="font-size: 13.5px; font-weight: 700; color: var(--text-primary);">${p.name}</div>
+                      ${p.desc ? `<div style="font-size: 11px; color: var(--text-muted); margin-bottom: 2px;">${p.desc}</div>` : ''}
+                      <div style="font-size: 10.5px; color: var(--text-secondary); font-weight: 500;">
+                        อัตราส่วน: น้ำ ${waterPerCapText} ลิตร / ${capDescText}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: rgba(255,255,255,0.015); border-radius: var(--radius-sm); padding: 10px; border: 1px solid var(--border);">
+                    <div style="display: flex; flex-direction: column;">
+                      <span style="font-size: 9.5px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-bottom: 2px;">ปริมาตรยาที่ใช้</span>
+                      <span style="font-size: 18px; font-weight: 800; font-family: var(--font-en); color: var(--red-primary);">${dosageCC.toFixed(1)} <span style="font-size: 11px; font-weight: 500; color: var(--text-secondary);">CC (มล.)</span></span>
+                    </div>
+                    <div style="display: flex; flex-direction: column;">
+                      <span style="font-size: 9.5px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-bottom: 2px;">จำนวนฝาที่ตวง</span>
+                      <span style="font-size: 18px; font-weight: 800; font-family: var(--font-en); color: var(--text-primary);">${dosageCaps.toFixed(2)} <span style="font-size: 11px; font-weight: 500; color: var(--text-secondary);">${capUnitText}</span></span>
+                    </div>
+                  </div>
+
+                  ${p.notes ? `
+                    <div style="font-size: 10.5px; color: var(--text-muted); border-top: 1px dashed var(--border); padding-top: 8px; margin-top: 2px; line-height: 1.45;">
+                      <div style="font-weight: 600; margin-bottom: 4px; color: var(--text-secondary);">📝 วิธีใช้เพิ่มเติม:</div>
+                      <ul style="padding-left: 16px; margin: 0; display: flex; flex-direction: column; gap: 3px;">
+                        ${p.notes.map(n => `<li>${n}</li>`).join('')}
+                      </ul>
+                    </div>
+                  ` : ''}
+                </div>
+              `;
+            }
+          });
+          dosageContainer.innerHTML = htmlContent;
+        } else {
+          dosageContainer.style.display = 'none';
+        }
+      } else {
+        litDisplay.innerHTML = `-- <span>ลิตร</span>`;
+        eqRes.innerText = `-- ลิตร`;
+        calcDesc.innerText = `กรอกขนาดตู้ปลาให้ครบถ้วนเพื่อคำนวณปริมาณน้ำ`;
+        document.getElementById('dosage-container').style.display = 'none';
+      }
+
+      // Render 3D isometric representation
+      renderIsometricTank(displayW, displayH, displayD, wVal > 0 && hVal > 0 && dVal > 0 ? liters : 0);
+    }
+
+    // ─── 3D ISOMETRIC TANK GRAPHIC RENDERER ───
+    function mapRange(val, inMin, inMax, outMin, outMax) {
+      if (val <= inMin) return outMin;
+      if (val >= inMax) return outMax;
+      return outMin + ((val - inMin) / (inMax - inMin)) * (outMax - outMin);
+    }
+
+    function renderIsometricTank(wVal, hVal, dVal, computedLiters) {
+      // Limits of input bounds
+      const isInch = selectedUnit === 'inch';
+      const minW = isInch ? 12 : 30;
+      const maxW = isInch ? 120 : 300;
+      const minH = isInch ? 10 : 25;
+      const maxH = isInch ? 60 : 150;
+      const minD = isInch ? 10 : 25;
+      const maxD = isInch ? 60 : 150;
+
+      // Map units to px size inside standard viewport 380 x 220 (expanded for labels)
+      const wPx = mapRange(wVal, minW, maxW, 110, 195);
+      const hPx = mapRange(hVal, minH, maxH, 45, 80);  // Depth dimension
+      const dPx = mapRange(dVal, minD, maxD, 65, 115); // Vertical Height dimension
+
+      // Perspective projection offsets (isometric projection vectors)
+      // 30 degree angle approximation
+      const dx = hPx * 0.75;
+      const dy = hPx * 0.45;
+
+      // Anchor position for front bottom-left corner of the tank
+      const startX = 40;
+      const startY = 180;
+
+      // Corner point coordinates array
+      // Bottom plane points
+      const A = [startX, startY];                          // Front bottom left
+      const B = [startX + wPx, startY];                    // Front bottom right
+      const C = [startX + wPx + dx, startY - dy];          // Back bottom right
+      const D = [startX + dx, startY - dy];                // Back bottom left
+
+      // Top plane points
+      const A_top = [A[0], A[1] - dPx];
+      const B_top = [B[0], B[1] - dPx];
+      const C_top = [C[0], C[1] - dPx];
+      const D_top = [D[0], D[1] - dPx];
+
+      // Helper function to stringify points for SVG polygons
+      const pts = (...args) => args.map(p => p.join(',')).join(' ');
+
+      // 1. Render outer structural glass planes
+      document.getElementById('tank-bottom-plane').setAttribute('points', pts(A, B, C, D));
+      document.getElementById('tank-front-plane').setAttribute('points', pts(A, B, B_top, A_top));
+      document.getElementById('tank-right-plane').setAttribute('points', pts(B, C, C_top, B_top));
+      document.getElementById('tank-top-rim').setAttribute('points', pts(A_top, B_top, C_top, D_top));
+
+      // 2. Render front and right structural lines
+      document.getElementById('edge-front-left').setAttribute('x1', A[0]);
+      document.getElementById('edge-front-left').setAttribute('y1', A[1]);
+      document.getElementById('edge-front-left').setAttribute('x2', A_top[0]);
+      document.getElementById('edge-front-left').setAttribute('y2', A_top[1]);
+
+      document.getElementById('edge-front-bottom').setAttribute('x1', A[0]);
+      document.getElementById('edge-front-bottom').setAttribute('y1', A[1]);
+      document.getElementById('edge-front-bottom').setAttribute('x2', B[0]);
+      document.getElementById('edge-front-bottom').setAttribute('y2', B[1]);
+
+      document.getElementById('edge-front-right').setAttribute('x1', B[0]);
+      document.getElementById('edge-front-right').setAttribute('y1', B[1]);
+      document.getElementById('edge-front-right').setAttribute('x2', B_top[0]);
+      document.getElementById('edge-front-right').setAttribute('y2', B_top[1]);
+
+      document.getElementById('edge-right-bottom').setAttribute('x1', B[0]);
+      document.getElementById('edge-right-bottom').setAttribute('y1', B[1]);
+      document.getElementById('edge-right-bottom').setAttribute('x2', C[0]);
+      document.getElementById('edge-right-bottom').setAttribute('y2', C[1]);
+
+      // 3. Back vertical internal structural line
+      document.getElementById('tank-back-vertical').setAttribute('x1', D[0]);
+      document.getElementById('tank-back-vertical').setAttribute('y1', D[1]);
+      document.getElementById('tank-back-vertical').setAttribute('x2', D_top[0]);
+      document.getElementById('tank-back-vertical').setAttribute('y2', D_top[1]);
+
+      // 4. Calculate water fill level
+      // If computed liters is zero (inputs missing), draw tank empty
+      const fillRatio = computedLiters > 0 ? 0.85 : 0.0;
+      const waterHeight = dPx * fillRatio;
+
+      // Water level top coordinates
+      const A_w = [A[0], A[1] - waterHeight];
+      const B_w = [B[0], B[1] - waterHeight];
+      const C_w = [C[0], C[1] - waterHeight];
+      const D_w = [D[0], D[1] - waterHeight];
+
+      // Set points for water volumes
+      document.getElementById('water-bottom').setAttribute('points', pts(A, B, C, D));
+      document.getElementById('water-back').setAttribute('points', pts(D_w, C_w, C, D));
+      document.getElementById('water-side').setAttribute('points', pts(B_w, C_w, C, B));
+      document.getElementById('water-front').setAttribute('points', pts(A_w, B_w, B, A));
+      document.getElementById('water-top').setAttribute('points', pts(A_w, B_w, C_w, D_w));
+
+      // Show/hide bubbles & fish based on if water is in the tank
+      const isWaterPresent = computedLiters > 0;
+      document.getElementById('bubble-group').style.display = isWaterPresent ? 'block' : 'none';
+
+      const fishGroup = document.getElementById('fish-group');
+      if (isWaterPresent) {
+        fishGroup.style.display = 'block';
+        // Center fish inside the actual water body volume
+        const fishX = startX + (wPx / 2) + (dx / 2);
+        const fishY = startY - (waterHeight / 2) - (dy / 2);
+
+        // Store current bounds for fish movement
+        fishBoundaryLeft = startX + 15 + (dx * 0.4);
+        fishBoundaryRight = startX + wPx - 15 + (dx * 0.4);
+
+        if (currentFishX === null) {
+          currentFishX = fishX;
+          currentFishY = fishY;
+        } else {
+          // Constrain vertical position inside new water height
+          currentFishY = fishY;
+        }
+      } else {
+        fishGroup.style.display = 'none';
+      }
+
+      // 5. Position & display Dimension Lines & Labels
+      // Width Guide (W) - positioned below the bottom front line
+      const labelW_Y = startY + 18;
+      document.getElementById('guide-w').setAttribute('x1', A[0]);
+      document.getElementById('guide-w').setAttribute('y1', labelW_Y);
+      document.getElementById('guide-w').setAttribute('x2', B[0]);
+      document.getElementById('guide-w').setAttribute('y2', labelW_Y);
+
+      const textW = document.getElementById('text-w');
+      textW.setAttribute('x', startX + (wPx / 2));
+      textW.setAttribute('y', labelW_Y + 12);
+      textW.textContent = `W (ยาว): ${wVal} ${isInch ? 'นิ้ว' : 'ซม.'}`;
+
+      // Depth Guide (H/Width) - positioned along the bottom-right edge
+      const labelH_offset = 12;
+      document.getElementById('guide-h').setAttribute('x1', B[0] + 5);
+      document.getElementById('guide-h').setAttribute('y1', B[1] + labelH_offset);
+      document.getElementById('guide-h').setAttribute('x2', C[0] + 5);
+      document.getElementById('guide-h').setAttribute('y2', C[1] + labelH_offset);
+
+      const textH = document.getElementById('text-h');
+      textH.setAttribute('x', C[0] + 12); // Shift safely right of the entire line
+      textH.setAttribute('y', C[1] + labelH_offset + 4);
+      textH.textContent = `H (กว้าง): ${hVal} ${isInch ? 'นิ้ว' : 'ซม.'}`;
+
+      // Height Guide (D/Height) - positioned vertically at the right back corner
+      const labelD_X = C[0] + 12; // Bring line slightly closer
+      document.getElementById('guide-d').setAttribute('x1', labelD_X);
+      document.getElementById('guide-d').setAttribute('y1', C[1]);
+      document.getElementById('guide-d').setAttribute('x2', labelD_X);
+      document.getElementById('guide-d').setAttribute('y2', C_top[1]);
+
+      const textD = document.getElementById('text-d');
+      textD.setAttribute('x', labelD_X + 8); // Align text starting to the right of the line
+      textD.setAttribute('y', C[1] - (dPx / 2));
+      textD.textContent = `D (สูง): ${dVal} ${isInch ? 'นิ้ว' : 'ซม.'}`;
+
+      // Simple visual indicator text
+      const indicator = document.getElementById('visual-indicator');
+      if (computedLiters > 0) {
+        indicator.innerText = `🌊 เติมน้ำแล้ว (${computedLiters.toFixed(1)} ลิตร)`;
+      } else {
+        indicator.innerText = `💤 ตู้ว่างเปล่า`;
+      }
+    }
+
+    // ─── FISH DYNAMIC SWIM ANIMATION ───
+    let currentFishX = null;
+    let currentFishY = null;
+    let fishDirection = 1; // 1 = swimming right, -1 = swimming left
+    let fishBoundaryLeft = 50;
+    let fishBoundaryRight = 200;
+
+    function animateFish() {
+      const fishGroup = document.getElementById('fish-group');
+      if (fishGroup && fishGroup.style.display !== 'none' && currentFishX !== null) {
+        // Swim movement speed
+        currentFishX += 0.45 * fishDirection;
+
+        // Bobbing up and down simulation
+        const time = Date.now() * 0.003;
+        const bobbing = Math.sin(time) * 0.25;
+
+        // Check boundary collisions to trigger turns
+        if (fishDirection === 1 && currentFishX >= fishBoundaryRight) {
+          fishDirection = -1;
+        } else if (fishDirection === -1 && currentFishX <= fishBoundaryLeft) {
+          fishDirection = 1;
+        }
+
+        // Apply transformations (translation + horizontal flipping based on direction)
+        const flipScale = fishDirection === 1 ? 'scale(1, 1)' : 'scale(-1, 1)';
+        fishGroup.setAttribute('transform', `translate(${currentFishX}, ${currentFishY + bobbing}) ${flipScale}`);
+      }
+      requestAnimationFrame(animateFish);
+    }
+
+    // Start fish animation loop
+    requestAnimationFrame(animateFish);
+
+    // Initialize presets and calculation
+    renderPresets();
+    runCalculation();
+  </script>
+
+<div id="pwa-update-toast" style="display: none; position: fixed; bottom: 85px; right: 24px; background: var(--bg-card); border: 2px solid var(--red-primary); border-radius: var(--radius-md); padding: 18px; box-shadow: var(--shadow-card); z-index: 99999; max-width: 320px; font-family: var(--font-th); transition: var(--transition); animation: pop 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
+    <div style="font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; display: flex; align-items: center; gap: 8px;">
+      <span>✨ มีการอัปเดตเวอร์ชันใหม่!</span>
+    </div>
+    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 14px; line-height: 1.5;">คุณพร้อมที่จะอัพเดทไฟล์ใหม่ใช่ไหม? (ระบบจะทำการติดตั้งทับไฟล์เดิมและรีโหลดหน้าเว็บบนเครื่องทันที)</p>
+    <div style="display: flex; gap: 8px; justify-content: flex-end;">
+      <button id="pwa-cancel-update" style="background: transparent; border: 1px solid var(--border); color: var(--text-secondary); padding: 6px 14px; border-radius: var(--radius-sm); font-size: 11px; cursor: pointer; font-weight: 600; transition: var(--transition);">ภายหลัง</button>
+      <button id="pwa-accept-update" style="background: var(--red-primary); border: none; color: #ffffff; padding: 6px 14px; border-radius: var(--radius-sm); font-size: 11px; cursor: pointer; font-weight: 600; box-shadow: 0 2px 8px var(--red-glow); transition: var(--transition);">อัปเดตทันที</button>
+    </div>
+  </div>
+
+<script>
+    // ─── PWA SERVICE WORKER REGISTRATION & UPDATE LOGIC ───
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').then(reg => {
+          
+          function showUpdatePrompt(worker) {
+            const updateToast = document.getElementById('pwa-update-toast');
+            if (updateToast) {
+              updateToast.style.display = 'block';
+              
+              // เมื่อกดปุ่ม "อัปเดตทันที" ให้บอก Service Worker ข้ามขั้นตอนการรอทำงาน
+              document.getElementById('pwa-accept-update').onclick = () => {
+                worker.postMessage({ action: 'skipWaiting' });
+              };
+            }
+          }
+
+          // กรณีมีเวอร์ชันใหม่ดาวน์โหลดเสร็จและสแตนด์บายรออยู่ก่อนแล้ว
+          if (reg.waiting) {
+            showUpdatePrompt(reg.waiting);
+          }
+
+          // ตรวจจับระหว่างที่เปิดแอปอยู่ แล้วพบว่าผู้พัฒนาเปลี่ยนเวอร์ชันใหม่บนเซิร์ฟเวอร์
+          reg.addEventListener('updatefound', () => {
+            const newWorker = reg.installing;
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                showUpdatePrompt(newWorker);
+              }
+            });
+          });
+        });
+
+        // เมื่อหน้าเว็บได้รับการควบคุมจาก Service Worker ใหม่ (รีโหลดหน้าจออัตโนมัติ)
+        let refreshing = false;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          if (!refreshing) {
+            window.location.reload();
+            refreshing = true;
+          }
+        });
+
+        // ปุ่ม "ภายหลัง" เพื่อปิดหน้าต่างแจ้งเตือน
+        const cancelBtn = document.getElementById('pwa-cancel-update');
+        if (cancelBtn) {
+          cancelBtn.addEventListener('click', () => {
+            document.getElementById('pwa-update-toast').style.display = 'none';
+          });
+        }
+      });
+    }
+  </script>
+
+</body>
+
+</html>
