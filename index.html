@@ -11,11 +11,6 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap"
     rel="stylesheet" />
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#e63946" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="ARO PLUS" />
 
   <style>
     /* ─── DESIGN SYSTEM & PALETTE ─── */
@@ -1222,6 +1217,47 @@
         opacity: 0;
       }
     }
+
+    /* ─── NEW FEATURES STYLINGS (Feature 1, 2, 3, 4) ─── */
+    .quick-tag-btn:hover {
+      border-color: var(--red-primary) !important;
+      color: var(--red-primary) !important;
+      transform: translateY(-1px);
+    }
+
+    .quick-tag-btn.active {
+      background: rgba(230, 57, 70, 0.12) !important;
+      border-color: var(--red-primary) !important;
+      color: var(--red-primary) !important;
+      font-weight: 600;
+      box-shadow: 0 0 10px rgba(230, 57, 70, 0.2);
+    }
+
+    .product-dosage-item.highlight-glow {
+      border-color: var(--red-primary) !important;
+      background: rgba(230, 57, 70, 0.05) !important;
+      box-shadow: 0 0 15px rgba(230, 57, 70, 0.25) !important;
+      animation: pulse-border 2s infinite ease-in-out;
+    }
+
+    .product-dosage-item.dimmed-opacity {
+      opacity: 0.45;
+      filter: grayscale(40%);
+    }
+
+    @keyframes pulse-border {
+
+      0%,
+      100% {
+        box-shadow: 0 0 10px rgba(230, 57, 70, 0.15);
+        border-color: var(--border-focus);
+      }
+
+      50% {
+        box-shadow: 0 0 20px rgba(230, 57, 70, 0.35);
+        border-color: var(--red-primary);
+      }
+    }
   </style>
 </head>
 
@@ -1301,6 +1337,50 @@
             <div class="calc-header">
               <h2>💧 เครื่องคำนวณสูตรน้ำ <span>ARO PLUS</span></h2>
               <p>กรอกขนาดตู้ปลาเพื่อวิเคราะห์ปริมาณน้ำและการคำนวณอัตราส่วนการใช้ผลิตภัณฑ์อย่างแม่นยำ</p>
+            </div>
+
+            <!-- Quick Tag Recommendations (Feature 3) -->
+            <div class="quick-tags-container"
+              style="display: flex; flex-direction: column; gap: 8px; padding: 12px 32px 4px; border-bottom: 1px solid var(--border); flex-shrink: 0;">
+              <div
+                style="display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 700; color: var(--text-secondary);">
+                <span>⚡ แนะนำด่วนสำหรับลูกค้า (Quick Assistant)</span>
+              </div>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+                <span style="font-size: 10.5px; font-weight: 600; color: var(--text-muted);">🐟 สายพันธุ์:</span>
+                <button class="quick-tag-btn" onclick="selectQuickTag('species', 'arowana', this)"
+                  style="background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); padding: 5px 12px; border-radius: 50px; font-size: 11px; font-weight: 500; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 4px;">
+                  🐲 ปลามังกร/Arowana
+                </button>
+                <button class="quick-tag-btn" onclick="selectQuickTag('species', 'channa', this)"
+                  style="background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); padding: 5px 12px; border-radius: 50px; font-size: 11px; font-weight: 500; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 4px;">
+                  🦈 ปลาช่อน/Channa
+                </button>
+                <button class="quick-tag-btn" onclick="selectQuickTag('species', 'goldfish', this)"
+                  style="background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); padding: 5px 12px; border-radius: 50px; font-size: 11px; font-weight: 500; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 4px;">
+                  🐠 ปลาทอง/Goldfish
+                </button>
+                <button class="quick-tag-btn" onclick="selectQuickTag('species', 'discus', this)"
+                  style="background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); padding: 5px 12px; border-radius: 50px; font-size: 11px; font-weight: 500; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 4px;">
+                  💿 ปลาปอมปาดัวร์/Discus
+                </button>
+
+                <div style="width: 1px; height: 16px; background: var(--border); margin: 0 4px;"></div>
+
+                <span style="font-size: 10.5px; font-weight: 600; color: var(--text-muted);">🩺 อาการ:</span>
+                <button class="quick-tag-btn" onclick="selectQuickTag('symptom', 'stress', this)"
+                  style="background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); padding: 5px 12px; border-radius: 50px; font-size: 11px; font-weight: 500; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 4px;">
+                  🥱 ปลาเครียด/ย้ายตู้
+                </button>
+                <button class="quick-tag-btn" onclick="selectQuickTag('symptom', 'dropsy', this)"
+                  style="background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); padding: 5px 12px; border-radius: 50px; font-size: 11px; font-weight: 500; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 4px;">
+                  🎈 เกล็ดพอง/ติดเชื้อ
+                </button>
+                <button class="quick-tag-btn" onclick="selectQuickTag('symptom', 'rot', this)"
+                  style="background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); padding: 5px 12px; border-radius: 50px; font-size: 11px; font-weight: 500; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 4px;">
+                  🩸 ตัวเปื่อย/ตกเลือด
+                </button>
+              </div>
             </div>
 
             <!-- Formula tabs -->
@@ -1476,6 +1556,66 @@
                       </div>
                     </div>
                   </div>
+
+                  <!-- ─── ระบบคำนวณหักลบปริมาณน้ำตามจริง (Feature 2) ─── -->
+                  <div class="effective-settings-container"
+                    style="border-top: 1px dashed var(--border); padding-top: 14px; margin-top: 6px; display: flex; flex-direction: column; gap: 10px;">
+                    <div
+                      style="font-size: 11.5px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 6px;">
+                      <span>⚙️ ปรับแต่งเนื้อน้ำจริง (Effective Volume)</span>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px;">
+                      <div class="input-group">
+                        <label for="water-drop">ระดับน้ำลดจากขอบตู้</label>
+                        <div class="input-wrapper">
+                          <input type="number" id="water-drop" min="0" placeholder="0" oninput="runCalculation()"
+                            style="font-size: 14px; padding: 8px 10px;" />
+                          <span class="input-unit" id="unit-lbl-drop" style="font-size: 10px;">นิ้ว</span>
+                        </div>
+                      </div>
+
+                      <div class="input-group">
+                        <label for="filter-deduction">วัสดุกรอง / หินตกแต่ง</label>
+                        <div class="input-wrapper">
+                          <select id="filter-deduction" onchange="runCalculation()"
+                            style="width: 100%; background: var(--bg-card); border: 1px solid var(--border); padding: 8px 10px; font-size: 12.5px; font-weight: 600; color: var(--text-primary); border-radius: var(--radius-sm); outline: none; appearance: none; -webkit-appearance: none; text-align: center; text-align-last: center; cursor: pointer; transition: var(--transition);">
+                            <option value="0">หักลบ 0%</option>
+                            <option value="5">หักลบ 5%</option>
+                            <option value="10">หักลบ 10%</option>
+                            <option value="15">หักลบ 15%</option>
+                          </select>
+                          <span class="input-unit"
+                            style="right: 10px; font-size: 10px; pointer-events: none; color: var(--text-muted);">▼</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- ─── เครื่องคำนวณโดสสำหรับการเปลี่ยนน้ำ (Feature 4) ─── -->
+                  <div id="water-change-container"
+                    style="display: none; border-top: 1px dashed var(--border); padding-top: 14px; margin-top: 6px; flex-direction: column; gap: 10px;">
+                    <div
+                      style="font-size: 11.5px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 6px;">
+                      <span>🔄 โดสยาสำหรับเติมน้ำใหม่ (Water Change Dose)</span>
+                    </div>
+                    <div class="input-group">
+                      <label for="water-change-percent">ปริมาณน้ำที่เปลี่ยนถ่ายออก (%)</label>
+                      <div style="display: flex; gap: 8px; align-items: center;">
+                        <div class="input-wrapper" style="flex: 1;">
+                          <input type="number" id="water-change-percent" min="0" max="100" placeholder="30" value="30"
+                            oninput="runCalculation()" style="font-size: 14px; padding: 8px 10px;" />
+                          <span class="input-unit" style="font-size: 10px; right: 10px;">%</span>
+                        </div>
+                        <div style="display: flex; gap: 4px;">
+                          <button type="button" onclick="setWaterChangePercent(30)" class="unit-toggle-btn"
+                            style="padding: 6px 10px; font-size: 10.5px; background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition);">30%</button>
+                          <button type="button" onclick="setWaterChangePercent(50)" class="unit-toggle-btn"
+                            style="padding: 6px 10px; font-size: 10.5px; background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition);">50%</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -1506,12 +1646,39 @@
 
                   <!-- Primary Result -->
                   <div class="output-card">
-                    <div class="output-label">ปริมาณน้ำในตู้ปลาทั้งหมด</div>
+                    <div class="output-label" id="output-title-lbl">ปริมาณน้ำสุทธิ (สำหรับคำนวณโดส)</div>
                     <div class="output-val" id="total-liters-display">
                       -- <span>ลิตร</span>
                     </div>
                     <div class="output-sub" id="calculation-desc">กรอกขนาดตู้ปลาเพื่อเริ่มต้นระบบคำนวณปริมาณน้ำ</div>
+
+                    <!-- Details Breakdown for Gross & Net Volumes (Feature 2) -->
+                    <div id="volume-details-box"
+                      style="display: none; border-top: 1px dashed var(--border); padding-top: 10px; margin-top: 8px; font-size: 11.5px; display: flex; flex-direction: column; gap: 5px;">
+                      <div style="display: flex; justify-content: space-between; color: var(--text-secondary);">
+                        <span>ปริมาณน้ำเต็มตู้ (Gross Volume):</span>
+                        <span id="gross-liters-val" style="font-family: var(--font-en); font-weight: 600;">--
+                          ลิตร</span>
+                      </div>
+                      <div style="display: flex; justify-content: space-between; color: var(--text-secondary);">
+                        <span>ปริมาณน้ำสุทธิ (Net Volume):</span>
+                        <span id="net-liters-val"
+                          style="font-family: var(--font-en); font-weight: 700; color: var(--red-primary);">--
+                          ลิตร</span>
+                      </div>
+                    </div>
                   </div>
+
+                  <!-- ปุ่มคัดลอกสรุปสำหรับส่งลูกค้า (Feature 1) -->
+                  <button id="copy-summary-btn" onclick="copySummaryToClipboard()"
+                    style="display: none; width: 100%; background: linear-gradient(135deg, var(--red-primary), #b31623); border: none; color: #ffffff; padding: 12px; border-radius: var(--radius-md); font-size: 13px; font-weight: 600; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px var(--red-glow); margin-bottom: 8px; outline: none;">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span>📋 คัดลอกสรุปสำหรับส่งลูกค้า</span>
+                  </button>
 
                   <!-- Dosage result section if selected -->
                   <div id="dosage-container" style="display: none; display: flex; flex-direction: column; gap: 12px;">
@@ -1636,6 +1803,66 @@
     // ─── STATE MANAGEMENT ───
     let selectedUnit = 'inch'; // 'inch' or 'cm'
     let activeTabIdx = 0; // index of active formula tab
+
+    // Feature 3 States (Species & Symptoms Recommendations)
+    let selectedSpecies = null;
+    let selectedSymptom = null;
+    let lastClickedTag = false;
+
+    // Feature 4 Helper
+    function setWaterChangePercent(val) {
+      document.getElementById('water-change-percent').value = val;
+      runCalculation();
+    }
+
+    // Feature 3 Helper
+    function selectQuickTag(type, value, btnEl) {
+      lastClickedTag = true;
+      if (type === 'species') {
+        if (selectedSpecies === value) {
+          selectedSpecies = null;
+          btnEl.classList.remove('active');
+        } else {
+          // Deselect other species
+          btnEl.parentNode.querySelectorAll('.quick-tag-btn').forEach(b => {
+            if (b.innerText.includes('ปลามังกร') || b.innerText.includes('ปลาช่อน') || b.innerText.includes('ปลาทอง') || b.innerText.includes('ปลา Discus')) {
+              b.classList.remove('active');
+            }
+          });
+          selectedSpecies = value;
+          btnEl.classList.add('active');
+        }
+      } else if (type === 'symptom') {
+        if (selectedSymptom === value) {
+          selectedSymptom = null;
+          btnEl.classList.remove('active');
+        } else {
+          // Deselect other symptoms
+          btnEl.parentNode.querySelectorAll('.quick-tag-btn').forEach(b => {
+            if (b.innerText.includes('ปลาเครียด') || b.innerText.includes('เกล็ดพอง') || b.innerText.includes('ตัวเปื่อย')) {
+              b.classList.remove('active');
+            }
+          });
+          selectedSymptom = value;
+          btnEl.classList.add('active');
+        }
+      }
+
+      applyTagHighlighting();
+    }
+
+    function applyTagHighlighting() {
+      // Auto-switch tabs if symptom is selected
+      if (selectedSymptom) {
+        if (selectedSymptom === 'stress' || selectedSymptom === 'dropsy' || selectedSymptom === 'rot') {
+          if (activeTabIdx !== 3) {
+            switchFormula(3);
+            return;
+          }
+        }
+      }
+      runCalculation();
+    }
 
     // Formulas configs
     const formulas = [
@@ -1802,6 +2029,7 @@
       document.getElementById('unit-lbl-w').innerText = labelString;
       document.getElementById('unit-lbl-h').innerText = labelString;
       document.getElementById('unit-lbl-d').innerText = labelString;
+      document.getElementById('unit-lbl-drop').innerText = labelString;
 
       renderPresets();
       runCalculation();
@@ -1871,6 +2099,14 @@
       document.getElementById('formula-title').innerText = fConfig.title;
       document.getElementById('formula-formula').innerText = fConfig.formulaText;
 
+      // Feature 4: Toggle water change input container visibility
+      const wcContainer = document.getElementById('water-change-container');
+      if (idx === 3) {
+        wcContainer.style.display = 'flex';
+      } else {
+        wcContainer.style.display = 'none';
+      }
+
       runCalculation();
     }
 
@@ -1881,42 +2117,60 @@
       const hVal = parseFloat(document.getElementById('tank-h').value) || 0;
       const dVal = parseFloat(document.getElementById('tank-d').value) || 0;
 
+      // Retrieve Feature 2 settings
+      const waterDrop = parseFloat(document.getElementById('water-drop').value) || 0;
+      const filterDeduction = parseFloat(document.getElementById('filter-deduction').value) || 0;
+
+      // Calculate effective height & volume
+      const effectiveD = Math.max(0, dVal - waterDrop);
+      const A_gross = wVal * hVal * dVal;
+      const A_effective = wVal * hVal * effectiveD;
+
       // Visual dimensions for isometric representation (with defaults if empty)
       const displayW = wVal || (selectedUnit === 'inch' ? 48 : 120);
       const displayH = hVal || (selectedUnit === 'inch' ? 20 : 50);
       const displayD = dVal || (selectedUnit === 'inch' ? 20 : 50);
 
-      // Calculate aquarium volume
-      // A = W * H * D
-      const A = wVal * hVal * dVal;
-      let liters = 0;
-      let multiplier = 0.016;
+      let multiplier = selectedUnit === 'inch' ? 0.016 : 0.001;
+      const grossLiters = A_gross * multiplier;
+      const waterLitersBeforeDeduction = A_effective * multiplier;
+      const netLiters = waterLitersBeforeDeduction * (1 - filterDeduction / 100);
 
-      if (selectedUnit === 'inch') {
-        multiplier = 0.016;
-        liters = A * multiplier;
-      } else {
-        // metric system: (cm * cm * cm) / 1000 = liters
-        multiplier = 0.001;
-        liters = A * multiplier;
-      }
+      // We use netLiters for all dosage calculations!
+      const liters = netLiters;
 
       // Update substitute values in equation layout
       document.getElementById('eq-v-w').innerText = wVal > 0 ? wVal : 'W';
       document.getElementById('eq-v-h').innerText = hVal > 0 ? hVal : 'H';
-      document.getElementById('eq-v-d').innerText = dVal > 0 ? dVal : 'D';
+      document.getElementById('eq-v-d').innerText = dVal > 0 ? (waterDrop > 0 ? `${dVal}-${waterDrop}` : dVal) : 'D';
       document.getElementById('eq-v-constant').innerText = multiplier;
 
       const litDisplay = document.getElementById('total-liters-display');
       const calcDesc = document.getElementById('calculation-desc');
       const eqRes = document.getElementById('eq-v-res');
 
+      const detailsBox = document.getElementById('volume-details-box');
+      const grossValSpan = document.getElementById('gross-liters-val');
+      const netValSpan = document.getElementById('net-liters-val');
+      const copyBtn = document.getElementById('copy-summary-btn');
+
       if (wVal > 0 && hVal > 0 && dVal > 0) {
-        const formattedLiters = liters.toFixed(2);
+        const formattedLiters = netLiters.toFixed(2);
 
         litDisplay.innerHTML = `${Number(formattedLiters).toLocaleString()} <span>ลิตร</span>`;
         eqRes.innerText = `${formattedLiters} ลิตร`;
-        calcDesc.innerText = `ปริมาตรตู้ปลา (A) = ${A.toLocaleString()} | สูตรคำนวณน้ำ = A × ${multiplier}`;
+
+        if (waterDrop > 0 || filterDeduction > 0) {
+          calcDesc.innerText = `ปริมาตรสุทธิคำนวณจากความสูงหักลบขอบตู้ และลบวัสดุกรอง ${filterDeduction}%`;
+        } else {
+          calcDesc.innerText = `ปริมาตรตู้ปลา (A) = ${A_gross.toLocaleString()} | สูตรคำนวณน้ำ = A × ${multiplier}`;
+        }
+
+        // Display Details Breakdown and Copy Button (Feature 1 & 2)
+        grossValSpan.innerText = `${grossLiters.toFixed(2)} ลิตร`;
+        netValSpan.innerText = `${netLiters.toFixed(2)} ลิตร`;
+        detailsBox.style.display = 'flex';
+        copyBtn.style.display = 'flex';
 
         // Animation pop effect
         litDisplay.classList.remove('animate-pop');
@@ -1934,12 +2188,82 @@
 
           let htmlContent = '';
           fConfig.products.forEach(p => {
+            // Determine relevance classes for Feature 3 highlighting
+            let isHigh = false;
+            let isDim = false;
+            if (activeTabIdx === 3) {
+              if (selectedSymptom) {
+                if (selectedSymptom === 'stress') {
+                  if (p.name.includes('AquaH')) {
+                    isHigh = true;
+                  } else {
+                    isDim = true;
+                  }
+                } else if (selectedSymptom === 'dropsy' || selectedSymptom === 'rot') {
+                  if (p.name.includes('AquaH')) {
+                    isDim = true;
+                  } else if (p.name.includes('AquaBac')) {
+                    if (selectedSpecies === 'arowana' || selectedSpecies === 'channa' || !selectedSpecies) {
+                      isHigh = true;
+                    } else {
+                      isDim = true;
+                    }
+                  } else if (p.name.includes('Bacta')) {
+                    if (selectedSpecies === 'goldfish' || selectedSpecies === 'discus' || !selectedSpecies) {
+                      isHigh = true;
+                    } else {
+                      isDim = true;
+                    }
+                  }
+                }
+              } else if (selectedSpecies) {
+                if (selectedSpecies === 'arowana' || selectedSpecies === 'channa') {
+                  if (p.name.includes('AquaBac')) {
+                    isHigh = true;
+                  } else if (p.name.includes('AquaH') && selectedSpecies === 'arowana') {
+                    isHigh = true;
+                  } else {
+                    isDim = true;
+                  }
+                } else if (selectedSpecies === 'goldfish' || selectedSpecies === 'discus') {
+                  if (p.name.includes('Bacta')) {
+                    isHigh = true;
+                  } else {
+                    isDim = true;
+                  }
+                }
+              }
+            }
+            const relevanceClass = isHigh ? ' highlight-glow' : (isDim ? ' dimmed-opacity' : '');
+
             if (p.type === 'powder') {
               // AquaH powder calculation
               const dosagePrep = liters * 3;
               const dosageShock = liters * 5;
+
+              // Feature 4: Water change dose for powder
+              let waterChangeDoseHtml = '';
+              if (activeTabIdx === 3) {
+                const wcPercent = parseFloat(document.getElementById('water-change-percent').value) || 30;
+                const wcLiters = liters * (wcPercent / 100);
+                const wcPrep = wcLiters * 3;
+                const wcShock = wcLiters * 5;
+
+                waterChangeDoseHtml = `
+                  <div style="margin-top: 4px; border-top: 1px dashed var(--border); padding-top: 8px; font-size: 11.5px; color: var(--text-secondary); display: flex; flex-direction: column; gap: 4px;">
+                    <div>
+                      <span style="color: var(--green-accent); font-weight: 700;">🔄 โดสเปลี่ยนน้ำใหม่ (${wcPercent}% / ~${wcLiters.toFixed(0)} ลิตร):</span>
+                    </div>
+                    <div style="display: flex; gap: 16px; padding-left: 4px;">
+                      <span>🔧 ปรับสภาพ: <strong style="color: var(--text-primary); font-family: var(--font-en);">${wcPrep.toFixed(1)} กรัม</strong></span>
+                      <span>🚨 แก้ช็อกน้ำ: <strong style="color: var(--text-primary); font-family: var(--font-en);">${wcShock.toFixed(1)} กรัม</strong></span>
+                    </div>
+                  </div>
+                `;
+              }
+
               htmlContent += `
-                <div class="product-dosage-item" style="flex-direction: column; align-items: stretch; gap: 10px;">
+                <div class="product-dosage-item${relevanceClass}" style="flex-direction: column; align-items: stretch; gap: 10px;">
                   <div style="display: flex; gap: 16px; align-items: center;">
                     <div class="product-img-wrap">
                       <img src="${p.image}" alt="${p.name}" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
@@ -1965,6 +2289,8 @@
                     </div>
                   </div>
 
+                  ${waterChangeDoseHtml}
+
                   ${p.notes ? `
                     <div style="font-size: 10.5px; color: var(--text-muted); border-top: 1px dashed var(--border); padding-top: 8px; margin-top: 2px; line-height: 1.45;">
                       <div style="font-weight: 600; margin-bottom: 4px; color: var(--text-secondary);">📝 วิธีใช้เพิ่มเติม:</div>
@@ -1986,8 +2312,29 @@
               const capUnitText = p.capName || "ฝา";
               const capDescText = p.capDesc || `1 ฝา (${p.ccPerCap} CC)`;
 
+              // Feature 4: Water change dose for liquid medicines
+              let waterChangeDoseHtml = '';
+              if (activeTabIdx === 3) {
+                const wcPercent = parseFloat(document.getElementById('water-change-percent').value) || 30;
+                const wcLiters = liters * (wcPercent / 100);
+                const wcCaps = wcLiters / p.waterPerCap;
+                const wcCC = wcCaps * p.ccPerCap;
+
+                waterChangeDoseHtml = `
+                  <div style="margin-top: 4px; border-top: 1px dashed var(--border); padding-top: 8px; font-size: 11.5px; color: var(--text-secondary);">
+                    <span style="color: var(--green-accent); font-weight: 700;">🔄 โดสเปลี่ยนน้ำใหม่ (${wcPercent}% / ~${wcLiters.toFixed(0)} ลิตร):</span>
+                    <strong style="color: var(--text-primary); font-family: var(--font-en); font-size: 13.5px; margin-left: 4px;">
+                      ${wcCC.toFixed(1)} <span style="font-size: 10px; font-weight: 500; color: var(--text-muted);">CC</span>
+                    </strong>
+                    <span style="color: var(--text-muted); font-size: 10.5px; margin-left: 2px;">
+                      (${wcCaps.toFixed(2)} ${capUnitText})
+                    </span>
+                  </div>
+                `;
+              }
+
               htmlContent += `
-                <div class="product-dosage-item" style="flex-direction: column; align-items: stretch; gap: 10px;">
+                <div class="product-dosage-item${relevanceClass}" style="flex-direction: column; align-items: stretch; gap: 10px;">
                   <div style="display: flex; gap: 16px; align-items: center;">
                     <div class="product-img-wrap">
                       <img src="${p.image}" alt="${p.name}" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
@@ -2012,6 +2359,8 @@
                     </div>
                   </div>
 
+                  ${waterChangeDoseHtml}
+
                   ${p.notes ? `
                     <div style="font-size: 10.5px; color: var(--text-muted); border-top: 1px dashed var(--border); padding-top: 8px; margin-top: 2px; line-height: 1.45;">
                       <div style="font-weight: 600; margin-bottom: 4px; color: var(--text-secondary);">📝 วิธีใช้เพิ่มเติม:</div>
@@ -2025,6 +2374,17 @@
             }
           });
           dosageContainer.innerHTML = htmlContent;
+
+          // Feature 3: Auto-scroll to the first highlighted medicine
+          if (activeTabIdx === 3 && lastClickedTag) {
+            setTimeout(() => {
+              const highlightedEl = dosageContainer.querySelector('.product-dosage-item.highlight-glow');
+              if (highlightedEl) {
+                highlightedEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+              }
+            }, 100);
+            lastClickedTag = false;
+          }
         } else {
           dosageContainer.style.display = 'none';
         }
@@ -2033,10 +2393,12 @@
         eqRes.innerText = `-- ลิตร`;
         calcDesc.innerText = `กรอกขนาดตู้ปลาให้ครบถ้วนเพื่อคำนวณปริมาณน้ำ`;
         document.getElementById('dosage-container').style.display = 'none';
+        detailsBox.style.display = 'none';
+        copyBtn.style.display = 'none';
       }
 
       // Render 3D isometric representation
-      renderIsometricTank(displayW, displayH, displayD, wVal > 0 && hVal > 0 && dVal > 0 ? liters : 0);
+      renderIsometricTank(displayW, displayH, displayD, wVal > 0 && hVal > 0 && dVal > 0 ? netLiters : 0);
     }
 
     // ─── 3D ISOMETRIC TANK GRAPHIC RENDERER ───
@@ -2121,7 +2483,11 @@
 
       // 4. Calculate water fill level
       // If computed liters is zero (inputs missing), draw tank empty
-      const fillRatio = computedLiters > 0 ? 0.85 : 0.0;
+      const waterDrop = parseFloat(document.getElementById('water-drop').value) || 0;
+      const filterDeduction = parseFloat(document.getElementById('filter-deduction').value) || 0;
+      const effectiveD = Math.max(0, dVal - waterDrop);
+
+      const fillRatio = computedLiters > 0 ? (effectiveD / dVal) * (1 - filterDeduction / 100) * 0.85 : 0.0;
       const waterHeight = dPx * fillRatio;
 
       // Water level top coordinates
@@ -2243,74 +2609,129 @@
     // Start fish animation loop
     requestAnimationFrame(animateFish);
 
+    // ─── CLIPBOARD SUMMARY GENERATOR (Feature 1) ───
+    function copySummaryToClipboard() {
+      const wVal = parseFloat(document.getElementById('tank-w').value) || 0;
+      const hVal = parseFloat(document.getElementById('tank-h').value) || 0;
+      const dVal = parseFloat(document.getElementById('tank-d').value) || 0;
+
+      if (wVal === 0 || hVal === 0 || dVal === 0) return;
+
+      const unitText = selectedUnit === 'inch' ? 'นิ้ว' : 'ซม.';
+
+      // Feature 2 settings
+      const waterDrop = parseFloat(document.getElementById('water-drop').value) || 0;
+      const filterDeduction = parseFloat(document.getElementById('filter-deduction').value) || 0;
+
+      // Calculations
+      const multiplier = selectedUnit === 'inch' ? 0.016 : 0.001;
+      const grossLiters = wVal * hVal * dVal * multiplier;
+      const effectiveHeight = Math.max(0, dVal - waterDrop);
+      const waterLitersBeforeDeduction = wVal * hVal * effectiveHeight * multiplier;
+      const netLiters = waterLitersBeforeDeduction * (1 - filterDeduction / 100);
+
+      let text = `📝 สรุปผลการคำนวณตู้ปลาจาก ARO PLUS\n`;
+      text += `🐳 ขนาดตู้: ${wVal} x ${hVal} x ${dVal} ${unitText}\n`;
+      text += `💧 ปริมาณน้ำเต็มตู้ (Gross): ~${grossLiters.toFixed(1)} ลิตร\n`;
+
+      if (waterDrop > 0 || filterDeduction > 0) {
+        text += `⚙️ การปรับแต่งเนื้อน้ำจริง:\n`;
+        if (waterDrop > 0) text += `  - ระดับน้ำลดจากขอบตู้: ${waterDrop} ${unitText}\n`;
+        if (filterDeduction > 0) text += `  - หักลบวัสดุกรอง/ตกแต่ง: ${filterDeduction}%\n`;
+        text += `💧 ปริมาณน้ำสุทธิสำหรับคำนวณ (Net): ~${netLiters.toFixed(1)} ลิตร\n`;
+      }
+
+      text += `\n✨ ปริมาณการใช้ผลิตภัณฑ์บำรุง (ต่อโดส):\n`;
+
+      // Active Plus (200ml)
+      const activeCaps = netLiters / 50;
+      const activeCC = activeCaps * 10;
+      text += `  - Active Plus (200 ml): ${activeCC.toFixed(1)} CC (~${activeCaps.toFixed(1)} ฝา)\n`;
+
+      // Aura Plus (200ml)
+      const auraCaps = netLiters / 100;
+      const auraCC = auraCaps * 10;
+      text += `  - Aura Plus (200 ml): ${auraCC.toFixed(1)} CC (~${auraCaps.toFixed(1)} ฝา)\n`;
+
+      // Medicine case
+      let medicineText = '';
+      const wcPercent = parseFloat(document.getElementById('water-change-percent').value) || 30;
+      const wcLiters = netLiters * (wcPercent / 100);
+
+      // Assemble medicines based on tags or active view
+      let targetMeds = [];
+      if (selectedSymptom) {
+        if (selectedSymptom === 'stress') {
+          targetMeds = ['AquaH 250 g.'];
+        } else if (selectedSymptom === 'dropsy' || selectedSymptom === 'rot') {
+          if (selectedSpecies === 'goldfish' || selectedSpecies === 'discus') {
+            targetMeds = ['Bacta 100 ml.'];
+          } else if (selectedSpecies === 'arowana' || selectedSpecies === 'channa') {
+            targetMeds = ['AquaBac 100 ml.'];
+          } else {
+            targetMeds = ['AquaBac 100 ml.', 'Bacta 100 ml.'];
+          }
+        }
+      } else if (activeTabIdx === 3) {
+        targetMeds = ['AquaBac 100 ml.', 'Bacta 100 ml.'];
+      }
+
+      if (targetMeds.length > 0) {
+        medicineText += `\n💊 กรณีรักษากลุ่มโรค/เวชภัณฑ์ที่เกี่ยวข้อง:\n`;
+        targetMeds.forEach(medName => {
+          if (medName.includes('AquaBac')) {
+            const medCaps = netLiters / 100;
+            const medCC = medCaps * 5;
+            const wcMedCaps = wcLiters / 100;
+            const wcMedCC = wcMedCaps * 5;
+            medicineText += `  - AquaBac (100 ml): ${medCC.toFixed(1)} CC (~${medCaps.toFixed(2)} ฝา)\n`;
+            medicineText += `    ↳ โดสเติมน้ำใหม่ (เมื่อเปลี่ยนน้ำ ${wcPercent}%): ${wcMedCC.toFixed(1)} CC (~${wcMedCaps.toFixed(2)} ฝา)\n`;
+            medicineText += `    (คำแนะนำ: เปลี่ยนถ่ายน้ำ 30-50% ทุกวันในช่วงการรักษา)\n`;
+          } else if (medName.includes('Bacta')) {
+            const medCaps = netLiters / 50;
+            const medCC = medCaps * 5;
+            const wcMedCaps = wcLiters / 50;
+            const wcMedCC = wcMedCaps * 5;
+            medicineText += `  - Bacta (100 ml): ${medCC.toFixed(1)} CC (~${medCaps.toFixed(2)} ฝา)\n`;
+            medicineText += `    ↳ โดสเติมน้ำใหม่ (เมื่อเปลี่ยนน้ำ ${wcPercent}%): ${wcMedCC.toFixed(1)} CC (~${wcMedCaps.toFixed(2)} ฝา)\n`;
+            medicineText += `    (คำแนะนำ: เปลี่ยนถ่ายน้ำ 30-50% ทุกวันในช่วงการรักษา)\n`;
+          } else if (medName.includes('AquaH')) {
+            const medPrep = netLiters * 3;
+            const medShock = netLiters * 5;
+            const wcPrep = wcLiters * 3;
+            const wcShock = wcLiters * 5;
+            medicineText += `  - AquaH ปรับสภาพน้ำ: ${medPrep.toFixed(0)} กรัม (โดสเปลี่ยนน้ำใหม่ ${wcPercent}%: ${wcPrep.toFixed(0)} กรัม)\n`;
+            medicineText += `  - AquaH แก้ปลาช็อกน้ำ: ${medShock.toFixed(0)} กรัม (โดสเปลี่ยนน้ำใหม่ ${wcPercent}%: ${wcShock.toFixed(0)} กรัม)\n`;
+          }
+        });
+      }
+
+      text += medicineText;
+      text += `\n💬 *คำแนะนำเพิ่มเติม: ปรึกษาแอดมินหรือผู้เชี่ยวชาญก่อนใช้ผลิตภัณฑ์รักษาเสมอ*`;
+
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copy-summary-btn');
+        const origHtml = btn.innerHTML;
+        btn.style.background = '#2a9d8f';
+        btn.innerHTML = `
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span>คัดลอกสรุปสำเร็จแล้ว!</span>
+        `;
+        setTimeout(() => {
+          btn.style.background = '';
+          btn.innerHTML = origHtml;
+        }, 2000);
+      }).catch(err => {
+        console.error('Clipboard copy failed: ', err);
+        alert('ไม่สามารถคัดลอกข้อความได้โดยอัตโนมัติ กรุณาลองใหม่อีกครั้ง');
+      });
+    }
+
     // Initialize presets and calculation
     renderPresets();
     runCalculation();
-  </script>
-
-<div id="pwa-update-toast" style="display: none; position: fixed; bottom: 85px; right: 24px; background: var(--bg-card); border: 2px solid var(--red-primary); border-radius: var(--radius-md); padding: 18px; box-shadow: var(--shadow-card); z-index: 99999; max-width: 320px; font-family: var(--font-th); transition: var(--transition); animation: pop 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
-    <div style="font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; display: flex; align-items: center; gap: 8px;">
-      <span>✨ มีการอัปเดตเวอร์ชันใหม่!</span>
-    </div>
-    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 14px; line-height: 1.5;">คุณพร้อมที่จะอัพเดทไฟล์ใหม่ใช่ไหม? (ระบบจะทำการติดตั้งทับไฟล์เดิมและรีโหลดหน้าเว็บบนเครื่องทันที)</p>
-    <div style="display: flex; gap: 8px; justify-content: flex-end;">
-      <button id="pwa-cancel-update" style="background: transparent; border: 1px solid var(--border); color: var(--text-secondary); padding: 6px 14px; border-radius: var(--radius-sm); font-size: 11px; cursor: pointer; font-weight: 600; transition: var(--transition);">ภายหลัง</button>
-      <button id="pwa-accept-update" style="background: var(--red-primary); border: none; color: #ffffff; padding: 6px 14px; border-radius: var(--radius-sm); font-size: 11px; cursor: pointer; font-weight: 600; box-shadow: 0 2px 8px var(--red-glow); transition: var(--transition);">อัปเดตทันที</button>
-    </div>
-  </div>
-
-<script>
-    // ─── PWA SERVICE WORKER REGISTRATION & UPDATE LOGIC ───
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js').then(reg => {
-          
-          function showUpdatePrompt(worker) {
-            const updateToast = document.getElementById('pwa-update-toast');
-            if (updateToast) {
-              updateToast.style.display = 'block';
-              
-              // เมื่อกดปุ่ม "อัปเดตทันที" ให้บอก Service Worker ข้ามขั้นตอนการรอทำงาน
-              document.getElementById('pwa-accept-update').onclick = () => {
-                worker.postMessage({ action: 'skipWaiting' });
-              };
-            }
-          }
-
-          // กรณีมีเวอร์ชันใหม่ดาวน์โหลดเสร็จและสแตนด์บายรออยู่ก่อนแล้ว
-          if (reg.waiting) {
-            showUpdatePrompt(reg.waiting);
-          }
-
-          // ตรวจจับระหว่างที่เปิดแอปอยู่ แล้วพบว่าผู้พัฒนาเปลี่ยนเวอร์ชันใหม่บนเซิร์ฟเวอร์
-          reg.addEventListener('updatefound', () => {
-            const newWorker = reg.installing;
-            newWorker.addEventListener('statechange', () => {
-              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                showUpdatePrompt(newWorker);
-              }
-            });
-          });
-        });
-
-        // เมื่อหน้าเว็บได้รับการควบคุมจาก Service Worker ใหม่ (รีโหลดหน้าจออัตโนมัติ)
-        let refreshing = false;
-        navigator.serviceWorker.addEventListener('controllerchange', () => {
-          if (!refreshing) {
-            window.location.reload();
-            refreshing = true;
-          }
-        });
-
-        // ปุ่ม "ภายหลัง" เพื่อปิดหน้าต่างแจ้งเตือน
-        const cancelBtn = document.getElementById('pwa-cancel-update');
-        if (cancelBtn) {
-          cancelBtn.addEventListener('click', () => {
-            document.getElementById('pwa-update-toast').style.display = 'none';
-          });
-        }
-      });
-    }
   </script>
 
 </body>
