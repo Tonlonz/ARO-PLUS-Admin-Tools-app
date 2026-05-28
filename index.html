@@ -5,6 +5,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>ARO PLUS Admin Tools</title>
+  <link rel="icon" type="image/png" href="images/logo.png" />
+  <link rel="apple-touch-icon" href="images/logo.png" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#0a0a0c" />
   <meta name="description" content="ARO PLUS Admin Tools - เครื่องคำนวณปริมาณน้ำและผลิตภัณฑ์สำหรับตู้ปลา" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -599,6 +603,7 @@
     }
 
     .input-wrapper input[type=number] {
+      appearance: textfield;
       -moz-appearance: textfield;
     }
 
@@ -1258,6 +1263,208 @@
         border-color: var(--red-primary);
       }
     }
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+    }
+
+    .logo-container {
+      cursor: pointer;
+    }
+
+    .quick-tags-shell {
+      padding: 12px 32px 4px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .quick-tags-toggle {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 10px 12px;
+      cursor: pointer;
+    }
+
+    .quick-tags-panel {
+      margin-top: 8px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px;
+      display: none;
+    }
+
+    .quick-tags-panel.open {
+      display: block;
+    }
+
+    .hamburger-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-input);
+      color: var(--text-primary);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hamburger-dropdown {
+      position: absolute;
+      top: 46px;
+      right: 0;
+      min-width: 240px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-card);
+      padding: 10px;
+      display: none;
+      z-index: 400;
+    }
+
+    .hamburger-dropdown.open {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      animation: pop 0.2s ease-out;
+    }
+
+    .sim-layout {
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 16px;
+      padding: 20px 24px 28px;
+    }
+
+    .sim-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+    }
+
+    .sim-canvas-wrap {
+      padding: 14px;
+      background: var(--bg-input);
+    }
+
+    #tank-sim-canvas {
+      width: 100%;
+      max-width: 100%;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, #101c35 0%, #050a14 100%);
+      touch-action: none;
+    }
+
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .palette-btn {
+      border: 1px solid var(--border);
+      background: var(--bg-input);
+      color: var(--text-secondary);
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 11px;
+      cursor: grab;
+    }
+
+    .sim-section {
+      padding: 12px 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    .sim-section h4 {
+      font-size: 12px;
+      margin-bottom: 8px;
+      color: var(--text-secondary);
+    }
+
+    .pill-btn {
+      border: 1px solid var(--border);
+      background: var(--bg-input);
+      color: var(--text-secondary);
+      border-radius: 99px;
+      padding: 6px 11px;
+      font-size: 11px;
+      cursor: pointer;
+      margin: 0 4px 6px 0;
+    }
+
+    .pill-btn.active {
+      border-color: var(--red-primary);
+      color: var(--red-primary);
+      background: rgba(230, 57, 70, 0.08);
+    }
+
+    .customer-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .customer-form .full {
+      grid-column: 1 / -1;
+    }
+
+    .field-input {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--bg-input);
+      color: var(--text-primary);
+      padding: 10px;
+      font-size: 13px;
+    }
+
+    .customer-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 240px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .customer-item {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      .quick-tags-shell {
+        padding: 10px 16px 4px;
+      }
+
+      .sim-layout {
+        grid-template-columns: 1fr;
+        padding: 14px 16px 80px;
+      }
+    }
   </style>
 </head>
 
@@ -1268,11 +1475,14 @@
     <!-- ─── TOP HEADER ─── -->
     <header class="topbar">
       <div class="topbar-left">
-        <div class="logo-container" aria-label="Wrench logo icon">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
+        <div style="margin-right: 3pt;" class="logo-container" aria-label="Wrench logo icon" onclick="goHome()" title="กลับหน้าแรก">
+          
+          <!-- <svg viewBox="0 0 24 24" aria-hidden="true">
             <path
               d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
-          </svg>
+          </svg> -->
+
+          <img src="images/logo.png" alt="ARO PLUS" class="logo-image" style="width: 43px; height: 43px;">
         </div>
         <div>
           <h1 class="brand-title">ARO PLUS Admin Tools</h1>
@@ -1280,7 +1490,7 @@
         </div>
       </div>
 
-      <div>
+      <div class="topbar-right">
         <div class="theme-toggle" role="group" aria-label="Appearance Mode">
           <button class="theme-btn" id="btn-theme-light" onclick="toggleTheme('light')" aria-pressed="false">
             <svg viewBox="0 0 24 24">
@@ -1296,6 +1506,18 @@
             </svg>
             Dark
           </button>
+        </div>
+        <button class="hamburger-btn" id="hamburger-btn" type="button" onclick="toggleTopMenu()"
+          aria-label="เมนูเพิ่มเติม">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        <div class="hamburger-dropdown" id="hamburger-dropdown">
+          <button class="pill-btn" type="button" onclick="navigate('customer');toggleTopMenu(false)">ระบบบันทึกประวัติตู้ปลาของลูกค้า</button>
+          <button class="pill-btn" type="button" onclick="navigate('simulator');toggleTopMenu(false)">แบบจำลองตู้ปลาของคุณ</button>
         </div>
       </div>
     </header>
@@ -1314,6 +1536,13 @@
             <line x1="8" y1="14" x2="14" y2="14" />
           </svg>
           เครื่องคำนวณปริมาณน้ำ
+        </a>
+        <a class="menu-item" id="menu-simulator" onclick="navigate('simulator')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 7h18v10H3z" />
+            <path d="M7 7v10M17 7v10" />
+          </svg>
+          แบบจำลองตู้ปลาของคุณ
         </a>
 
         <div class="menu-label">ข้อมูลแบรนด์</div>
@@ -1340,13 +1569,13 @@
             </div>
 
             <!-- Quick Tag Recommendations (Feature 3) -->
-            <div class="quick-tags-container"
-              style="display: flex; flex-direction: column; gap: 8px; padding: 12px 32px 4px; border-bottom: 1px solid var(--border); flex-shrink: 0;">
-              <div
-                style="display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 700; color: var(--text-secondary);">
+            <div class="quick-tags-shell">
+              <button class="quick-tags-toggle" type="button" onclick="toggleQuickAssistant()">
                 <span>⚡ แนะนำด่วนสำหรับลูกค้า (Quick Assistant)</span>
-              </div>
-              <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+                <span id="quick-assistant-arrow">▼</span>
+              </button>
+              <div id="quick-tags-panel" class="quick-tags-panel">
+                <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
                 <span style="font-size: 10.5px; font-weight: 600; color: var(--text-muted);">🐟 สายพันธุ์:</span>
                 <button class="quick-tag-btn" onclick="selectQuickTag('species', 'arowana', this)"
                   style="background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); padding: 5px 12px; border-radius: 50px; font-size: 11px; font-weight: 500; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 4px;">
@@ -1380,6 +1609,7 @@
                   style="background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); padding: 5px 12px; border-radius: 50px; font-size: 11px; font-weight: 500; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 4px;">
                   🩸 ตัวเปื่อย/ตกเลือด
                 </button>
+                </div>
               </div>
             </div>
 
@@ -1691,6 +1921,68 @@
           </div><!-- /calc-layout -->
         </section>
 
+        <section class="page" id="page-simulator">
+          <div class="calc-header">
+            <h2>🧪 <span>แบบจำลองตู้ปลาของคุณ</span></h2>
+            <p>ลากและวางอุปกรณ์บนตู้ 2.5D เพื่อจำลองเนื้อน้ำจริง ระบบแสง และอาการปลาแบบโต้ตอบ</p>
+          </div>
+          <div class="sim-layout">
+            <div class="sim-card">
+              <div class="card-title"><span>Isometric Interactive Canvas</span><span id="sim-net-water-indicator"></span></div>
+              <div class="sim-canvas-wrap">
+                <canvas id="tank-sim-canvas" width="980" height="540"></canvas>
+              </div>
+              <div class="sim-section">
+                <h4>อุปกรณ์และของตกแต่ง (ลากแล้ววาง)</h4>
+                <div class="palette-grid" id="asset-palette"></div>
+              </div>
+            </div>
+            <div class="sim-card">
+              <div class="sim-section" style="border-top:none;">
+                <h4>ปั๊มน้ำและท่อน้ำออก</h4>
+                <button class="pill-btn" id="flow-toggle-btn" onclick="toggleWaterFlow()">ปิด Water Flow</button>
+              </div>
+              <div class="sim-section">
+                <h4>ไฟ ARO PLUS</h4>
+                <div id="lighting-controls"></div>
+              </div>
+              <div class="sim-section">
+                <h4>อาการปลา</h4>
+                <div id="symptom-controls"></div>
+              </div>
+              <div class="sim-section">
+                <h4>ผลิตภัณฑ์รักษา</h4>
+                <div id="medication-controls"></div>
+              </div>
+              <div class="sim-section">
+                <h4>ปริมาตรน้ำที่หักจากของตกแต่ง</h4>
+                <div id="sim-volume-deduction-text" style="font-size:13px;color:var(--text-secondary);">0.00 ลิตร</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page" id="page-customer">
+          <div class="about-container">
+            <div class="about-hero-card" style="align-items:flex-start;">
+              <div style="flex:1;width:100%;">
+                <h3>ประวัติลูกค้าและโปรไฟล์ตู้ปลา</h3>
+                <p>บันทึก/เรียกใช้ข้อมูลลูกค้าด้วย Local Storage + IndexedDB เพื่อใช้ซ้ำแบบ One-Click Load</p>
+                <div class="customer-form" style="margin-top:14px;">
+                  <input class="field-input" id="customer-name" placeholder="ชื่อลูกค้า" />
+                  <input class="field-input" id="customer-phone" placeholder="เบอร์โทร/Line" />
+                  <input class="field-input full" id="customer-note" placeholder="บันทึกเพิ่มเติม" />
+                  <button class="pill-btn" type="button" onclick="saveTankProfile()">บันทึกโปรไฟล์ตู้</button>
+                </div>
+              </div>
+            </div>
+            <div class="product-info-card">
+              <div class="product-name">รายชื่อลูกค้าเดิม</div>
+              <div class="customer-list" id="customer-profile-list"></div>
+            </div>
+          </div>
+        </section>
+
         <!-- ════ ABOUT PAGE ════ -->
         <section class="page" id="page-about">
           <div class="about-container">
@@ -1981,7 +2273,25 @@
       document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
 
       document.getElementById(`page-${pageId}`).classList.add('active');
-      document.getElementById(`menu-${pageId}`).classList.add('active');
+      const menuTarget = document.getElementById(`menu-${pageId}`);
+      if (menuTarget) menuTarget.classList.add('active');
+    }
+
+    function goHome() {
+      navigate('calc');
+    }
+
+    function toggleQuickAssistant() {
+      const panel = document.getElementById('quick-tags-panel');
+      const arrow = document.getElementById('quick-assistant-arrow');
+      panel.classList.toggle('open');
+      arrow.innerText = panel.classList.contains('open') ? '▲' : '▼';
+    }
+
+    function toggleTopMenu(forceState = null) {
+      const menu = document.getElementById('hamburger-dropdown');
+      const shouldOpen = forceState === null ? !menu.classList.contains('open') : forceState;
+      menu.classList.toggle('open', shouldOpen);
     }
 
     // ─── CONFIG & APPEARANCE THEME ───
@@ -2135,9 +2445,11 @@
       const grossLiters = A_gross * multiplier;
       const waterLitersBeforeDeduction = A_effective * multiplier;
       const netLiters = waterLitersBeforeDeduction * (1 - filterDeduction / 100);
+      const simDecorationDeduction = window.tankSimulator?.getVolumeDeductionLiters?.() || 0;
+      const netLitersAfterSimulator = Math.max(0, netLiters - simDecorationDeduction);
 
       // We use netLiters for all dosage calculations!
-      const liters = netLiters;
+      const liters = netLitersAfterSimulator;
 
       // Update substitute values in equation layout
       document.getElementById('eq-v-w').innerText = wVal > 0 ? wVal : 'W';
@@ -2155,20 +2467,20 @@
       const copyBtn = document.getElementById('copy-summary-btn');
 
       if (wVal > 0 && hVal > 0 && dVal > 0) {
-        const formattedLiters = netLiters.toFixed(2);
+        const formattedLiters = netLitersAfterSimulator.toFixed(2);
 
         litDisplay.innerHTML = `${Number(formattedLiters).toLocaleString()} <span>ลิตร</span>`;
         eqRes.innerText = `${formattedLiters} ลิตร`;
 
         if (waterDrop > 0 || filterDeduction > 0) {
-          calcDesc.innerText = `ปริมาตรสุทธิคำนวณจากความสูงหักลบขอบตู้ และลบวัสดุกรอง ${filterDeduction}%`;
+          calcDesc.innerText = `ปริมาตรสุทธิคำนวณจากความสูงหักลบขอบตู้ ลบวัสดุกรอง ${filterDeduction}% และหักของตกแต่งในตู้จำลอง`;
         } else {
           calcDesc.innerText = `ปริมาตรตู้ปลา (A) = ${A_gross.toLocaleString()} | สูตรคำนวณน้ำ = A × ${multiplier}`;
         }
 
         // Display Details Breakdown and Copy Button (Feature 1 & 2)
         grossValSpan.innerText = `${grossLiters.toFixed(2)} ลิตร`;
-        netValSpan.innerText = `${netLiters.toFixed(2)} ลิตร`;
+        netValSpan.innerText = `${netLitersAfterSimulator.toFixed(2)} ลิตร`;
         detailsBox.style.display = 'flex';
         copyBtn.style.display = 'flex';
 
@@ -2629,6 +2941,8 @@
       const effectiveHeight = Math.max(0, dVal - waterDrop);
       const waterLitersBeforeDeduction = wVal * hVal * effectiveHeight * multiplier;
       const netLiters = waterLitersBeforeDeduction * (1 - filterDeduction / 100);
+      const simDecorationDeduction = window.tankSimulator?.getVolumeDeductionLiters?.() || 0;
+      const finalNetLiters = Math.max(0, netLiters - simDecorationDeduction);
 
       let text = `📝 สรุปผลการคำนวณตู้ปลาจาก ARO PLUS\n`;
       text += `🐳 ขนาดตู้: ${wVal} x ${hVal} x ${dVal} ${unitText}\n`;
@@ -2638,25 +2952,25 @@
         text += `⚙️ การปรับแต่งเนื้อน้ำจริง:\n`;
         if (waterDrop > 0) text += `  - ระดับน้ำลดจากขอบตู้: ${waterDrop} ${unitText}\n`;
         if (filterDeduction > 0) text += `  - หักลบวัสดุกรอง/ตกแต่ง: ${filterDeduction}%\n`;
-        text += `💧 ปริมาณน้ำสุทธิสำหรับคำนวณ (Net): ~${netLiters.toFixed(1)} ลิตร\n`;
+        text += `💧 ปริมาณน้ำสุทธิสำหรับคำนวณ (Net): ~${finalNetLiters.toFixed(1)} ลิตร\n`;
       }
 
       text += `\n✨ ปริมาณการใช้ผลิตภัณฑ์บำรุง (ต่อโดส):\n`;
 
       // Active Plus (200ml)
-      const activeCaps = netLiters / 50;
+      const activeCaps = finalNetLiters / 50;
       const activeCC = activeCaps * 10;
       text += `  - Active Plus (200 ml): ${activeCC.toFixed(1)} CC (~${activeCaps.toFixed(1)} ฝา)\n`;
 
       // Aura Plus (200ml)
-      const auraCaps = netLiters / 100;
+      const auraCaps = finalNetLiters / 100;
       const auraCC = auraCaps * 10;
       text += `  - Aura Plus (200 ml): ${auraCC.toFixed(1)} CC (~${auraCaps.toFixed(1)} ฝา)\n`;
 
       // Medicine case
       let medicineText = '';
       const wcPercent = parseFloat(document.getElementById('water-change-percent').value) || 30;
-      const wcLiters = netLiters * (wcPercent / 100);
+      const wcLiters = finalNetLiters * (wcPercent / 100);
 
       // Assemble medicines based on tags or active view
       let targetMeds = [];
@@ -2680,7 +2994,7 @@
         medicineText += `\n💊 กรณีรักษากลุ่มโรค/เวชภัณฑ์ที่เกี่ยวข้อง:\n`;
         targetMeds.forEach(medName => {
           if (medName.includes('AquaBac')) {
-            const medCaps = netLiters / 100;
+            const medCaps = finalNetLiters / 100;
             const medCC = medCaps * 5;
             const wcMedCaps = wcLiters / 100;
             const wcMedCC = wcMedCaps * 5;
@@ -2688,7 +3002,7 @@
             medicineText += `    ↳ โดสเติมน้ำใหม่ (เมื่อเปลี่ยนน้ำ ${wcPercent}%): ${wcMedCC.toFixed(1)} CC (~${wcMedCaps.toFixed(2)} ฝา)\n`;
             medicineText += `    (คำแนะนำ: เปลี่ยนถ่ายน้ำ 30-50% ทุกวันในช่วงการรักษา)\n`;
           } else if (medName.includes('Bacta')) {
-            const medCaps = netLiters / 50;
+            const medCaps = finalNetLiters / 50;
             const medCC = medCaps * 5;
             const wcMedCaps = wcLiters / 50;
             const wcMedCC = wcMedCaps * 5;
@@ -2696,8 +3010,8 @@
             medicineText += `    ↳ โดสเติมน้ำใหม่ (เมื่อเปลี่ยนน้ำ ${wcPercent}%): ${wcMedCC.toFixed(1)} CC (~${wcMedCaps.toFixed(2)} ฝา)\n`;
             medicineText += `    (คำแนะนำ: เปลี่ยนถ่ายน้ำ 30-50% ทุกวันในช่วงการรักษา)\n`;
           } else if (medName.includes('AquaH')) {
-            const medPrep = netLiters * 3;
-            const medShock = netLiters * 5;
+            const medPrep = finalNetLiters * 3;
+            const medShock = finalNetLiters * 5;
             const wcPrep = wcLiters * 3;
             const wcShock = wcLiters * 5;
             medicineText += `  - AquaH ปรับสภาพน้ำ: ${medPrep.toFixed(0)} กรัม (โดสเปลี่ยนน้ำใหม่ ${wcPercent}%: ${wcPrep.toFixed(0)} กรัม)\n`;
@@ -2729,8 +3043,322 @@
       });
     }
 
-    // Initialize presets and calculation
+    const paletteItems = [
+      { id: 'sand', label: 'ทราย', icon: '🟫', category: 'ground', volume: 4 },
+      { id: 'rock', label: 'หินตกแต่ง', icon: '🪨', category: 'ground', volume: 8 },
+      { id: 'driftwood', label: 'ขอนไม้', icon: '🪵', category: 'ground', volume: 15 },
+      { id: 'light', label: 'หลอดไฟ ARO PLUS', icon: '💡', category: 'top', volume: 0 },
+      { id: 'pump', label: 'ถังน้ำ/ปั๊มน้ำ', icon: '⚙️', category: 'system', volume: 6 },
+      { id: 'filter', label: 'แผ่นกรอง', icon: '🧱', category: 'system', volume: 10 },
+      { id: 'arowana', label: 'ปลามังกร', icon: '🐲', category: 'fish', volume: 0 },
+      { id: 'datnoid', label: 'ปลาเสือตอ', icon: '🐟', category: 'fish', volume: 0 },
+      { id: 'goldfish', label: 'ปลาทอง', icon: '🐠', category: 'fish', volume: 0 },
+      { id: 'channa', label: 'ปลา Channa', icon: '🦈', category: 'fish', volume: 0 }
+    ];
+
+    class IsometricTankSimulator {
+      constructor(canvasId) {
+        this.canvas = document.getElementById(canvasId);
+        this.ctx = this.canvas.getContext('2d');
+        this.items = [];
+        this.draggingId = null;
+        this.flowEnabled = false;
+        this.lightingMode = 'off';
+        this.symptomMode = 'normal';
+        this.medicationMode = 'none';
+        this.pendingPaletteItem = null;
+        this.fishTick = 0;
+        this.bind();
+        this.loop();
+      }
+      bind() {
+        this.canvas.addEventListener('pointerdown', e => this.onPointerDown(e));
+        this.canvas.addEventListener('pointermove', e => this.onPointerMove(e));
+        this.canvas.addEventListener('pointerup', e => this.onPointerUp(e));
+        this.canvas.addEventListener('pointerleave', e => this.onPointerUp(e));
+      }
+      getVolumeDeductionLiters() {
+        return this.items.reduce((sum, i) => sum + (i.volume || 0), 0);
+      }
+      getStateSnapshot() {
+        return {
+          items: this.items,
+          flowEnabled: this.flowEnabled,
+          lightingMode: this.lightingMode,
+          symptomMode: this.symptomMode,
+          medicationMode: this.medicationMode
+        };
+      }
+      loadStateSnapshot(snapshot) {
+        if (!snapshot) return;
+        this.items = snapshot.items || [];
+        this.flowEnabled = !!snapshot.flowEnabled;
+        this.lightingMode = snapshot.lightingMode || 'off';
+        this.symptomMode = snapshot.symptomMode || 'normal';
+        this.medicationMode = snapshot.medicationMode || 'none';
+      }
+      onPointerDown(e) {
+        const { x, y } = this.getPos(e);
+        const hit = this.items.findLast(item => Math.hypot(item.x - x, item.y - y) < 20);
+        if (hit) {
+          this.draggingId = hit.uid;
+        } else if (this.pendingPaletteItem) {
+          this.spawnFromPalette(x, y, this.pendingPaletteItem);
+          this.pendingPaletteItem = null;
+        }
+      }
+      onPointerMove(e) {
+        if (!this.draggingId) return;
+        const item = this.items.find(i => i.uid === this.draggingId);
+        if (!item) return;
+        const { x, y } = this.getPos(e);
+        item.x = x;
+        item.y = y;
+      }
+      onPointerUp(e) {
+        if (!this.draggingId) return;
+        const item = this.items.find(i => i.uid === this.draggingId);
+        this.draggingId = null;
+        if (!item) return;
+        if (!this.isInsideTank(item.x, item.y)) {
+          this.items = this.items.filter(i => i.uid !== item.uid);
+          runCalculation();
+          return;
+        }
+        this.snapItem(item);
+        runCalculation();
+      }
+      spawnFromPalette(x, y, def) {
+        const item = { ...def, uid: `${def.id}-${Date.now()}`, x, y, z: 0 };
+        this.snapItem(item);
+        this.items.push(item);
+        runCalculation();
+      }
+      isInsideTank(x, y) {
+        return x >= 130 && x <= 840 && y >= 110 && y <= 470;
+      }
+      snapItem(item) {
+        if (item.category === 'ground') item.y = 410;
+        if (item.category === 'top') item.y = 135;
+        if (item.category === 'fish') item.y = Math.min(360, Math.max(190, item.y));
+      }
+      getPos(e) {
+        const r = this.canvas.getBoundingClientRect();
+        return { x: (e.clientX - r.left) * (this.canvas.width / r.width), y: (e.clientY - r.top) * (this.canvas.height / r.height) };
+      }
+      loop() {
+        this.fishTick += 0.02;
+        this.render();
+        requestAnimationFrame(() => this.loop());
+      }
+      drawTank() {
+        const c = this.ctx;
+        c.save();
+        c.strokeStyle = 'rgba(145,180,230,.8)';
+        c.fillStyle = 'rgba(50,120,220,.22)';
+        c.beginPath();
+        c.moveTo(150, 140); c.lineTo(760, 140); c.lineTo(850, 220); c.lineTo(240, 220); c.closePath();
+        c.fill(); c.stroke();
+        c.fillStyle = 'rgba(35,90,170,.25)';
+        c.fillRect(150, 140, 610, 300);
+        c.strokeRect(150, 140, 610, 300);
+        c.restore();
+      }
+      drawFlow() {
+        if (!this.flowEnabled) return;
+        const c = this.ctx;
+        c.save();
+        c.strokeStyle = 'rgba(120,230,255,.9)';
+        for (let i = 0; i < 7; i += 1) {
+          const y = 180 + i * 34 + Math.sin(this.fishTick * 3 + i) * 6;
+          c.beginPath();
+          c.moveTo(200, y); c.lineTo(760, y); c.stroke();
+          c.beginPath();
+          c.moveTo(760, y); c.lineTo(748, y - 5); c.lineTo(748, y + 5); c.closePath(); c.fillStyle = 'rgba(120,230,255,.9)'; c.fill();
+        }
+        c.restore();
+      }
+      drawItems() {
+        const c = this.ctx;
+        const sorted = [...this.items].sort((a, b) => (a.y + (a.category === 'top' ? -100 : 0)) - (b.y + (b.category === 'top' ? -100 : 0)));
+        sorted.forEach(item => {
+          c.save();
+          c.font = item.category === 'fish' ? '34px sans-serif' : '28px sans-serif';
+          let y = item.y;
+          if (item.category === 'fish') y += Math.sin(this.fishTick * 4 + item.x * 0.01) * (this.symptomMode === 'stress' ? 3 : 9);
+          c.fillText(item.icon, item.x - 12, y);
+          if (this.symptomMode === 'white_spot' && item.category === 'fish') {
+            c.fillStyle = 'rgba(255,255,255,.9)'; c.beginPath(); c.arc(item.x + 6, y - 12, 2, 0, Math.PI * 2); c.fill();
+          }
+          c.restore();
+        });
+      }
+      drawTint() {
+        const c = this.ctx;
+        c.save();
+        const lightMap = {
+          gold: 'rgba(255,209,84,0.16)',
+          red: 'rgba(255,90,90,0.16)',
+          channa: 'rgba(119,227,255,0.16)',
+          off: 'transparent'
+        };
+        const medMap = {
+          aquabac: 'rgba(128,255,180,0.09)',
+          bacta: 'rgba(255,170,170,0.09)',
+          aquah: 'rgba(196,215,255,0.09)',
+          none: 'transparent'
+        };
+        c.fillStyle = lightMap[this.lightingMode] || 'transparent';
+        c.fillRect(150, 140, 610, 300);
+        c.fillStyle = medMap[this.medicationMode] || 'transparent';
+        c.fillRect(150, 140, 610, 300);
+        c.restore();
+      }
+      render() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.drawTank();
+        this.drawFlow();
+        this.drawItems();
+        this.drawTint();
+      }
+    }
+
+    function renderPalette() {
+      const holder = document.getElementById('asset-palette');
+      holder.innerHTML = paletteItems.map(item => `<button class="palette-btn" type="button" data-id="${item.id}">${item.icon} ${item.label}</button>`).join('');
+      holder.querySelectorAll('.palette-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const picked = paletteItems.find(p => p.id === btn.dataset.id);
+          if (picked && window.tankSimulator) window.tankSimulator.pendingPaletteItem = picked;
+        });
+      });
+    }
+
+    function setActivePill(containerId, value) {
+      const box = document.getElementById(containerId);
+      box.querySelectorAll('.pill-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.value === value));
+    }
+
+    function renderSimulatorControls() {
+      const lightContainer = document.getElementById('lighting-controls');
+      lightContainer.innerHTML = `
+        <button class="pill-btn" data-value="off" onclick="setLighting('off')">ปิดไฟ</button>
+        <button class="pill-btn" data-value="gold" onclick="setLighting('gold')">ไฟปลามังกรทอง</button>
+        <button class="pill-btn" data-value="red" onclick="setLighting('red')">ไฟขับสีแดง</button>
+        <button class="pill-btn" data-value="channa" onclick="setLighting('channa')">ไฟเร่งสี Channa</button>`;
+      const symptomContainer = document.getElementById('symptom-controls');
+      symptomContainer.innerHTML = `
+        <button class="pill-btn" data-value="normal" onclick="setSymptom('normal')">ปกติ</button>
+        <button class="pill-btn" data-value="fin_rot" onclick="setSymptom('fin_rot')">ครีบเปื่อย/ตกเลือด</button>
+        <button class="pill-btn" data-value="white_spot" onclick="setSymptom('white_spot')">จุดขาว</button>
+        <button class="pill-btn" data-value="stress" onclick="setSymptom('stress')">เครียด/ช็อกน้ำ</button>`;
+      const medContainer = document.getElementById('medication-controls');
+      medContainer.innerHTML = `
+        <button class="pill-btn" data-value="none" onclick="setMedication('none')">ไม่ใช้ยา</button>
+        <button class="pill-btn" data-value="aquabac" onclick="setMedication('aquabac')">AquaBac</button>
+        <button class="pill-btn" data-value="bacta" onclick="setMedication('bacta')">Bacta</button>
+        <button class="pill-btn" data-value="aquah" onclick="setMedication('aquah')">AquaH</button>`;
+      setActivePill('lighting-controls', 'off');
+      setActivePill('symptom-controls', 'normal');
+      setActivePill('medication-controls', 'none');
+    }
+
+    function setLighting(mode) { window.tankSimulator.lightingMode = mode; setActivePill('lighting-controls', mode); }
+    function setSymptom(mode) { window.tankSimulator.symptomMode = mode; setActivePill('symptom-controls', mode); }
+    function setMedication(mode) { window.tankSimulator.medicationMode = mode; setActivePill('medication-controls', mode); }
+    function toggleWaterFlow() {
+      window.tankSimulator.flowEnabled = !window.tankSimulator.flowEnabled;
+      document.getElementById('flow-toggle-btn').innerText = window.tankSimulator.flowEnabled ? 'ปิด Water Flow' : 'เปิด Water Flow';
+    }
+
+    function updateSimulatorIndicators() {
+      const deduction = window.tankSimulator?.getVolumeDeductionLiters?.() || 0;
+      const text = `${deduction.toFixed(2)} ลิตร`;
+      const el = document.getElementById('sim-volume-deduction-text');
+      const badge = document.getElementById('sim-net-water-indicator');
+      if (el) el.innerText = text;
+      if (badge) badge.innerText = `หักเนื้อน้ำ ${text}`;
+    }
+
+    const PROFILE_KEY = 'aro-customer-profiles-v2';
+    async function openProfileDb() {
+      return await new Promise((resolve, reject) => {
+        const req = indexedDB.open('aro-plus-profiles-db', 1);
+        req.onupgradeneeded = () => req.result.createObjectStore('profiles', { keyPath: 'id' });
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+    function getLocalProfiles() { return JSON.parse(localStorage.getItem(PROFILE_KEY) || '[]'); }
+    function setLocalProfiles(list) { localStorage.setItem(PROFILE_KEY, JSON.stringify(list)); }
+
+    async function saveTankProfile() {
+      const name = document.getElementById('customer-name').value.trim();
+      if (!name) { alert('กรุณากรอกชื่อลูกค้า'); return; }
+      const profile = {
+        id: `${Date.now()}`,
+        name,
+        phone: document.getElementById('customer-phone').value.trim(),
+        note: document.getElementById('customer-note').value.trim(),
+        selectedUnit,
+        w: document.getElementById('tank-w').value,
+        h: document.getElementById('tank-h').value,
+        d: document.getElementById('tank-d').value,
+        waterDrop: document.getElementById('water-drop').value,
+        filterDeduction: document.getElementById('filter-deduction').value,
+        sim: window.tankSimulator?.getStateSnapshot?.() || null,
+        createdAt: new Date().toISOString()
+      };
+      const list = getLocalProfiles();
+      list.unshift(profile);
+      setLocalProfiles(list.slice(0, 100));
+      try {
+        const db = await openProfileDb();
+        const tx = db.transaction('profiles', 'readwrite');
+        tx.objectStore('profiles').put(profile);
+      } catch (e) { console.warn('IndexedDB save failed', e); }
+      renderCustomerProfiles();
+    }
+
+    function loadTankProfile(id) {
+      const p = getLocalProfiles().find(x => x.id === id);
+      if (!p) return;
+      switchUnit(p.selectedUnit || 'inch');
+      document.getElementById('tank-w').value = p.w || '';
+      document.getElementById('tank-h').value = p.h || '';
+      document.getElementById('tank-d').value = p.d || '';
+      document.getElementById('water-drop').value = p.waterDrop || '';
+      document.getElementById('filter-deduction').value = p.filterDeduction || '0';
+      if (window.tankSimulator) window.tankSimulator.loadStateSnapshot(p.sim);
+      navigate('simulator');
+      runCalculation();
+    }
+
+    function renderCustomerProfiles() {
+      const list = getLocalProfiles();
+      const holder = document.getElementById('customer-profile-list');
+      holder.innerHTML = list.map(p => `
+        <div class="customer-item">
+          <div>
+            <div style="font-size:12px;font-weight:700;">${p.name}</div>
+            <div style="font-size:10px;color:var(--text-muted);">${p.phone || '-'} | ${new Date(p.createdAt).toLocaleString('th-TH')}</div>
+          </div>
+          <button class="pill-btn" type="button" onclick="loadTankProfile('${p.id}')">โหลด</button>
+        </div>`).join('') || '<div style="font-size:12px;color:var(--text-muted);">ยังไม่มีข้อมูลลูกค้า</div>';
+    }
+
+    // Initialize presets and calculation + simulator modules
     renderPresets();
+    renderPalette();
+    renderSimulatorControls();
+    window.tankSimulator = new IsometricTankSimulator('tank-sim-canvas');
+    renderCustomerProfiles();
+    setInterval(updateSimulatorIndicators, 300);
+    document.addEventListener('click', (e) => {
+      const menu = document.getElementById('hamburger-dropdown');
+      const trigger = document.getElementById('hamburger-btn');
+      if (!menu.contains(e.target) && !trigger.contains(e.target)) menu.classList.remove('open');
+    });
     runCalculation();
   </script>
 
