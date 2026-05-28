@@ -7,15 +7,19 @@
   <title>ARO PLUS Admin Tools</title>
   <link rel="icon" type="image/png" href="images/logo.png" />
   <link rel="apple-touch-icon" href="images/logo.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="images/logo.png" />
   <link rel="manifest" href="manifest.webmanifest" />
   <meta name="theme-color" content="#0a0a0c" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="ARO PLUS" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <meta name="description" content="ARO PLUS Admin Tools - เครื่องคำนวณปริมาณน้ำและผลิตภัณฑ์สำหรับตู้ปลา" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap"
     rel="stylesheet" />
-
   <style>
     /* ─── DESIGN SYSTEM & PALETTE ─── */
     :root {
@@ -1035,7 +1039,7 @@
       }
 
       .brand-title {
-        font-size: 15px;
+        font-size: 13px;
       }
 
       .brand-sub {
@@ -1106,7 +1110,25 @@
       }
 
       .visual-card {
-        min-height: 290px;
+        min-height: auto;
+      }
+
+      .tank-view {
+        min-height: 320px;
+        padding: 4px 8px 12px;
+      }
+
+      .tank-svg-wrapper {
+        width: 100%;
+        max-width: 100%;
+        min-height: 300px;
+        aspect-ratio: auto;
+      }
+
+      #isometric-tank {
+        min-height: 280px;
+        height: 42vw;
+        max-height: 360px;
       }
 
       .products-grid {
@@ -1342,60 +1364,223 @@
       animation: pop 0.2s ease-out;
     }
 
-    .sim-layout {
-      display: grid;
-      grid-template-columns: 1.3fr 0.7fr;
-      gap: 16px;
-      padding: 20px 24px 28px;
+    /* ─── CONTACT PAGE ─── */
+    .contact-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
 
-    .sim-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-card);
-      overflow: hidden;
-    }
-
-    .sim-canvas-wrap {
-      padding: 14px;
-      background: var(--bg-input);
-    }
-
-    #tank-sim-canvas {
-      width: 100%;
-      max-width: 100%;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
-      background: linear-gradient(180deg, #101c35 0%, #050a14 100%);
-      touch-action: none;
-    }
-
-    .palette-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    .contact-row {
+      display: flex;
+      align-items: stretch;
       gap: 8px;
     }
 
-    .palette-btn {
+    .contact-main-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      text-decoration: none;
+      transition: var(--transition);
+      min-height: 64px;
+    }
+
+    .contact-main-btn:hover {
+      border-color: var(--red-primary);
+      transform: translateY(-1px);
+    }
+
+    .contact-icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--bg-input);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .contact-icon-wrap img {
+      width: 30px;
+      height: 30px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .contact-name {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .contact-mini-btn {
+      width: 44px;
+      min-width: 44px;
       border: 1px solid var(--border);
       background: var(--bg-input);
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: var(--text-secondary);
-      border-radius: 10px;
-      padding: 8px 10px;
-      font-size: 11px;
-      cursor: grab;
+      transition: var(--transition);
     }
 
-    .sim-section {
-      padding: 12px 14px;
-      border-top: 1px solid var(--border);
+    .contact-mini-btn:hover {
+      border-color: var(--red-primary);
+      color: var(--red-primary);
     }
 
-    .sim-section h4 {
+    .contact-mini-btn.active {
+      border-color: var(--red-primary);
+      color: var(--red-primary);
+      background: rgba(230, 57, 70, 0.08);
+    }
+
+    .contact-qr-panel {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.35s ease-in-out, opacity 0.3s ease-in-out, padding 0.35s ease;
+      padding: 0 16px;
+      margin-top: 0;
+    }
+
+    .contact-qr-panel.open {
+      max-height: 420px;
+      opacity: 1;
+      padding: 16px;
+      margin-top: 8px;
+    }
+
+    .contact-qr-inner {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .contact-qr-frame {
+      padding: 12px;
+      background: #ffffff;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .contact-qr-frame canvas,
+    .contact-qr-frame img {
+      display: block;
+      border-radius: 12px;
+    }
+
+    .copy-all-contacts-btn {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
       font-size: 12px;
-      margin-bottom: 8px;
+      font-weight: 600;
       color: var(--text-secondary);
+      background: transparent;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .copy-all-contacts-btn:hover {
+      border-color: var(--red-primary);
+      color: var(--red-primary);
+    }
+
+    /* ─── PWA INSTALL & UPDATE ─── */
+    .pwa-bar {
+      position: fixed;
+      left: 16px;
+      right: 16px;
+      bottom: 76px;
+      z-index: 500;
+      background: var(--bg-card);
+      border: 1px solid var(--border-focus);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-card);
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      animation: slideUpPwa 0.35s ease-out;
+    }
+
+    .pwa-bar.hidden {
+      display: none;
+    }
+
+    .pwa-bar-text {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+      flex: 1;
+    }
+
+    .pwa-bar-actions {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .pwa-btn {
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .pwa-btn-primary {
+      background: var(--red-primary);
+      color: #fff;
+    }
+
+    .pwa-btn-ghost {
+      background: var(--bg-input);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+
+    @keyframes slideUpPwa {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @media (min-width: 769px) {
+      .pwa-bar {
+        bottom: 20px;
+        left: auto;
+        right: 24px;
+        max-width: 420px;
+      }
     }
 
     .pill-btn {
@@ -1460,10 +1645,6 @@
         padding: 10px 16px 4px;
       }
 
-      .sim-layout {
-        grid-template-columns: 1fr;
-        padding: 14px 16px 80px;
-      }
     }
   </style>
 </head>
@@ -1517,7 +1698,7 @@
         </button>
         <div class="hamburger-dropdown" id="hamburger-dropdown">
           <button class="pill-btn" type="button" onclick="navigate('customer');toggleTopMenu(false)">ระบบบันทึกประวัติตู้ปลาของลูกค้า</button>
-          <button class="pill-btn" type="button" onclick="navigate('simulator');toggleTopMenu(false)">แบบจำลองตู้ปลาของคุณ</button>
+          <button class="pill-btn" type="button" onclick="navigate('contact');toggleTopMenu(false)">ช่องทางติดต่อ ARO PLUS</button>
         </div>
       </div>
     </header>
@@ -1537,15 +1718,13 @@
           </svg>
           เครื่องคำนวณปริมาณน้ำ
         </a>
-        <a class="menu-item" id="menu-simulator" onclick="navigate('simulator')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M3 7h18v10H3z" />
-            <path d="M7 7v10M17 7v10" />
-          </svg>
-          แบบจำลองตู้ปลาของคุณ
-        </a>
-
         <div class="menu-label">ข้อมูลแบรนด์</div>
+        <a class="menu-item" id="menu-contact" onclick="navigate('contact')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+          </svg>
+          ติดต่อ ARO PLUS
+        </a>
         <a class="menu-item" id="menu-about" onclick="navigate('about')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="10" />
@@ -1921,43 +2100,25 @@
           </div><!-- /calc-layout -->
         </section>
 
-        <section class="page" id="page-simulator">
-          <div class="calc-header">
-            <h2>🧪 <span>แบบจำลองตู้ปลาของคุณ</span></h2>
-            <p>ลากและวางอุปกรณ์บนตู้ 2.5D เพื่อจำลองเนื้อน้ำจริง ระบบแสง และอาการปลาแบบโต้ตอบ</p>
-          </div>
-          <div class="sim-layout">
-            <div class="sim-card">
-              <div class="card-title"><span>Isometric Interactive Canvas</span><span id="sim-net-water-indicator"></span></div>
-              <div class="sim-canvas-wrap">
-                <canvas id="tank-sim-canvas" width="980" height="540"></canvas>
-              </div>
-              <div class="sim-section">
-                <h4>อุปกรณ์และของตกแต่ง (ลากแล้ววาง)</h4>
-                <div class="palette-grid" id="asset-palette"></div>
+        <section class="page" id="page-contact">
+          <div class="about-container">
+            <div class="about-hero-card">
+              <div class="about-hero-info" style="width:100%;">
+                <h3>ช่องทางติดต่อ ARO PLUS</h3>
+                <p>กดปุ่มเพื่อเปิดลิงก์ ก็อปปี้ลิงก์ หรือแสดง QR Code ส่งให้ลูกค้าได้ทันที</p>
               </div>
             </div>
-            <div class="sim-card">
-              <div class="sim-section" style="border-top:none;">
-                <h4>ปั๊มน้ำและท่อน้ำออก</h4>
-                <button class="pill-btn" id="flow-toggle-btn" onclick="toggleWaterFlow()">ปิด Water Flow</button>
+            <div class="product-info-card">
+              <div id="contact-list" class="contact-list"></div>
+              <div id="contact-qr-panel" class="contact-qr-panel">
+                <div class="contact-qr-inner">
+                  <div id="contact-qr-title" style="font-size:13px;font-weight:700;color:var(--text-secondary);"></div>
+                  <div class="contact-qr-frame">
+                    <img id="contact-qr-image" alt="QR Code" width="220" height="220" />
+                  </div>
+                </div>
               </div>
-              <div class="sim-section">
-                <h4>ไฟ ARO PLUS</h4>
-                <div id="lighting-controls"></div>
-              </div>
-              <div class="sim-section">
-                <h4>อาการปลา</h4>
-                <div id="symptom-controls"></div>
-              </div>
-              <div class="sim-section">
-                <h4>ผลิตภัณฑ์รักษา</h4>
-                <div id="medication-controls"></div>
-              </div>
-              <div class="sim-section">
-                <h4>ปริมาตรน้ำที่หักจากของตกแต่ง</h4>
-                <div id="sim-volume-deduction-text" style="font-size:13px;color:var(--text-secondary);">0.00 ลิตร</div>
-              </div>
+              <button type="button" class="copy-all-contacts-btn" onclick="copyAllContacts()">คัดลอกข้อความทั้งหมด</button>
             </div>
           </div>
         </section>
@@ -2087,6 +2248,23 @@
     <footer class="footer-credit">
       Made by <b>Tony Chun</b> and my best friends (Gemini, ChatGPT and Claude :D)
     </footer>
+
+    <!-- PWA: ติดตั้งแอป -->
+    <div id="pwa-install-bar" class="pwa-bar hidden">
+      <div class="pwa-bar-text">📲 ติดตั้ง <strong>ARO PLUS Admin Tools</strong> ลงหน้าจอหลัก เพื่อเปิดใช้งานแบบแอป (ออนไลน์/ออฟไลน์)</div>
+      <div class="pwa-bar-actions">
+        <button type="button" class="pwa-btn pwa-btn-ghost" onclick="dismissPwaInstall()">ปิด</button>
+        <button type="button" class="pwa-btn pwa-btn-primary" onclick="installPwaApp()">ติดตั้งแอป</button>
+      </div>
+    </div>
+
+    <!-- PWA: อัปเดตเวอร์ชัน -->
+    <div id="pwa-update-bar" class="pwa-bar hidden">
+      <div class="pwa-bar-text">✨ มีการอัปเดตเวอร์ชันใหม่! คุณพร้อมอัปเดตไฟล์ล่าสุดหรือไม่?</div>
+      <div class="pwa-bar-actions">
+        <button type="button" class="pwa-btn pwa-btn-primary" onclick="applyPwaUpdate()">อัปเดตทันที</button>
+      </div>
+    </div>
 
   </div>
 
@@ -2400,8 +2578,9 @@
     function switchFormula(idx) {
       activeTabIdx = idx;
 
-      document.querySelectorAll('.tab-button').forEach((btn, i) => {
-        btn.classList.toggle('active', i === idx);
+      document.querySelectorAll('.tabs-bar .tab-button').forEach((btn) => {
+        const m = btn.id && btn.id.match(/^f-tab-(\d+)$/);
+        if (m) btn.classList.toggle('active', parseInt(m[1], 10) === idx);
       });
 
       const fConfig = formulas[idx];
@@ -2445,11 +2624,9 @@
       const grossLiters = A_gross * multiplier;
       const waterLitersBeforeDeduction = A_effective * multiplier;
       const netLiters = waterLitersBeforeDeduction * (1 - filterDeduction / 100);
-      const simDecorationDeduction = window.tankSimulator?.getVolumeDeductionLiters?.() || 0;
-      const netLitersAfterSimulator = Math.max(0, netLiters - simDecorationDeduction);
 
       // We use netLiters for all dosage calculations!
-      const liters = netLitersAfterSimulator;
+      const liters = netLiters;
 
       // Update substitute values in equation layout
       document.getElementById('eq-v-w').innerText = wVal > 0 ? wVal : 'W';
@@ -2467,20 +2644,20 @@
       const copyBtn = document.getElementById('copy-summary-btn');
 
       if (wVal > 0 && hVal > 0 && dVal > 0) {
-        const formattedLiters = netLitersAfterSimulator.toFixed(2);
+        const formattedLiters = netLiters.toFixed(2);
 
         litDisplay.innerHTML = `${Number(formattedLiters).toLocaleString()} <span>ลิตร</span>`;
         eqRes.innerText = `${formattedLiters} ลิตร`;
 
         if (waterDrop > 0 || filterDeduction > 0) {
-          calcDesc.innerText = `ปริมาตรสุทธิคำนวณจากความสูงหักลบขอบตู้ ลบวัสดุกรอง ${filterDeduction}% และหักของตกแต่งในตู้จำลอง`;
+          calcDesc.innerText = `ปริมาตรสุทธิคำนวณจากความสูงหักลบขอบตู้ และลบวัสดุกรอง ${filterDeduction}%`;
         } else {
           calcDesc.innerText = `ปริมาตรตู้ปลา (A) = ${A_gross.toLocaleString()} | สูตรคำนวณน้ำ = A × ${multiplier}`;
         }
 
         // Display Details Breakdown and Copy Button (Feature 1 & 2)
         grossValSpan.innerText = `${grossLiters.toFixed(2)} ลิตร`;
-        netValSpan.innerText = `${netLitersAfterSimulator.toFixed(2)} ลิตร`;
+        netValSpan.innerText = `${netLiters.toFixed(2)} ลิตร`;
         detailsBox.style.display = 'flex';
         copyBtn.style.display = 'flex';
 
@@ -2941,8 +3118,7 @@
       const effectiveHeight = Math.max(0, dVal - waterDrop);
       const waterLitersBeforeDeduction = wVal * hVal * effectiveHeight * multiplier;
       const netLiters = waterLitersBeforeDeduction * (1 - filterDeduction / 100);
-      const simDecorationDeduction = window.tankSimulator?.getVolumeDeductionLiters?.() || 0;
-      const finalNetLiters = Math.max(0, netLiters - simDecorationDeduction);
+      const finalNetLiters = netLiters;
 
       let text = `📝 สรุปผลการคำนวณตู้ปลาจาก ARO PLUS\n`;
       text += `🐳 ขนาดตู้: ${wVal} x ${hVal} x ${dVal} ${unitText}\n`;
@@ -3043,241 +3219,102 @@
       });
     }
 
-    const paletteItems = [
-      { id: 'sand', label: 'ทราย', icon: '🟫', category: 'ground', volume: 4 },
-      { id: 'rock', label: 'หินตกแต่ง', icon: '🪨', category: 'ground', volume: 8 },
-      { id: 'driftwood', label: 'ขอนไม้', icon: '🪵', category: 'ground', volume: 15 },
-      { id: 'light', label: 'หลอดไฟ ARO PLUS', icon: '💡', category: 'top', volume: 0 },
-      { id: 'pump', label: 'ถังน้ำ/ปั๊มน้ำ', icon: '⚙️', category: 'system', volume: 6 },
-      { id: 'filter', label: 'แผ่นกรอง', icon: '🧱', category: 'system', volume: 10 },
-      { id: 'arowana', label: 'ปลามังกร', icon: '🐲', category: 'fish', volume: 0 },
-      { id: 'datnoid', label: 'ปลาเสือตอ', icon: '🐟', category: 'fish', volume: 0 },
-      { id: 'goldfish', label: 'ปลาทอง', icon: '🐠', category: 'fish', volume: 0 },
-      { id: 'channa', label: 'ปลา Channa', icon: '🦈', category: 'fish', volume: 0 }
-    ];
 
-    class IsometricTankSimulator {
-      constructor(canvasId) {
-        this.canvas = document.getElementById(canvasId);
-        this.ctx = this.canvas.getContext('2d');
-        this.items = [];
-        this.draggingId = null;
-        this.flowEnabled = false;
-        this.lightingMode = 'off';
-        this.symptomMode = 'normal';
-        this.medicationMode = 'none';
-        this.pendingPaletteItem = null;
-        this.fishTick = 0;
-        this.bind();
-        this.loop();
-      }
-      bind() {
-        this.canvas.addEventListener('pointerdown', e => this.onPointerDown(e));
-        this.canvas.addEventListener('pointermove', e => this.onPointerMove(e));
-        this.canvas.addEventListener('pointerup', e => this.onPointerUp(e));
-        this.canvas.addEventListener('pointerleave', e => this.onPointerUp(e));
-      }
-      getVolumeDeductionLiters() {
-        return this.items.reduce((sum, i) => sum + (i.volume || 0), 0);
-      }
-      getStateSnapshot() {
-        return {
-          items: this.items,
-          flowEnabled: this.flowEnabled,
-          lightingMode: this.lightingMode,
-          symptomMode: this.symptomMode,
-          medicationMode: this.medicationMode
-        };
-      }
-      loadStateSnapshot(snapshot) {
-        if (!snapshot) return;
-        this.items = snapshot.items || [];
-        this.flowEnabled = !!snapshot.flowEnabled;
-        this.lightingMode = snapshot.lightingMode || 'off';
-        this.symptomMode = snapshot.symptomMode || 'normal';
-        this.medicationMode = snapshot.medicationMode || 'none';
-      }
-      onPointerDown(e) {
-        const { x, y } = this.getPos(e);
-        const hit = this.items.findLast(item => Math.hypot(item.x - x, item.y - y) < 20);
-        if (hit) {
-          this.draggingId = hit.uid;
-        } else if (this.pendingPaletteItem) {
-          this.spawnFromPalette(x, y, this.pendingPaletteItem);
-          this.pendingPaletteItem = null;
-        }
-      }
-      onPointerMove(e) {
-        if (!this.draggingId) return;
-        const item = this.items.find(i => i.uid === this.draggingId);
-        if (!item) return;
-        const { x, y } = this.getPos(e);
-        item.x = x;
-        item.y = y;
-      }
-      onPointerUp(e) {
-        if (!this.draggingId) return;
-        const item = this.items.find(i => i.uid === this.draggingId);
-        this.draggingId = null;
-        if (!item) return;
-        if (!this.isInsideTank(item.x, item.y)) {
-          this.items = this.items.filter(i => i.uid !== item.uid);
-          runCalculation();
-          return;
-        }
-        this.snapItem(item);
-        runCalculation();
-      }
-      spawnFromPalette(x, y, def) {
-        const item = { ...def, uid: `${def.id}-${Date.now()}`, x, y, z: 0 };
-        this.snapItem(item);
-        this.items.push(item);
-        runCalculation();
-      }
-      isInsideTank(x, y) {
-        return x >= 130 && x <= 840 && y >= 110 && y <= 470;
-      }
-      snapItem(item) {
-        if (item.category === 'ground') item.y = 410;
-        if (item.category === 'top') item.y = 135;
-        if (item.category === 'fish') item.y = Math.min(360, Math.max(190, item.y));
-      }
-      getPos(e) {
-        const r = this.canvas.getBoundingClientRect();
-        return { x: (e.clientX - r.left) * (this.canvas.width / r.width), y: (e.clientY - r.top) * (this.canvas.height / r.height) };
-      }
-      loop() {
-        this.fishTick += 0.02;
-        this.render();
-        requestAnimationFrame(() => this.loop());
-      }
-      drawTank() {
-        const c = this.ctx;
-        c.save();
-        c.strokeStyle = 'rgba(145,180,230,.8)';
-        c.fillStyle = 'rgba(50,120,220,.22)';
-        c.beginPath();
-        c.moveTo(150, 140); c.lineTo(760, 140); c.lineTo(850, 220); c.lineTo(240, 220); c.closePath();
-        c.fill(); c.stroke();
-        c.fillStyle = 'rgba(35,90,170,.25)';
-        c.fillRect(150, 140, 610, 300);
-        c.strokeRect(150, 140, 610, 300);
-        c.restore();
-      }
-      drawFlow() {
-        if (!this.flowEnabled) return;
-        const c = this.ctx;
-        c.save();
-        c.strokeStyle = 'rgba(120,230,255,.9)';
-        for (let i = 0; i < 7; i += 1) {
-          const y = 180 + i * 34 + Math.sin(this.fishTick * 3 + i) * 6;
-          c.beginPath();
-          c.moveTo(200, y); c.lineTo(760, y); c.stroke();
-          c.beginPath();
-          c.moveTo(760, y); c.lineTo(748, y - 5); c.lineTo(748, y + 5); c.closePath(); c.fillStyle = 'rgba(120,230,255,.9)'; c.fill();
-        }
-        c.restore();
-      }
-      drawItems() {
-        const c = this.ctx;
-        const sorted = [...this.items].sort((a, b) => (a.y + (a.category === 'top' ? -100 : 0)) - (b.y + (b.category === 'top' ? -100 : 0)));
-        sorted.forEach(item => {
-          c.save();
-          c.font = item.category === 'fish' ? '34px sans-serif' : '28px sans-serif';
-          let y = item.y;
-          if (item.category === 'fish') y += Math.sin(this.fishTick * 4 + item.x * 0.01) * (this.symptomMode === 'stress' ? 3 : 9);
-          c.fillText(item.icon, item.x - 12, y);
-          if (this.symptomMode === 'white_spot' && item.category === 'fish') {
-            c.fillStyle = 'rgba(255,255,255,.9)'; c.beginPath(); c.arc(item.x + 6, y - 12, 2, 0, Math.PI * 2); c.fill();
-          }
-          c.restore();
-        });
-      }
-      drawTint() {
-        const c = this.ctx;
-        c.save();
-        const lightMap = {
-          gold: 'rgba(255,209,84,0.16)',
-          red: 'rgba(255,90,90,0.16)',
-          channa: 'rgba(119,227,255,0.16)',
-          off: 'transparent'
-        };
-        const medMap = {
-          aquabac: 'rgba(128,255,180,0.09)',
-          bacta: 'rgba(255,170,170,0.09)',
-          aquah: 'rgba(196,215,255,0.09)',
-          none: 'transparent'
-        };
-        c.fillStyle = lightMap[this.lightingMode] || 'transparent';
-        c.fillRect(150, 140, 610, 300);
-        c.fillStyle = medMap[this.medicationMode] || 'transparent';
-        c.fillRect(150, 140, 610, 300);
-        c.restore();
-      }
-      render() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.drawTank();
-        this.drawFlow();
-        this.drawItems();
-        this.drawTint();
-      }
+    // ─── QR CODE MONKEY API (https://www.qrcode-monkey.com/qr-code-api-with-logo/) ───
+    const QR_MONKEY_API = 'https://api.qrcode-monkey.com/qr/custom';
+    const QR_MONKEY_CONFIG = {
+      body: 'circle',
+      eye: 'frame13',
+      eyeBall: 'ball15',
+      bodyColor: '#000000',
+      bgColor: '#FFFFFF'
+    };
+
+    function buildQrMonkeyImageUrl(dataUrl) {
+      const params = new URLSearchParams({
+        data: dataUrl,
+        config: JSON.stringify(QR_MONKEY_CONFIG),
+        size: '400',
+        file: 'png',
+        download: 'false'
+      });
+      return `${QR_MONKEY_API}?${params.toString()}`;
     }
 
-    function renderPalette() {
-      const holder = document.getElementById('asset-palette');
-      holder.innerHTML = paletteItems.map(item => `<button class="palette-btn" type="button" data-id="${item.id}">${item.icon} ${item.label}</button>`).join('');
-      holder.querySelectorAll('.palette-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const picked = paletteItems.find(p => p.id === btn.dataset.id);
-          if (picked && window.tankSimulator) window.tankSimulator.pendingPaletteItem = picked;
-        });
+    const ARO_CONTACTS = [
+      { id: 'facebook', name: 'Facebook', url: 'https://facebook.com/aroplusthailand', icon: 'icon/Facebook.png' },
+      { id: 'youtube-official', name: 'YouTube ARO PLUS Official', url: 'https://www.youtube.com/@AROPLUS_Official', icon: 'icon/YouTube.png' },
+      { id: 'youtube-channel', name: 'YouTube ARO PLUS Channel', url: 'https://www.youtube.com/@AROPLUS_Channel', icon: 'icon/YouTube.png' },
+      { id: 'line', name: 'Line', url: 'https://line.me/R/ti/p/@aroplus', icon: 'icon/Line.png' },
+      { id: 'tiktok', name: 'TikTok', url: 'https://www.tiktok.com/@aroplus?_r=1&_t=ZS-96k33TUGbtk', icon: 'icon/TikTok.png' },
+      { id: 'shopee', name: 'Shopee', url: 'https://shopee.co.th/aro_plus', icon: 'icon/Shopee.png' },
+      { id: 'lazada', name: 'Lazada', url: 'https://www.lazada.co.th/shop/aro-plus/', icon: 'icon/Lazada.png' }
+    ];
+
+    let activeQrContactId = null;
+
+    function renderContactPage() {
+      const list = document.getElementById('contact-list');
+      list.innerHTML = ARO_CONTACTS.map(c => `
+        <div class="contact-row" data-contact-id="${c.id}">
+          <a class="contact-main-btn" href="${c.url}" target="_blank" rel="noopener noreferrer">
+            <span class="contact-icon-wrap"><img src="${c.icon}" alt="${c.name}" loading="lazy" onerror="this.style.opacity='0.35'" /></span>
+            <span class="contact-name">${c.name}</span>
+          </a>
+          <button type="button" class="contact-mini-btn" title="คัดลอกลิงก์" data-contact-id="${c.id}" onclick="copyContactLink(this.dataset.contactId, event)">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+          <button type="button" class="contact-mini-btn contact-qr-btn" data-qr-id="${c.id}" title="แสดง QR Code" onclick="toggleContactQr(this.dataset.qrId, event)">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM17 17h3v3h-3z"/></svg>
+          </button>
+        </div>`).join('');
+    }
+
+    function copyContactLink(id, event) {
+      event.preventDefault();
+      event.stopPropagation();
+      const c = ARO_CONTACTS.find(x => x.id === id);
+      if (!c) return;
+      navigator.clipboard.writeText(c.url).then(() => {
+        event.currentTarget.style.color = 'var(--green-accent)';
+        setTimeout(() => { event.currentTarget.style.color = ''; }, 1200);
       });
     }
 
-    function setActivePill(containerId, value) {
-      const box = document.getElementById(containerId);
-      box.querySelectorAll('.pill-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.value === value));
+    function toggleContactQr(id, event) {
+      event.preventDefault();
+      event.stopPropagation();
+      const panel = document.getElementById('contact-qr-panel');
+      const img = document.getElementById('contact-qr-image');
+      const title = document.getElementById('contact-qr-title');
+      const c = ARO_CONTACTS.find(x => x.id === id);
+      if (!c) return;
+
+      document.querySelectorAll('.contact-qr-btn').forEach(b => b.classList.remove('active'));
+
+      if (activeQrContactId === id && panel.classList.contains('open')) {
+        panel.classList.remove('open');
+        activeQrContactId = null;
+        return;
+      }
+
+      activeQrContactId = id;
+      event.currentTarget.classList.add('active');
+      title.textContent = c.name;
+      img.src = buildQrMonkeyImageUrl(c.url);
+      img.alt = `QR Code - ${c.name}`;
+      panel.classList.add('open');
     }
 
-    function renderSimulatorControls() {
-      const lightContainer = document.getElementById('lighting-controls');
-      lightContainer.innerHTML = `
-        <button class="pill-btn" data-value="off" onclick="setLighting('off')">ปิดไฟ</button>
-        <button class="pill-btn" data-value="gold" onclick="setLighting('gold')">ไฟปลามังกรทอง</button>
-        <button class="pill-btn" data-value="red" onclick="setLighting('red')">ไฟขับสีแดง</button>
-        <button class="pill-btn" data-value="channa" onclick="setLighting('channa')">ไฟเร่งสี Channa</button>`;
-      const symptomContainer = document.getElementById('symptom-controls');
-      symptomContainer.innerHTML = `
-        <button class="pill-btn" data-value="normal" onclick="setSymptom('normal')">ปกติ</button>
-        <button class="pill-btn" data-value="fin_rot" onclick="setSymptom('fin_rot')">ครีบเปื่อย/ตกเลือด</button>
-        <button class="pill-btn" data-value="white_spot" onclick="setSymptom('white_spot')">จุดขาว</button>
-        <button class="pill-btn" data-value="stress" onclick="setSymptom('stress')">เครียด/ช็อกน้ำ</button>`;
-      const medContainer = document.getElementById('medication-controls');
-      medContainer.innerHTML = `
-        <button class="pill-btn" data-value="none" onclick="setMedication('none')">ไม่ใช้ยา</button>
-        <button class="pill-btn" data-value="aquabac" onclick="setMedication('aquabac')">AquaBac</button>
-        <button class="pill-btn" data-value="bacta" onclick="setMedication('bacta')">Bacta</button>
-        <button class="pill-btn" data-value="aquah" onclick="setMedication('aquah')">AquaH</button>`;
-      setActivePill('lighting-controls', 'off');
-      setActivePill('symptom-controls', 'normal');
-      setActivePill('medication-controls', 'none');
-    }
-
-    function setLighting(mode) { window.tankSimulator.lightingMode = mode; setActivePill('lighting-controls', mode); }
-    function setSymptom(mode) { window.tankSimulator.symptomMode = mode; setActivePill('symptom-controls', mode); }
-    function setMedication(mode) { window.tankSimulator.medicationMode = mode; setActivePill('medication-controls', mode); }
-    function toggleWaterFlow() {
-      window.tankSimulator.flowEnabled = !window.tankSimulator.flowEnabled;
-      document.getElementById('flow-toggle-btn').innerText = window.tankSimulator.flowEnabled ? 'ปิด Water Flow' : 'เปิด Water Flow';
-    }
-
-    function updateSimulatorIndicators() {
-      const deduction = window.tankSimulator?.getVolumeDeductionLiters?.() || 0;
-      const text = `${deduction.toFixed(2)} ลิตร`;
-      const el = document.getElementById('sim-volume-deduction-text');
-      const badge = document.getElementById('sim-net-water-indicator');
-      if (el) el.innerText = text;
-      if (badge) badge.innerText = `หักเนื้อน้ำ ${text}`;
+    function copyAllContacts() {
+      const text = ARO_CONTACTS.map(c => `${c.name}: ${c.url}`).join('\n');
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.querySelector('.copy-all-contacts-btn');
+        const orig = btn.textContent;
+        btn.textContent = 'คัดลอกสำเร็จแล้ว!';
+        btn.style.color = 'var(--green-accent)';
+        setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 2000);
+      });
     }
 
     const PROFILE_KEY = 'aro-customer-profiles-v2';
@@ -3306,7 +3343,6 @@
         d: document.getElementById('tank-d').value,
         waterDrop: document.getElementById('water-drop').value,
         filterDeduction: document.getElementById('filter-deduction').value,
-        sim: window.tankSimulator?.getStateSnapshot?.() || null,
         createdAt: new Date().toISOString()
       };
       const list = getLocalProfiles();
@@ -3329,8 +3365,7 @@
       document.getElementById('tank-d').value = p.d || '';
       document.getElementById('water-drop').value = p.waterDrop || '';
       document.getElementById('filter-deduction').value = p.filterDeduction || '0';
-      if (window.tankSimulator) window.tankSimulator.loadStateSnapshot(p.sim);
-      navigate('simulator');
+      navigate('calc');
       runCalculation();
     }
 
@@ -3347,13 +3382,83 @@
         </div>`).join('') || '<div style="font-size:12px;color:var(--text-muted);">ยังไม่มีข้อมูลลูกค้า</div>';
     }
 
-    // Initialize presets and calculation + simulator modules
+    // ─── PWA: ติดตั้งแอป + อัปเดตออฟไลน์ ───
+    let deferredInstallPrompt = null;
+
+    function isStandalonePwa() {
+      return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    }
+
+    function dismissPwaInstall() {
+      document.getElementById('pwa-install-bar').classList.add('hidden');
+      localStorage.setItem('aro-pwa-install-dismissed', '1');
+    }
+
+    async function installPwaApp() {
+      if (deferredInstallPrompt) {
+        deferredInstallPrompt.prompt();
+        await deferredInstallPrompt.userChoice;
+        deferredInstallPrompt = null;
+        document.getElementById('pwa-install-bar').classList.add('hidden');
+        return;
+      }
+      alert('บน iPhone/iPad: กดปุ่มแชร์ (Share) แล้วเลือก "เพิ่มไปยังหน้าจอโฮม"\n\nบน Android: เมนู Chrome → "ติดตั้งแอป" หรือ "เพิ่มลงหน้าจอหลัก"');
+    }
+
+    function applyPwaUpdate() {
+      if (navigator.serviceWorker.controller) {
+        navigator.serviceWorker.controller.postMessage({ action: 'skipWaiting' });
+      }
+    }
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+      if (!localStorage.getItem('aro-pwa-install-dismissed') && !isStandalonePwa()) {
+        document.getElementById('pwa-install-bar').classList.remove('hidden');
+      }
+    });
+
+    window.addEventListener('appinstalled', () => {
+      document.getElementById('pwa-install-bar').classList.add('hidden');
+      deferredInstallPrompt = null;
+    });
+
+    let swRefreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (swRefreshing) return;
+      swRefreshing = true;
+      window.location.reload();
+    });
+
+    function initPwaServiceWorker() {
+      if (!('serviceWorker' in navigator)) return;
+      navigator.serviceWorker.register('./sw.js').then((reg) => {
+        if (reg.waiting && navigator.serviceWorker.controller) {
+          document.getElementById('pwa-update-bar').classList.remove('hidden');
+        }
+        reg.addEventListener('updatefound', () => {
+          const worker = reg.installing;
+          if (!worker) return;
+          worker.addEventListener('statechange', () => {
+            if (worker.state === 'installed' && navigator.serviceWorker.controller) {
+              document.getElementById('pwa-update-bar').classList.remove('hidden');
+            }
+          });
+        });
+        setInterval(() => reg.update(), 60 * 60 * 1000);
+      }).catch(err => console.warn('SW register failed', err));
+    }
+
+
+    // Initialize
     renderPresets();
-    renderPalette();
-    renderSimulatorControls();
-    window.tankSimulator = new IsometricTankSimulator('tank-sim-canvas');
+    renderContactPage();
     renderCustomerProfiles();
-    setInterval(updateSimulatorIndicators, 300);
+    initPwaServiceWorker();
+    if (!isStandalonePwa() && /iPhone|iPad|iPod/i.test(navigator.userAgent) && !localStorage.getItem('aro-pwa-install-dismissed')) {
+      setTimeout(() => document.getElementById('pwa-install-bar').classList.remove('hidden'), 1500);
+    }
     document.addEventListener('click', (e) => {
       const menu = document.getElementById('hamburger-dropdown');
       const trigger = document.getElementById('hamburger-btn');
