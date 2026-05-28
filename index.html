@@ -7,14 +7,20 @@
   <title>ARO PLUS Admin Tools</title>
   <link rel="icon" type="image/png" href="images/logo.png" />
   <link rel="apple-touch-icon" href="images/logo.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="images/logo.png" />
   <link rel="manifest" href="manifest.webmanifest" />
   <meta name="theme-color" content="#0a0a0c" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="ARO PLUS" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <meta name="description" content="ARO PLUS Admin Tools - เครื่องคำนวณปริมาณน้ำและผลิตภัณฑ์สำหรับตู้ปลา" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap"
     rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js" defer></script>
 
   <style>
     /* ─── DESIGN SYSTEM & PALETTE ─── */
@@ -1035,7 +1041,7 @@
       }
 
       .brand-title {
-        font-size: 15px;
+        font-size: 13px;
       }
 
       .brand-sub {
@@ -1106,7 +1112,36 @@
       }
 
       .visual-card {
-        min-height: 290px;
+        min-height: auto;
+      }
+
+      .tank-view {
+        min-height: 320px;
+        padding: 4px 8px 12px;
+      }
+
+      .tank-svg-wrapper {
+        width: 100%;
+        max-width: 100%;
+        min-height: 300px;
+        aspect-ratio: auto;
+      }
+
+      #isometric-tank {
+        min-height: 280px;
+        height: 42vw;
+        max-height: 360px;
+      }
+
+      .tabs-bar .tab-mobile-relocate {
+        display: none !important;
+      }
+
+      .mobile-formula-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 12px;
       }
 
       .products-grid {
@@ -1371,20 +1406,253 @@
       touch-action: none;
     }
 
-    .palette-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    .palette-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 4px 0 8px;
+    }
+
+    .palette-tile {
+      width: 72px;
+      height: 72px;
+      border: 2px solid rgba(168, 85, 247, 0.45);
+      background: var(--bg-input);
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      cursor: grab;
+      touch-action: none;
+      user-select: none;
+      transition: var(--transition);
+      flex-shrink: 0;
+    }
+
+    .palette-tile:active,
+    .palette-tile.dragging-source {
+      border-color: var(--red-primary);
+      transform: scale(0.96);
+      box-shadow: 0 0 12px var(--red-glow);
+    }
+
+    .palette-tile-icon {
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .palette-tile-label {
+      font-size: 9.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-align: center;
+      line-height: 1.15;
+      padding: 0 4px;
+    }
+
+    .palette-sub-row {
+      display: none;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 6px 0 10px;
+      border-top: 1px dashed var(--border);
+      margin-top: 4px;
+    }
+
+    .palette-sub-row.open {
+      display: flex;
+    }
+
+    .palette-sub-tile {
+      width: 64px;
+      height: 64px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg-card);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      cursor: grab;
+      touch-action: none;
+    }
+
+    .palette-sub-tile .palette-tile-icon {
+      font-size: 22px;
+    }
+
+    .palette-sub-tile .palette-tile-label {
+      font-size: 8.5px;
+    }
+
+    #drag-ghost {
+      position: fixed;
+      z-index: 9999;
+      pointer-events: none;
+      font-size: 36px;
+      transform: translate(-50%, -50%);
+      display: none;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.45));
+    }
+
+    .sim-stage-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .sim-palette-section {
+      padding: 12px 14px 16px;
+      background: var(--bg-input);
+      border-top: 1px solid var(--border);
+    }
+
+    .mobile-formula-tabs {
+      display: none;
+    }
+
+    /* ─── CONTACT PAGE ─── */
+    .contact-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: stretch;
       gap: 8px;
     }
 
-    .palette-btn {
+    .contact-main-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      text-decoration: none;
+      transition: var(--transition);
+      min-height: 64px;
+    }
+
+    .contact-main-btn:hover {
+      border-color: var(--red-primary);
+      transform: translateY(-1px);
+    }
+
+    .contact-icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--bg-input);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .contact-icon-wrap svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    .contact-name {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .contact-mini-btn {
+      width: 44px;
+      min-width: 44px;
       border: 1px solid var(--border);
       background: var(--bg-input);
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: var(--text-secondary);
-      border-radius: 10px;
-      padding: 8px 10px;
-      font-size: 11px;
-      cursor: grab;
+      transition: var(--transition);
+    }
+
+    .contact-mini-btn:hover {
+      border-color: var(--red-primary);
+      color: var(--red-primary);
+    }
+
+    .contact-mini-btn.active {
+      border-color: var(--red-primary);
+      color: var(--red-primary);
+      background: rgba(230, 57, 70, 0.08);
+    }
+
+    .contact-qr-panel {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.35s ease-in-out, opacity 0.3s ease-in-out, padding 0.35s ease;
+      padding: 0 16px;
+      margin-top: 0;
+    }
+
+    .contact-qr-panel.open {
+      max-height: 420px;
+      opacity: 1;
+      padding: 16px;
+      margin-top: 8px;
+    }
+
+    .contact-qr-inner {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .contact-qr-frame {
+      padding: 12px;
+      background: #ffffff;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .contact-qr-frame canvas,
+    .contact-qr-frame img {
+      display: block;
+      border-radius: 12px;
+    }
+
+    .copy-all-contacts-btn {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: transparent;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .copy-all-contacts-btn:hover {
+      border-color: var(--red-primary);
+      color: var(--red-primary);
     }
 
     .sim-section {
@@ -1464,6 +1732,24 @@
         grid-template-columns: 1fr;
         padding: 14px 16px 80px;
       }
+
+      #tank-sim-canvas {
+        min-height: 55vw;
+        max-height: 420px;
+      }
+
+      .palette-tile {
+        width: 64px;
+        height: 64px;
+      }
+
+      .palette-tile-icon {
+        font-size: 24px;
+      }
+
+      .sim-side-panel {
+        order: 2;
+      }
     }
   </style>
 </head>
@@ -1518,6 +1804,7 @@
         <div class="hamburger-dropdown" id="hamburger-dropdown">
           <button class="pill-btn" type="button" onclick="navigate('customer');toggleTopMenu(false)">ระบบบันทึกประวัติตู้ปลาของลูกค้า</button>
           <button class="pill-btn" type="button" onclick="navigate('simulator');toggleTopMenu(false)">แบบจำลองตู้ปลาของคุณ</button>
+          <button class="pill-btn" type="button" onclick="navigate('contact');toggleTopMenu(false)">ช่องทางติดต่อ ARO PLUS</button>
         </div>
       </div>
     </header>
@@ -1546,6 +1833,12 @@
         </a>
 
         <div class="menu-label">ข้อมูลแบรนด์</div>
+        <a class="menu-item" id="menu-contact" onclick="navigate('contact')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+          </svg>
+          ติดต่อ ARO PLUS
+        </a>
         <a class="menu-item" id="menu-about" onclick="navigate('about')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="10" />
@@ -1616,11 +1909,11 @@
             <!-- Formula tabs -->
             <div class="tabs-bar" role="tablist">
               <button class="tab-button active" onclick="switchFormula(0)" id="f-tab-0">💧 ปริมาณน้ำ</button>
-              <button class="tab-button" onclick="switchFormula(1)" id="f-tab-1">
+              <button class="tab-button tab-mobile-relocate" onclick="switchFormula(1)" id="f-tab-1">
                 <span class="tab-dot" style="background: #ff4d5a; box-shadow: 0 0 8px rgba(255, 77, 90, 0.6);"></span>
                 Active Plus
               </button>
-              <button class="tab-button" onclick="switchFormula(2)" id="f-tab-2">
+              <button class="tab-button tab-mobile-relocate" onclick="switchFormula(2)" id="f-tab-2">
                 <span class="tab-dot" style="background: #9ca3af; box-shadow: 0 0 8px rgba(156, 163, 175, 0.6);"></span>
                 Aura Plus
               </button>
@@ -1910,6 +2203,17 @@
                     <span>📋 คัดลอกสรุปสำหรับส่งลูกค้า</span>
                   </button>
 
+                  <div class="mobile-formula-tabs" id="mobile-formula-tabs" role="tablist" aria-label="เมนูปรับสภาพน้ำมือถือ">
+                    <button type="button" class="tab-button" onclick="switchFormula(1)" id="m-f-tab-1">
+                      <span class="tab-dot" style="background: #ff4d5a;"></span>
+                      Active Plus
+                    </button>
+                    <button type="button" class="tab-button" onclick="switchFormula(2)" id="m-f-tab-2">
+                      <span class="tab-dot" style="background: #9ca3af;"></span>
+                      Aura Plus
+                    </button>
+                  </div>
+
                   <!-- Dosage result section if selected -->
                   <div id="dosage-container" style="display: none; display: flex; flex-direction: column; gap: 12px;">
                   </div>
@@ -1924,20 +2228,21 @@
         <section class="page" id="page-simulator">
           <div class="calc-header">
             <h2>🧪 <span>แบบจำลองตู้ปลาของคุณ</span></h2>
-            <p>ลากและวางอุปกรณ์บนตู้ 2.5D เพื่อจำลองเนื้อน้ำจริง ระบบแสง และอาการปลาแบบโต้ตอบ</p>
+            <p>ลากวัสดุจากแถบด้านล่างแล้ววางลงในตู้ 2.5D — ระบบจะหักปริมาตรน้ำและอัปเดตโดสทันที</p>
           </div>
+          <div id="drag-ghost" aria-hidden="true"></div>
           <div class="sim-layout">
-            <div class="sim-card">
-              <div class="card-title"><span>Isometric Interactive Canvas</span><span id="sim-net-water-indicator"></span></div>
+            <div class="sim-card sim-stage-layout">
+              <div class="card-title"><span>แบบจำลองตู้ปลา 2.5D</span><span id="sim-net-water-indicator"></span></div>
               <div class="sim-canvas-wrap">
                 <canvas id="tank-sim-canvas" width="980" height="540"></canvas>
               </div>
-              <div class="sim-section">
-                <h4>อุปกรณ์และของตกแต่ง (ลากแล้ววาง)</h4>
-                <div class="palette-grid" id="asset-palette"></div>
+              <div class="sim-palette-section">
+                <div class="palette-row" id="asset-palette-categories"></div>
+                <div class="palette-sub-row" id="asset-palette-sub"></div>
               </div>
             </div>
-            <div class="sim-card">
+            <div class="sim-card sim-side-panel">
               <div class="sim-section" style="border-top:none;">
                 <h4>ปั๊มน้ำและท่อน้ำออก</h4>
                 <button class="pill-btn" id="flow-toggle-btn" onclick="toggleWaterFlow()">ปิด Water Flow</button>
@@ -1958,6 +2263,29 @@
                 <h4>ปริมาตรน้ำที่หักจากของตกแต่ง</h4>
                 <div id="sim-volume-deduction-text" style="font-size:13px;color:var(--text-secondary);">0.00 ลิตร</div>
               </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page" id="page-contact">
+          <div class="about-container">
+            <div class="about-hero-card">
+              <div class="about-hero-info" style="width:100%;">
+                <h3>ช่องทางติดต่อ ARO PLUS</h3>
+                <p>กดปุ่มเพื่อเปิดลิงก์ ก็อปปี้ลิงก์ หรือแสดง QR Code ส่งให้ลูกค้าได้ทันที</p>
+              </div>
+            </div>
+            <div class="product-info-card">
+              <div id="contact-list" class="contact-list"></div>
+              <div id="contact-qr-panel" class="contact-qr-panel">
+                <div class="contact-qr-inner">
+                  <div id="contact-qr-title" style="font-size:13px;font-weight:700;color:var(--text-secondary);"></div>
+                  <div class="contact-qr-frame">
+                    <canvas id="contact-qr-canvas"></canvas>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="copy-all-contacts-btn" onclick="copyAllContacts()">คัดลอกข้อความทั้งหมด</button>
             </div>
           </div>
         </section>
@@ -2400,8 +2728,9 @@
     function switchFormula(idx) {
       activeTabIdx = idx;
 
-      document.querySelectorAll('.tab-button').forEach((btn, i) => {
-        btn.classList.toggle('active', i === idx);
+      document.querySelectorAll('.tab-button').forEach((btn) => {
+        const match = btn.id && btn.id.match(/^(?:m-)?f-tab-(\d+)$/);
+        if (match) btn.classList.toggle('active', parseInt(match[1], 10) === idx);
       });
 
       const fConfig = formulas[idx];
@@ -3044,17 +3373,96 @@
     }
 
     const paletteItems = [
-      { id: 'sand', label: 'ทราย', icon: '🟫', category: 'ground', volume: 4 },
-      { id: 'rock', label: 'หินตกแต่ง', icon: '🪨', category: 'ground', volume: 8 },
-      { id: 'driftwood', label: 'ขอนไม้', icon: '🪵', category: 'ground', volume: 15 },
-      { id: 'light', label: 'หลอดไฟ ARO PLUS', icon: '💡', category: 'top', volume: 0 },
-      { id: 'pump', label: 'ถังน้ำ/ปั๊มน้ำ', icon: '⚙️', category: 'system', volume: 6 },
-      { id: 'filter', label: 'แผ่นกรอง', icon: '🧱', category: 'system', volume: 10 },
-      { id: 'arowana', label: 'ปลามังกร', icon: '🐲', category: 'fish', volume: 0 },
-      { id: 'datnoid', label: 'ปลาเสือตอ', icon: '🐟', category: 'fish', volume: 0 },
-      { id: 'goldfish', label: 'ปลาทอง', icon: '🐠', category: 'fish', volume: 0 },
-      { id: 'channa', label: 'ปลา Channa', icon: '🦈', category: 'fish', volume: 0 }
+      { id: 'sand', label: 'ทราย', icon: '🟫', category: 'ground', volume: 4, group: 'stone' },
+      { id: 'rock', label: 'หิน', icon: '🪨', category: 'ground', volume: 8, group: 'stone' },
+      { id: 'driftwood', label: 'ขอนไม้', icon: '🪵', category: 'ground', volume: 15, group: 'stone' },
+      { id: 'pump', label: 'ปั๊มน้ำ', icon: '⚙️', category: 'system', volume: 6, group: 'water' },
+      { id: 'filter', label: 'กรอง', icon: '🧱', category: 'system', volume: 10, group: 'water' },
+      { id: 'light', label: 'หลอดไฟ', icon: '💡', category: 'top', volume: 0, group: 'light' },
+      { id: 'arowana', label: 'มังกร', icon: '🐲', category: 'fish', volume: 0, group: 'fish' },
+      { id: 'datnoid', label: 'เสือตอ', icon: '🐟', category: 'fish', volume: 0, group: 'fish' },
+      { id: 'goldfish', label: 'ทอง', icon: '🐠', category: 'fish', volume: 0, group: 'fish' },
+      { id: 'channa', label: 'Channa', icon: '🦈', category: 'fish', volume: 0, group: 'fish' }
     ];
+
+    const paletteCategories = [
+      { id: 'stone', label: 'หิน', icon: '🪨' },
+      { id: 'water', label: 'น้ำ', icon: '💧' },
+      { id: 'light', label: 'หลอดไฟ', icon: '💡' },
+      { id: 'fish', label: 'ปลา', icon: '🐟' },
+      { id: 'other', label: 'อื่นๆ', icon: '✨' }
+    ];
+
+    class PaletteDragController {
+      constructor(simulator) {
+        this.sim = simulator;
+        this.ghost = document.getElementById('drag-ghost');
+        this.dragItem = null;
+        this.sourceEl = null;
+        this.activeCategory = null;
+        this.isDragging = false;
+        this.startX = 0;
+        this.startY = 0;
+        this.onMove = this.onMove.bind(this);
+        this.onUp = this.onUp.bind(this);
+      }
+      beginDrag(itemDef, sourceEl) {
+        this.dragItem = itemDef;
+        this.sourceEl = sourceEl;
+        this.isDragging = true;
+        sourceEl.classList.add('dragging-source');
+        this.ghost.textContent = itemDef.icon;
+        this.ghost.style.display = 'block';
+      }
+      onMove(e) {
+        if (!this.dragItem) return;
+        const dist = Math.hypot(e.clientX - this.startX, e.clientY - this.startY);
+        if (!this.isDragging && dist > 8) this.beginDrag(this.dragItem, this.sourceEl);
+        if (!this.isDragging) return;
+        this.ghost.style.left = `${e.clientX}px`;
+        this.ghost.style.top = `${e.clientY}px`;
+      }
+      onUp(e) {
+        if (!this.dragItem) return;
+        if (this.isDragging) {
+          const canvas = this.sim.canvas;
+          const rect = canvas.getBoundingClientRect();
+          const insideCanvas = e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom;
+          if (insideCanvas) {
+            const x = (e.clientX - rect.left) * (canvas.width / rect.width);
+            const y = (e.clientY - rect.top) * (canvas.height / rect.height);
+            this.sim.spawnItemAt(x, y, this.dragItem);
+          }
+          this.ghost.style.display = 'none';
+          if (this.sourceEl) this.sourceEl.classList.remove('dragging-source');
+        }
+        const wasTap = !this.isDragging;
+        const el = this.sourceEl;
+        const item = this.dragItem;
+        this.dragItem = null;
+        this.sourceEl = null;
+        this.isDragging = false;
+        document.removeEventListener('pointermove', this.onMove);
+        document.removeEventListener('pointerup', this.onUp);
+        document.removeEventListener('pointercancel', this.onUp);
+        if (wasTap && el?.dataset?.category) {
+          el.dispatchEvent(new CustomEvent('palette-tap', { bubbles: true, detail: { category: el.dataset.category, item } }));
+        }
+      }
+      bindTile(el, itemDef) {
+        el.addEventListener('pointerdown', (e) => {
+          e.preventDefault();
+          this.dragItem = itemDef;
+          this.sourceEl = el;
+          this.isDragging = false;
+          this.startX = e.clientX;
+          this.startY = e.clientY;
+          document.addEventListener('pointermove', this.onMove);
+          document.addEventListener('pointerup', this.onUp);
+          document.addEventListener('pointercancel', this.onUp);
+        });
+      }
+    }
 
     class IsometricTankSimulator {
       constructor(canvasId) {
@@ -3066,8 +3474,8 @@
         this.lightingMode = 'off';
         this.symptomMode = 'normal';
         this.medicationMode = 'none';
-        this.pendingPaletteItem = null;
         this.fishTick = 0;
+        this.tankBounds = { minX: 150, maxX: 850, minY: 120, maxY: 470 };
         this.bind();
         this.loop();
       }
@@ -3075,7 +3483,15 @@
         this.canvas.addEventListener('pointerdown', e => this.onPointerDown(e));
         this.canvas.addEventListener('pointermove', e => this.onPointerMove(e));
         this.canvas.addEventListener('pointerup', e => this.onPointerUp(e));
-        this.canvas.addEventListener('pointerleave', e => this.onPointerUp(e));
+        this.canvas.addEventListener('pointercancel', e => this.onPointerUp(e));
+      }
+      spawnItemAt(x, y, def) {
+        const item = { ...def, uid: `${def.id}-${Date.now()}-${Math.random().toString(16).slice(2, 6)}`, x, y, z: 0 };
+        if (!this.isInsideTank(x, y)) return false;
+        this.snapItem(item);
+        this.items.push(item);
+        runCalculation();
+        return true;
       }
       getVolumeDeductionLiters() {
         return this.items.reduce((sum, i) => sum + (i.volume || 0), 0);
@@ -3099,12 +3515,10 @@
       }
       onPointerDown(e) {
         const { x, y } = this.getPos(e);
-        const hit = this.items.findLast(item => Math.hypot(item.x - x, item.y - y) < 20);
+        const hit = this.items.findLast(item => Math.hypot(item.x - x, item.y - y) < 24);
         if (hit) {
           this.draggingId = hit.uid;
-        } else if (this.pendingPaletteItem) {
-          this.spawnFromPalette(x, y, this.pendingPaletteItem);
-          this.pendingPaletteItem = null;
+          this.canvas.setPointerCapture(e.pointerId);
         }
       }
       onPointerMove(e) {
@@ -3119,6 +3533,7 @@
         if (!this.draggingId) return;
         const item = this.items.find(i => i.uid === this.draggingId);
         this.draggingId = null;
+        try { this.canvas.releasePointerCapture(e.pointerId); } catch (_) { /* noop */ }
         if (!item) return;
         if (!this.isInsideTank(item.x, item.y)) {
           this.items = this.items.filter(i => i.uid !== item.uid);
@@ -3128,19 +3543,16 @@
         this.snapItem(item);
         runCalculation();
       }
-      spawnFromPalette(x, y, def) {
-        const item = { ...def, uid: `${def.id}-${Date.now()}`, x, y, z: 0 };
-        this.snapItem(item);
-        this.items.push(item);
-        runCalculation();
-      }
       isInsideTank(x, y) {
-        return x >= 130 && x <= 840 && y >= 110 && y <= 470;
+        const b = this.tankBounds || { minX: 150, maxX: 850, minY: 120, maxY: 470 };
+        return x >= b.minX && x <= b.maxX && y >= b.minY && y <= b.maxY;
       }
       snapItem(item) {
-        if (item.category === 'ground') item.y = 410;
-        if (item.category === 'top') item.y = 135;
-        if (item.category === 'fish') item.y = Math.min(360, Math.max(190, item.y));
+        const b = this.tankBounds || { minY: 120, maxY: 470 };
+        if (item.category === 'ground') item.y = b.maxY - 18;
+        if (item.category === 'top') item.y = b.minY + 28;
+        if (item.category === 'system') item.y = Math.min(b.maxY - 40, Math.max(b.minY + 60, item.y));
+        if (item.category === 'fish') item.y = Math.min(b.maxY - 50, Math.max(b.minY + 80, item.y));
       }
       getPos(e) {
         const r = this.canvas.getBoundingClientRect();
@@ -3153,15 +3565,58 @@
       }
       drawTank() {
         const c = this.ctx;
+        const wVal = parseFloat(document.getElementById('tank-w')?.value) || 48;
+        const hVal = parseFloat(document.getElementById('tank-h')?.value) || 20;
+        const dVal = parseFloat(document.getElementById('tank-d')?.value) || 20;
+        const isInch = selectedUnit === 'inch';
+        const wPx = mapRange(wVal, isInch ? 12 : 30, isInch ? 120 : 300, 200, 620);
+        const hPx = mapRange(hVal, isInch ? 10 : 25, isInch ? 60 : 150, 70, 130);
+        const dPx = mapRange(dVal, isInch ? 10 : 25, isInch ? 60 : 150, 120, 260);
+        const startX = 180;
+        const startY = 420;
+        const dx = hPx * 0.72;
+        const dy = hPx * 0.42;
+        const A = [startX, startY];
+        const B = [startX + wPx, startY];
+        const C = [startX + wPx + dx, startY - dy];
+        const D = [startX + dx, startY - dy];
+        const A_top = [A[0], A[1] - dPx];
+        const B_top = [B[0], B[1] - dPx];
+        const C_top = [C[0], C[1] - dPx];
+        const D_top = [D[0], D[1] - dPx];
+        this.tankBounds = { minX: A[0] - 20, maxX: C[0] + 20, minY: C_top[1] - 20, maxY: A[1] + 10 };
+        const pts = (...p) => p.map(v => v.join(',')).join(' ');
         c.save();
-        c.strokeStyle = 'rgba(145,180,230,.8)';
-        c.fillStyle = 'rgba(50,120,220,.22)';
+        c.strokeStyle = 'rgba(90, 150, 230, 0.95)';
+        c.lineWidth = 2.5;
+        c.fillStyle = 'rgba(40, 100, 200, 0.18)';
         c.beginPath();
-        c.moveTo(150, 140); c.lineTo(760, 140); c.lineTo(850, 220); c.lineTo(240, 220); c.closePath();
+        c.moveTo(A_top[0], A_top[1]); c.lineTo(B_top[0], B_top[1]); c.lineTo(C_top[0], C_top[1]); c.lineTo(D_top[0], D_top[1]); c.closePath();
         c.fill(); c.stroke();
-        c.fillStyle = 'rgba(35,90,170,.25)';
-        c.fillRect(150, 140, 610, 300);
-        c.strokeRect(150, 140, 610, 300);
+        c.beginPath();
+        c.moveTo(A[0], A[1]); c.lineTo(B[0], B[1]); c.lineTo(C[0], C[1]); c.lineTo(D[0], D[1]); c.closePath();
+        c.stroke();
+        c.beginPath();
+        c.moveTo(A[0], A[1]); c.lineTo(A_top[0], A_top[1]);
+        c.moveTo(B[0], B[1]); c.lineTo(B_top[0], B_top[1]);
+        c.moveTo(C[0], C[1]); c.lineTo(C_top[0], C_top[1]);
+        c.moveTo(D[0], D[1]); c.lineTo(D_top[0], D_top[1]);
+        c.stroke();
+        c.fillStyle = 'rgba(30, 110, 210, 0.35)';
+        c.beginPath();
+        c.moveTo(A[0], A[1]); c.lineTo(B[0], B[1]); c.lineTo(C[0], C[1]); c.lineTo(D[0], D[1]); c.closePath();
+        c.fill();
+        const waterY = A_top[1] + dPx * 0.12;
+        c.strokeStyle = 'rgba(100, 200, 255, 0.85)';
+        c.lineWidth = 2;
+        c.beginPath();
+        for (let i = 0; i <= 12; i++) {
+          const t = i / 12;
+          const x = A_top[0] + (B_top[0] - A_top[0]) * t;
+          const y = waterY + Math.sin(this.fishTick * 2 + t * 8) * 4;
+          if (i === 0) c.moveTo(x, y); else c.lineTo(x, y);
+        }
+        c.stroke();
         c.restore();
       }
       drawFlow() {
@@ -3223,14 +3678,148 @@
       }
     }
 
+    function renderPaletteSub(categoryId) {
+      const sub = document.getElementById('asset-palette-sub');
+      const items = categoryId === 'other'
+        ? paletteItems
+        : paletteItems.filter(p => p.group === categoryId);
+      if (!items.length) {
+        sub.classList.remove('open');
+        sub.innerHTML = '';
+        return;
+      }
+      sub.classList.add('open');
+      sub.innerHTML = items.map(item => `
+        <button type="button" class="palette-sub-tile" data-item-id="${item.id}">
+          <span class="palette-tile-icon">${item.icon}</span>
+          <span class="palette-tile-label">${item.label}</span>
+        </button>`).join('');
+      sub.querySelectorAll('.palette-sub-tile').forEach(tile => {
+        const def = paletteItems.find(p => p.id === tile.dataset.itemId);
+        if (def) window.paletteDrag.bindTile(tile, def);
+      });
+    }
+
     function renderPalette() {
-      const holder = document.getElementById('asset-palette');
-      holder.innerHTML = paletteItems.map(item => `<button class="palette-btn" type="button" data-id="${item.id}">${item.icon} ${item.label}</button>`).join('');
-      holder.querySelectorAll('.palette-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const picked = paletteItems.find(p => p.id === btn.dataset.id);
-          if (picked && window.tankSimulator) window.tankSimulator.pendingPaletteItem = picked;
+      const holder = document.getElementById('asset-palette-categories');
+      holder.innerHTML = paletteCategories.map(cat => `
+        <button type="button" class="palette-tile" data-category="${cat.id}" title="${cat.label}">
+          <span class="palette-tile-icon">${cat.icon}</span>
+          <span class="palette-tile-label">${cat.label}</span>
+        </button>`).join('');
+
+      holder.querySelectorAll('.palette-tile').forEach(tile => {
+        const catId = tile.dataset.category;
+        const defaultItem = paletteItems.find(p => p.group === catId) || paletteItems.find(p => p.id === 'rock');
+        window.paletteDrag.bindTile(tile, defaultItem);
+        tile.addEventListener('palette-tap', () => {
+          if (window.paletteDrag.activeCategory === catId) {
+            window.paletteDrag.activeCategory = null;
+            document.getElementById('asset-palette-sub').classList.remove('open');
+            return;
+          }
+          window.paletteDrag.activeCategory = catId;
+          renderPaletteSub(catId);
         });
+      });
+    }
+
+    const ARO_CONTACTS = [
+      { id: 'facebook', name: 'Facebook', url: 'https://facebook.com/aroplusthailand', color: '#1877F2' },
+      { id: 'youtube-official', name: 'YouTube ARO PLUS Official', url: 'https://www.youtube.com/@AROPLUS_Official', color: '#FF0000' },
+      { id: 'youtube-channel', name: 'YouTube ARO PLUS Channel', url: 'https://www.youtube.com/@AROPLUS_Channel', color: '#FF0000' },
+      { id: 'line', name: 'Line', url: 'https://line.me/R/ti/p/@aroplus', color: '#06C755' },
+      { id: 'tiktok', name: 'TikTok', url: 'https://www.tiktok.com/@aroplus?_r=1&_t=ZS-96k33TUGbtk', color: '#000000' },
+      { id: 'shopee', name: 'Shopee', url: 'https://shopee.co.th/aro_plus', color: '#EE4D2D' },
+      { id: 'lazada', name: 'Lazada', url: 'https://www.lazada.co.th/shop/aro-plus/', color: '#0F146D' }
+    ];
+
+    function getContactIcon(id) {
+      const icons = {
+        facebook: '<svg viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>',
+        'youtube-official': '<svg viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>',
+        'youtube-channel': '<svg viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>',
+        line: '<svg viewBox="0 0 24 24" fill="#06C755"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>',
+        tiktok: '<svg viewBox="0 0 24 24" fill="#000"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>',
+        shopee: '<svg viewBox="0 0 24 24" fill="#EE4D2D"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15v-4H8l4-7v4h3l-4 7z"/></svg>',
+        lazada: '<svg viewBox="0 0 24 24" fill="#0F146D"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-3.5L6 21l1.5-7.5L2 9h7l3-7z"/></svg>'
+      };
+      return icons[id] || '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>';
+    }
+
+    let activeQrContactId = null;
+
+    function renderContactPage() {
+      const list = document.getElementById('contact-list');
+      list.innerHTML = ARO_CONTACTS.map(c => `
+        <div class="contact-row" data-contact-id="${c.id}">
+          <a class="contact-main-btn" href="${c.url}" target="_blank" rel="noopener noreferrer">
+            <span class="contact-icon-wrap">${getContactIcon(c.id)}</span>
+            <span class="contact-name">${c.name}</span>
+          </a>
+          <button type="button" class="contact-mini-btn" title="คัดลอกลิงก์" data-contact-id="${c.id}" onclick="copyContactLink(this.dataset.contactId, event)">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+          <button type="button" class="contact-mini-btn contact-qr-btn" data-qr-id="${c.id}" title="แสดง QR Code" onclick="toggleContactQr(this.dataset.qrId, event)">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM17 17h3v3h-3z"/></svg>
+          </button>
+        </div>`).join('');
+    }
+
+    function copyContactLink(id, event) {
+      event.preventDefault();
+      event.stopPropagation();
+      const c = ARO_CONTACTS.find(x => x.id === id);
+      if (!c) return;
+      navigator.clipboard.writeText(c.url).then(() => {
+        const btn = event.currentTarget;
+        btn.style.color = 'var(--green-accent)';
+        setTimeout(() => { btn.style.color = ''; }, 1200);
+      });
+    }
+
+    function toggleContactQr(id, event) {
+      event.preventDefault();
+      event.stopPropagation();
+      const panel = document.getElementById('contact-qr-panel');
+      const canvas = document.getElementById('contact-qr-canvas');
+      const title = document.getElementById('contact-qr-title');
+      const c = ARO_CONTACTS.find(x => x.id === id);
+      if (!c) return;
+
+      document.querySelectorAll('.contact-qr-btn').forEach(b => b.classList.remove('active'));
+
+      if (activeQrContactId === id && panel.classList.contains('open')) {
+        panel.classList.remove('open');
+        activeQrContactId = null;
+        return;
+      }
+
+      activeQrContactId = id;
+      event.currentTarget.classList.add('active');
+      title.textContent = c.name;
+      panel.classList.add('open');
+
+      if (typeof QRCode !== 'undefined') {
+        QRCode.toCanvas(canvas, c.url, {
+          width: 220,
+          margin: 1,
+          color: { dark: '#111111', light: '#ffffff' }
+        }, (err) => { if (err) console.warn(err); });
+      }
+    }
+
+    function copyAllContacts() {
+      const text = ARO_CONTACTS.map(c => `${c.name}: ${c.url}`).join('\n');
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.querySelector('.copy-all-contacts-btn');
+        const orig = btn.textContent;
+        btn.textContent = 'คัดลอกสำเร็จแล้ว!';
+        btn.style.color = 'var(--green-accent)';
+        setTimeout(() => {
+          btn.textContent = orig;
+          btn.style.color = '';
+        }, 2000);
       });
     }
 
@@ -3349,9 +3938,11 @@
 
     // Initialize presets and calculation + simulator modules
     renderPresets();
-    renderPalette();
+    renderContactPage();
     renderSimulatorControls();
     window.tankSimulator = new IsometricTankSimulator('tank-sim-canvas');
+    window.paletteDrag = new PaletteDragController(window.tankSimulator);
+    renderPalette();
     renderCustomerProfiles();
     setInterval(updateSimulatorIndicators, 300);
     document.addEventListener('click', (e) => {
@@ -3360,8 +3951,15 @@
       if (!menu.contains(e.target) && !trigger.contains(e.target)) menu.classList.remove('open');
     });
     runCalculation();
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(err => console.warn('SW register failed', err));
+      });
+    }
   </script>
 
 </body>
 
 </html>
+  
